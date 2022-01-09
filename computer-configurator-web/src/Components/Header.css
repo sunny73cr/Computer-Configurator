@@ -1,0 +1,26 @@
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* header is fixed while the page scrolls */
+  width: 100%;
+  justify-content: space-between;
+  background-color: var(--secondaryColor);
+  box-shadow: 0 0 3rem 0.5rem var(--shadowColor);
+}
+
+header h1 {
+  padding-left: 1rem;
+  color: var(--secondaryTextColor);
+}
+
+header button {
+  /* blend with the header */
+  background-color: var(--secondaryColor);
+  border: none;
+  padding-right: 1rem;
+  /* icon color */
+  color: var(--secondaryTextColor);
+  /* the size of the icon */
+  font-size: 1.8rem;
+}

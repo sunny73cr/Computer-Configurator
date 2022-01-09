@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+    <!-- bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
+    <title>Computer Configurator</title>
+    <meta
+      name="description"
+      content="Making your next computer build easier."
+    />
+
+    <style>
+      /* before the application loads, apply the following styles */
+      body {
+        margin: 0;
+        /* fill the viewport width*/
+        width: 100vw;
+        /* fill the viewport height*/
+        min-height: 100vh;
+        background-color: #3a3a3a;
+      }
+
+      div.loadingContainer {
+        /* stack items vertically on the page */
+        display: flex;
+        flex-direction: column;
+        /* vertically center the elements. */
+        justify-content: center;
+        /* fill the viewport height*/
+        min-height: 100vh;
+      }
+
+      /* style the alert for requiring javascript.*/
+      noscript {
+        text-align: center;
+        color: #c02020;
+      }
+
+      /* display a message before the application loads */
+      p.loadingMessage {
+        text-align: center;
+        color: #9a9a9a;
+      }
+
+      /* the container for the loading 'wiper' animation. */
+      div.wiperContainer {
+        /* center the container. */
+        margin: 0 auto 0 auto;
+        /* space through which the wiper animates. */
+        width: 7.5rem;
+      }
+
+      /* the loading 'wiper' animation is a child of the wiperContainer. */
+      div.wiperContainer > div.wiperAnimation {
+        /* position relative to the parent element. */
+        position: relative;
+        /* colour the wiper. */
+        background-color: #9a9a9a;
+
+        --wiperThickness: 0.6rem;
+        /* equal thickness and radius creates a circle edge. */
+        height: var(--wiperThickness);
+        border-radius: var(--wiperThickness);
+
+        /* the wiper's starting width. */
+        --minimumWiperWidth: 1rem;
+        /* the wipers maximum width. */
+        --maximumWiperWidth: 1.65rem;
+
+        /* add the animation. */
+        animation: wiper;
+        /* the wiper's speed. */
+        animation-duration: 2.5s;
+        /* smooth the wiper's movement. */
+        animation-timing-function: ease-in-out;
+        /* loop the animation. */
+        animation-iteration-count: infinite;
+      }
+
+      @keyframes wiper {
+        0% {
+          /* start at the left of the container. */
+          width: var(--minimumWiperWidth);
+          left: 0%;
+        }
+        25% {
+          /* expand the wiper during movement. */
+          width: var(--maximumWiperWidth);
+        }
+        50% {
+          /* contract as it approaches the boundary. */
+          width: var(--minimumWiperWidth);
+          left: 100%;
+        }
+        75% {
+          /* expand on reverse movement. */
+          width: var(--maximumWiperWidth);
+        }
+        100% {
+          /* contract as it approaches the boundary. */
+          width: var(--minimumWiperWidth);
+          left: 0%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="loadingContainer">
+        <!-- if javascript is disabled. -->
+        <noscript>
+          <p>This application requires JavaScript.</p>
+        </noscript>
+        <!-- display the loading animation. -->
+        <div class="wiperContainer">
+          <div class="wiperAnimation"></div>
+        </div>
+        <!-- display the loading message. -->
+        <p class="loadingMessage">loading Computer Configurator...</p>
+      </div>
+    </div>
+  </body>
+</html>
