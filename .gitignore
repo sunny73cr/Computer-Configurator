@@ -1,15 +1,18 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
+# web
+/computer-configurator-web/node_modules
+/computer-configurator-web/.pnp
+/computer-configurator-web/.pnp.js
+# api
+/computer-configurator-api/obj
 
 # testing
-/coverage
+/computer-configurator-web/coverage
 
 # production
-/build
+/computer-configurator-web/build
 
 # misc
 .DS_Store
