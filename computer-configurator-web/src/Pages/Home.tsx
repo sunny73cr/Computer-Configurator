@@ -1,11 +1,10 @@
-import React from "react";
+import CategoryGrid from "../Components/CategoryGrid/CategoryGrid";
 
 function Home() {
   return (
-    <div>
-      <h2>This is a second level heading</h2>
-      <h3>This is a third level heading</h3>
-      <p>This is a paragraph</p>
+    <div className="Home">
+      <h2>Home</h2>
+      {CategoryGrid()}
     </div>
   );
 }

@@ -1,0 +1,29 @@
+.categoryGrid {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 0.5rem;
+  width: 6rem;
+  height: 10rem;
+  padding: 0.4rem;
+  border: darkgray solid 1px;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  border: darkred solid 1px;
+}
+
+.card h3 {
+  text-align: center;
+  word-wrap: break-word;
+  margin: 0;
+}

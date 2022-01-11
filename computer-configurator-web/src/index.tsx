@@ -5,13 +5,13 @@ import "./index.css";
 import "./overlayFade.css";
 import reportWebVitals from "./reportWebVitals";
 
-import Header from "./Components/Header";
+import Header from "./Components/Header/Header";
 import Home from "./Pages/Home";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      {/* <span className="overlay fadeIn toCenter"/> */}
+      <span className="overlay fadeIn toTop"/>
       <Header />
       <div className="content">
         <Routes>
