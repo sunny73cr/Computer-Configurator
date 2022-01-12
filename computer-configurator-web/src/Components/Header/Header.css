@@ -1,26 +1,36 @@
 header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  /* header is fixed while the page scrolls */
-  width: 100%;
-  justify-content: space-between;
   background-color: var(--secondaryColor);
   box-shadow: 0 0 3rem 0.5rem var(--shadowColor);
 }
 
-header h1 {
+.titleBar {
+  display: flex;
+  flex-direction: row;
+  /* vertically centered. */
+  align-items: center;
+  /* horizontally spaced between */
+  justify-content: space-between;
+}
+
+.titleBar h1 {
   padding-left: 1rem;
   color: var(--secondaryTextColor);
 }
 
-header button {
+.titleBar button {
+  padding-right: 1rem;
   /* blend with the header */
   background-color: var(--secondaryColor);
   border: none;
-  padding-right: 1rem;
   /* icon color */
   color: var(--secondaryTextColor);
   /* the size of the icon */
   font-size: 1.8rem;
+}
+
+.navDropdown {
+  display: flex;
+  flex-direction: column;
+  padding-left: 3rem;
+  padding-bottom: 1rem;
 }

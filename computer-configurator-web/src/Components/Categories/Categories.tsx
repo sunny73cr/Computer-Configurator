@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./CategoryGrid.css";
+import "./Categories.css";
 
 interface Category {
   name: string;
@@ -14,14 +14,14 @@ function CategoryCard(
   imageAsBase64String: string
 ): JSX.Element {
   return (
-    <div className="card" key={categoryName}>
-      <img
-        alt={`The ${categoryName} category.`}
-        src={`data:image/jpeg;base64,${imageAsBase64String}`}
-      />
-      <h3>
-        <Link to={`/${categoryName}`}>{categoryName}</Link>
-      </h3>
+    <div className="categoryCard" key={categoryName}>
+      <Link to={`/${categoryName}`}>
+        <img
+          alt={`The ${categoryName} category.`}
+          src={`data:image/jpeg;base64,${imageAsBase64String}`}
+        />
+        <h3>{categoryName}</h3>
+      </Link>
     </div>
   );
 }
@@ -39,10 +39,16 @@ export default function CategoryGrid(): JSX.Element {
   //TODO: get categories from server.
 
   return (
-    <div className="categoryGrid">
-      {categories.map((category) => {
-        return CategoryCard(category.name, category.image);
-      })}
+    <div className="categories">
+      <h2>Categories</h2>
+      <div className="allCategoriesLink">
+        <Link to="/Parts">View parts in all Categories</Link>
+      </div>
+      <div className="categoryGrid">
+        {categories.map((category) => {
+          return CategoryCard(category.name, category.image);
+        })}
+      </div>
     </div>
   );
 }

@@ -1,9 +1,8 @@
-import CategoryGrid from "../Components/CategoryGrid/CategoryGrid";
+import CategoryGrid from "../Components/Categories/Categories";
 
 function Home() {
   return (
     <div className="Home">
-      <h2>Home</h2>
       {CategoryGrid()}
     </div>
   );
