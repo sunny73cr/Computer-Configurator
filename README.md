@@ -2,7 +2,7 @@
   
   A Computer Parts Management, Analysis and Comparison system.
   
-  Built using React, C# .NET 6.0, and MySQL.
+  Built using React, C#, and MySQL.
 
 ---
 
