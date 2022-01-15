@@ -1,36 +1,75 @@
 header {
-	background-color: var(--secondaryColor);
-	box-shadow: 0 0 3rem 0.5rem var(--shadowColor);
+	background-color: rgba(var(--secondaryColor), 1);
+	box-shadow: 0 0 3rem 0.5rem rgba(var(--shadowColor), 1);
 }
 
-.titleBar {
+header .titleBar {
 	display: flex;
 	flex-direction: row;
 	/* vertically centered. */
 	align-items: center;
 	/* horizontally spaced between */
 	justify-content: space-between;
-}
-
-.titleBar h1 {
+	padding-top: 0.5rem;
+	padding-right: 0;
+	padding-bottom: 0.5rem;
 	padding-left: 1rem;
-	color: var(--secondaryTextColor);
 }
 
-.titleBar button {
+header .titleBar a {
+	font-size: 1.4rem;
+	color: rgba(var(--secondaryTextColor), 1);
+	text-decoration: none;
+}
+
+header .titleBar button {
 	padding-right: 1rem;
 	/* blend with the header */
-	background-color: var(--secondaryColor);
+	background-color: rgba(var(--secondaryColor), 1);
 	border: none;
 	/* icon color */
-	color: var(--secondaryTextColor);
+	color: rgba(var(--secondaryTextColor), 1);
 	/* the size of the icon */
 	font-size: 1.8rem;
 }
 
-.navDropdown {
+header .navSidebar {
+	position: fixed;
 	display: flex;
 	flex-direction: column;
-	padding-left: 3rem;
-	padding-bottom: 1rem;
+	text-align: center;
+	/* space from page boundary */
+	padding-top: 1rem;
+	padding-right: 1.5rem;
+	padding-bottom: 0;
+	padding-left: 1.5rem;
+	/* cover the page height */
+	height: 100%;
+	/* prevent from covering the page width */
+	max-width: 33%;
+	/* separate from the header*/
+	border-top: rgba(var(--tertiaryColor), 1) 2px solid;
+	/* match the header */
+	background-color: rgba(var(--secondaryColor), 1);
+	/* prevent links from overflowing */
+	word-wrap: break-word;
+	/* initially hidden to the right */
+	right: -50%;
+}
+
+header .navSidebar.showLeft {
+	/* slide to the left */
+	right: 0;
+	transition: right 1s ease-out;
+}
+
+header .navSidebar.hideRight {
+	/* slide to the right -- cha cha real smooth */
+	right: -50%;
+	transition: right 1s ease-in;
+}
+
+header .navSidebar a {
+	color: rgba(var(--secondaryTextColor), 1);
+	margin: 0.2rem;
 }

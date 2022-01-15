@@ -1,18 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+
 import "./Header.css";
 
-function Header() {
-	const [isNavExpanded, setIsNavExpanded] = useState<Boolean>(false);
+import { aboutLink, configureComputerLink, partSearchLink } from "../../index";
 
-	useEffect(() => {
-		console.log("navbar is expanded?", isNavExpanded);
-	}, [isNavExpanded]);
+function Header() {
+	const [navExpanded, setNavExpanded] = useState<Boolean>(false);
 
 	function NavBar() {
 		return (
-			<div className="navDropdown">
-				<Link to="/about">About</Link>
+			<div className={`navSidebar ${navExpanded ? "showLeft" : "hideRight"}`}>
+				<Link to={aboutLink}>About</Link>
+				<Link to={partSearchLink}>Part Search</Link>
+				<Link to={configureComputerLink}>System Configuration</Link>
 			</div>
 		);
 	}
@@ -20,14 +21,14 @@ function Header() {
 	return (
 		<header>
 			<div className="titleBar">
-				<Link to="/">
-					<h1>Computer Configurator</h1>
+				<Link to="/" className="Title">
+					Computer Configurator
 				</Link>
-				<button onClick={() => setIsNavExpanded(!isNavExpanded)}>
-					<span className={`bi ${isNavExpanded ? "bi-x-lg" : "bi-list"}`}></span>
+				<button onClick={() => /*Toggle nav*/ setNavExpanded(!navExpanded)}>
+					<span className={`bi ${navExpanded ? "bi-x-lg" : "bi-list"}`}></span>
 				</button>
 			</div>
-			{isNavExpanded ? NavBar() : /*Empty*/ <div />}
+			{NavBar()}
 		</header>
 	);
 }
