@@ -1,20 +1,36 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+
 import "./Header.css";
 
-function Header() {
-  const [isNavCollapsed, setIsNavCollapsed] = useState<Boolean>(true);
+import { aboutLink, configureComputerLink, partSearchLink } from "../../index";
 
-  return (
-    <header>
-      <Link to="/">
-        <h1>Computer Configurator</h1>
-      </Link>
-      <button onClick={() => setIsNavCollapsed(!isNavCollapsed)}>
-        <span className={`bi ${isNavCollapsed ? "bi-list" : "bi-x-lg"}`}></span>
-      </button>
-    </header>
-  );
+function Header() {
+	const [navExpanded, setNavExpanded] = useState<Boolean>(false);
+
+	function NavBar() {
+		return (
+			<div className={`navSidebar ${navExpanded ? "showLeft" : "hideRight"}`}>
+				<Link to={aboutLink}>About</Link>
+				<Link to={partSearchLink}>Part Search</Link>
+				<Link to={configureComputerLink}>System Configuration</Link>
+			</div>
+		);
+	}
+
+	return (
+		<header>
+			<div className="titleBar">
+				<Link to="/" className="Title">
+					Computer Configurator
+				</Link>
+				<button onClick={() => /*Toggle nav*/ setNavExpanded(!navExpanded)}>
+					<span className={`bi ${navExpanded ? "bi-x-lg" : "bi-list"}`}></span>
+				</button>
+			</div>
+			{NavBar()}
+		</header>
+	);
 }
 
 export default Header;

@@ -1,29 +1,42 @@
-.categoryGrid {
-  display: grid;
-  justify-items: center;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+.categories {
+	--cardWidth: 6rem;
 }
 
-.card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 0.5rem;
-  width: 6rem;
-  height: 10rem;
-  padding: 0.4rem;
-  border: darkgray solid 1px;
+.categories .titleBar {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
 }
 
-.card img {
-  width: 100%;
-  height: 100%;
-  border: darkred solid 1px;
+.categories .grid {
+	display: grid;
+	justify-items: center;
+	gap: 1rem;
+	grid-template-columns: repeat(auto-fill, minmax(var(--cardWidth), 1fr));
 }
 
-.card h3 {
-  text-align: center;
-  word-wrap: break-word;
-  margin: 0;
+.categories .grid .card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 0.5rem;
+	width: var(--cardWidth);
+	padding: 0.4rem;
+	border: darkgray solid 1px;
+}
+
+.categories .grid .card a:hover {
+	background-color: none;
+}
+
+.categories .grid .card img {
+	width: 100px;
+	height: 100px;
+}
+
+.categories .grid .card h3 {
+	text-align: center;
+	word-wrap: break-word;
+	margin: 0;
 }

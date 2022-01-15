@@ -1,66 +1,71 @@
 :root {
-  /* global theme */
-  --primaryColor: #3a3a3a;
-  --primaryTextColor: #9a9a9a;
+	/* global theme */
+	/* RGB colors; for use with rgba(var(--color), opacity)*/
+	--primaryColor: 58, 58, 58;
+	--primaryTextColor: 154, 154, 154;
 
-  --secondaryColor: #6a6a6a;
-  --secondaryTextColor: #1a1a1a;
+	--secondaryColor: 106, 106, 106;
+	--secondaryTextColor: 26, 26, 26;
 
-  --tertiaryColor: #9a9a9a;
-  --tertiaryTextColor: #000000;
+	--tertiaryColor: 154, 154, 154;
+	--tertiaryTextColor: 0, 0, 0;
 
-  --failure: #c02020;
-  --success: #25c020;
+	--failure: 192, 32, 32;
+	--success: 32, 192, 32;
 
-  --shadowColor: #000000;
+	--shadowColor: 0, 0, 0;
 }
 
 body {
-  margin: 0;
-  /* fill the viewport width*/
-  width: 100vw;
-  /* fill the viewport height*/
-  min-height: 100vh;
-  background-color: var(--primaryColor);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+	margin: 0;
+	/* fill the viewport width*/
+	width: 100vw;
+	/* fill the viewport height*/
+	min-height: 100vh;
+	background-color: rgba(var(--primaryColor), 1);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 h1 {
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: var(--primaryTextColor);
+	font-size: 1.4rem;
+	font-weight: 500;
+	color: rgba(var(--primaryTextColor), 1);
 }
 
 h2 {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: var(--primaryTextColor);
+	font-size: 1.2rem;
+	font-weight: 500;
+	color: rgba(var(--primaryTextColor), 1);
 }
 
 h3 {
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--primaryTextColor);
+	font-size: 1rem;
+	font-weight: 500;
+	color: rgba(var(--primaryTextColor), 1);
 }
 
 a {
-  text-decoration: none;
-  font-weight: 500;
-  color: var(--primaryTextColor);
+	font-weight: 500;
+	color: rgba(var(--primaryTextColor), 1);
+	text-decoration: none;
+	padding: 0.2rem;
+}
+
+a:hover {
+	background-color: rgba(var(--secondaryColor), 0.1);
+	border-radius: 1rem;
 }
 
 p {
-  font-size: 0.8rem;
-  font-weight: 400;
-  color: var(--primaryTextColor);
+	font-size: 0.8rem;
+	font-weight: 400;
+	color: rgba(var(--primaryTextColor), 1);
 }
 
-div.content {
-  /* space from header and its shadow */
-  padding-top: 2rem;
-  padding-right: 0.6rem;
-  padding-bottom: 0.6rem;
-  padding-left: 0.6rem;
+.content {
+	/* space from header and its shadow */
+	padding-top: 2rem;
+	padding-right: 0.6rem;
+	padding-bottom: 0.6rem;
+	padding-left: 0.6rem;
 }
