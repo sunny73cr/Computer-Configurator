@@ -10,7 +10,7 @@ function Header() {
 
 	function NavBar() {
 		return (
-			<div className={`navSidebar ${navExpanded ? "showLeft" : "hideRight"}`}>
+			<div className={`navSidebar ${navExpanded ? "showLeft" : "hideRight"}`} onClick={() => setNavExpanded(!navExpanded)}>
 				<Link to={aboutLink}>About</Link>
 				<Link to={partSearchLink}>Part Search</Link>
 				<Link to={configureComputerLink}>System Configuration</Link>
@@ -21,9 +21,7 @@ function Header() {
 	return (
 		<header>
 			<div className="titleBar">
-				<Link to="/" className="Title">
-					Computer Configurator
-				</Link>
+				<Link to="/">Computer Configurator</Link>
 				<button onClick={() => /*Toggle nav*/ setNavExpanded(!navExpanded)}>
 					<span className={`bi ${navExpanded ? "bi-x-lg" : "bi-list"}`}></span>
 				</button>

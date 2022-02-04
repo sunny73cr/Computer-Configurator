@@ -1,0 +1,33 @@
+.loading {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 75vh;
+}
+
+.loading .spinner {
+	animation: spinner;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	animation-duration: 2s;
+
+	width: 2rem;
+	height: 2rem;
+
+	border-radius: 50%;
+	border-width: 2px;
+	border-style: dashed;
+	border-color: rgba(0, 0, 0, 0);
+	border-bottom-color: rgba(var(--tertiaryColor), 1);
+}
+
+@keyframes spinner {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}

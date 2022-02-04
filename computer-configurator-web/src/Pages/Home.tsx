@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import "./Styles/Home.css";
+import "./Home.css";
 
 import CategoryGrid, { Category } from "../Components/CategoryGrid/CategoryGrid";
 

@@ -18,23 +18,28 @@ header .titleBar {
 
 header .titleBar a {
 	font-size: 1.4rem;
-	color: rgba(var(--secondaryTextColor), 1);
+	color: rgba(26, 26, 26, 1);
 	text-decoration: none;
 }
 
 header .titleBar button {
-	padding-right: 1rem;
+	margin-right: 1rem;
 	/* blend with the header */
 	background-color: rgba(var(--secondaryColor), 1);
 	border: none;
 	/* icon color */
-	color: rgba(var(--secondaryTextColor), 1);
+	color: rgba(26, 26, 26, 1);
 	/* the size of the icon */
-	font-size: 1.8rem;
+	font-size: 1.5rem;
+	padding-top: 0.2rem;
+	padding-right: 0.5rem;
+	padding-bottom: 0.2rem;
+	padding-left: 0.5rem;
 }
 
 header .navSidebar {
 	position: fixed;
+	z-index: 999;
 	display: flex;
 	flex-direction: column;
 	text-align: center;
@@ -50,7 +55,7 @@ header .navSidebar {
 	/* separate from the header*/
 	border-top: rgba(var(--tertiaryColor), 1) 2px solid;
 	/* match the header */
-	background-color: rgba(var(--secondaryColor), 1);
+	background-color: rgba(var(--secondaryColor), 0.9);
 	/* prevent links from overflowing */
 	word-wrap: break-word;
 	/* initially hidden to the right */
@@ -60,13 +65,13 @@ header .navSidebar {
 header .navSidebar.showLeft {
 	/* slide to the left */
 	right: 0;
-	transition: right 1s ease-out;
+	transition: right 0.8s linear;
 }
 
 header .navSidebar.hideRight {
 	/* slide to the right -- cha cha real smooth */
-	right: -50%;
-	transition: right 1s ease-in;
+	right: -300px;
+	transition: right 0.8s linear;
 }
 
 header .navSidebar a {

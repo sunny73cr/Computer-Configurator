@@ -1,0 +1,24 @@
+.configuratorIntro {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 80vh;
+}
+
+.configuratorIntro p {
+	padding: 0 1rem 0 1rem;
+}
+
+.configuratorIntro .controlBar {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	margin-top: auto;
+	margin-bottom: 1rem;
+}
+
+.configuratorIntro .controlBar button {
+	margin-top: 1rem;
+	margin-bottom: 2rem;
+}

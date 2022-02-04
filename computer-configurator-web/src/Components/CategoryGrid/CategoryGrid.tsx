@@ -27,7 +27,9 @@ export default function CategoryGrid(categories: Array<Category>): JSX.Element {
 				<h2>Categories</h2>
 				<Link to={partSearchLink}>View all</Link>
 			</div>
-			<div className="grid">{categories.map((category) => CategoryCard(category.name, category.image))}</div>
+			<div className="categoryGrid">
+				<div className="grid">{categories.map((category) => CategoryCard(category.name, category.image))}</div>
+			</div>
 		</div>
 	);
 }
