@@ -58,7 +58,7 @@ To start with a 'clean slate' (TL;DR at the bottom.):
 ---  
   
 Steps 3 and 4 wipe an existing presence of the cc database.  
-You can skip to step 4 if you have not followed these steps before.  
+You can skip to step 5 if you have not followed these steps before.  
 Ensure you are connected to the cc database before continuing with step 3.  
   
 ---  
