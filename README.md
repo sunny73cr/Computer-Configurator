@@ -4,20 +4,17 @@
   
   Built using Vue, C# ASP.NET Core 6.0, and PostgreSQL.  
   
-  Dependencies:  
-    -- Database --  
-    None.  
-    --  
+Dependencies:  
+-- Database --  
+  - None.  
   
 -- API --  
   - Npgsql - ADO.NET Data Provider, .NET Interop with PostgreSQL  
   - Dapper ORM - Assists in developing with Npgsql  
   - Swashbuckle ASPNetCore - Swagger/OpenAPI API Documentation  
---  
 
 -- Web --  
   - Vue Router - Client-Side routing for the Vue SPA  
---  
   
 ---  
   You can contact me at: sunny73cr@protonmail.com  
