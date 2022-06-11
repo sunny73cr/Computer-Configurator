@@ -7,10 +7,10 @@ NOTES:
 For Windows CMD You can clear the console using `\! cls`  
 Powershell is similar, using: ` \! clear `  
 
-You cannot drop the database that have open connections.  
+You cannot drop a database that has open connections.  
 Close pgAdmin, and ensure nobody else is using the database before dropping it.  
-You can edit the cc_drop.sql script and append 'FORCE' in dire circumstances.  
 To do this, I connect to another database, like the 'postgres' db that the PostgreSQL installer creates.  
+You can edit the cc_drop.sql script and append 'FORCE' in dire circumstances.  
   
 To start with a 'clean slate' (TL;DR at the bottom.):  
   
