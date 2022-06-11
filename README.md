@@ -2,7 +2,22 @@
   
   A Computer Parts Management, Analysis and Comparison system.
   
-  Built using React, C# .NET 6.0, and MySQL.
+  Built using Vue, C# ASP.NET Core 6.0, and PostgreSQL.
+  
+  Dependencies:
+    -- Database --
+    None.
+    --
+
+    -- API --
+    - Npgsql - ADO.NET Data Provider, .NET Interop with PostgreSQL
+    - Dapper ORM - Assists in developing with Npgsql
+    - Swashbuckle ASPNetCore - Swagger/OpenAPI API Documentation
+    --
+
+    -- Web --
+    - Vue Router - Client-Side routing for the Vue SPA 
+    --
 
 ---
 
