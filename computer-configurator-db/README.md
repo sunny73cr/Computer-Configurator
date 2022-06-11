@@ -4,16 +4,13 @@ This project contains the scripts for setting up the Computer Configurator datab
 These SQL scripts are intended for use with PostgreSQL 14.
 
 NOTES:
-	For Windows CMD You can clear the console using
-	`\! cls`
+For Windows CMD You can clear the console using `\! cls`
+Powershell is similar, using: ` \! clear `
 
-    Powershell is similar, using:
-    ` \! clear `
-
-    You cannot drop the database that have open connections.
-    Close pgAdmin, and ensure nobody else is using the database before dropping it.
-    You can edit the cc_drop.sql script and append 'FORCE' in dire circumstances.
-    To do this, I connect to another database, like the 'postgres' db that the PostgreSQL installer creates.
+You cannot drop the database that have open connections.
+Close pgAdmin, and ensure nobody else is using the database before dropping it.
+You can edit the cc_drop.sql script and append 'FORCE' in dire circumstances.
+To do this, I connect to another database, like the 'postgres' db that the PostgreSQL installer creates.
 
 To start with a 'clean slate' (TL;DR at the bottom.):
 
