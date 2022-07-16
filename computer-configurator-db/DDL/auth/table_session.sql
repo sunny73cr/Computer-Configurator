@@ -1,7 +1,8 @@
 CREATE TABLE session (
-	Key uuid NOT NULL PRIMARY KEY DEFAULT gen_random_uuid(),
-	LoginTimesamp timestamptz NOT NULL DEFAULT transaction_timestamp(), 
-	LogoutTimestamp timestamptz NULL,
-	Active bool GENERATED ALWAYS AS (LogoutTimestamp != NULL) STORED,
-	Unique(Key)
+    Key uuid NOT NULL DEFAULT gen_random_uuid(),
+    AccountUUID uuid NOT NULL,
+    LoginTimestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    LogoutTimestamp timestamp NULL,
+    PRIMARY KEY (Key),
+    FOREIGN KEY (AccountUUID) REFERENCES account(UUID)
 );
