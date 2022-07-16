@@ -4,11 +4,16 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>computer_configurator_api</RootNamespace>
+    <RootNamespace>ComputerConfigurator.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\computer-configurator-dataaccess\computer-configurator-dataaccess.csproj" />
+    <ProjectReference Include="..\computer-configurator-domain\computer-configurator-domain.csproj" />
   </ItemGroup>
 
 </Project>

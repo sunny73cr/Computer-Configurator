@@ -1,25 +1,61 @@
+using ComputerConfigurator.Api;
+using Microsoft.OpenApi.Models;
+
+var DefaultCors = "_defaultCors";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: DefaultCors,
+                      builder =>
+                      {
+                          builder.WithOrigins("http://localhost:5000").AllowAnyHeader().AllowAnyMethod();
+                      });
+});
+
+builder.Services.AddControllers().AddJsonOptions(
+    x => x.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.Never
+);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.CustomSchemaIds(type => type.ToString());
+    c.SwaggerDoc("v0.2", new OpenApiInfo
+    {
+        Title = "Computer Configurator Web API - Parts",
+        Version = "v0.2",
+        Description = "An ASP .NET Core 6.0 Web API for managing computer parts.",
+        Contact = new OpenApiContact
+        {
+            Name = "Dylan Avery",
+            Email = "sunny73cr@protonmail.com",
+            Url = new Uri("https://github.com/sunny73cr")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Licenced under MIT",
+            Url = new Uri("https://mit-license.org/")
+        }
+    });
+});
+
+//builder.Services.AddScoped<CCContext>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseCors(DefaultCors);
 
-app.UseHttpsRedirection();
+app.UseSwagger();
 
-app.UseAuthorization();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v0.2/swagger.json", "ComputerConfiguratorApi v0.2"));
 
-app.MapControllers();
+app.UseRouting();
+
+app.UseEndpoints(endpoints => endpoints.MapControllers());
 
 app.Run();

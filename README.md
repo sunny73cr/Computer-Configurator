@@ -1,12 +1,34 @@
 # ComputerConfigurator Version 0.2a
-  
-  A Computer Parts Management, Analysis and Comparison system.
-  
-  Built using React, C#, and MySQL.
+
+A Computer Parts Management, Analysis and Comparison system.
+
+Built using React Typescript, C# ASP.NET Core 6.0, and PostgreSQL 14.
+
+    Dependencies:
+    -- Database --
+    - None.
+    --
+
+    -- Domain --
+    - None.
+    --
+
+    -- Data Access --
+    - Npgsql - ADO.NET Data Provider, .NET Interop with PostgreSQL
+    - Dapper ORM - Assists in developing with Npgsql
+    --
+
+    -- API --
+    - Swashbuckle ASPNetCore - Swagger/OpenAPI API Documentation
+    --
+
+    -- Web --
+    TBD.
+    --
 
 ---
 
-  You can contact me at: sunny73cr@protonmail.com
+You can contact me at: sunny73cr@protonmail.com
 
 ---
 

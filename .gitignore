@@ -1,17 +1,39 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+#visual studio
+.vs/
+
+#visual studio code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+#Documentation
+/Documentation/ComputerConfigurator.vpp.bak*
+/Documentation/.ComputerConfigurator.vpp.lck
+
+#db
+
+#domain
+/computer-configurator-domain/bin
+/computer-configurator-domain/obj
+
+#dataaccess
+/computer-configurator-dataaccess/bin
+/computer-configurator-dataaccess/obj
+
+# api
+/computer-configurator-api/bin
+/computer-configurator-api/obj
+
 # web
 /computer-configurator-web/node_modules
 /computer-configurator-web/.pnp
 /computer-configurator-web/.pnp.js
-# api
-/computer-configurator-api/obj
-
-# testing
 /computer-configurator-web/coverage
-
-# production
 /computer-configurator-web/build
 
 # misc
