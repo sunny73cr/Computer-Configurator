@@ -6,7 +6,8 @@ Responsible for communicating with the database and providing an appropriate res
 ## Dependencies
 
 ### Npgsql.EntityFrameworkCore.PostgreSQL [(Website)](https://www.npgsql.org/) [(NuGet)](https://www.nuget.org/packages/Npgsql.EntityFrameworkCore.PostgreSQL/7.0.0-preview.6) [(GitHub)](https://github.com/npgsql/efcore.pg):
-** (Entity Framework Core 6.0) **
+**(Entity Framework Core 6.0)**
+
 The major dependency for this project, providing the 'data access layer'.
 Npgsql provides communnication with PostgreSQL databases; and EntityFrameworkCore provides Object-Relational-Mapping.
 Eventually as queries become more complex for a combination of highly normalised data (eg. a 'System');
