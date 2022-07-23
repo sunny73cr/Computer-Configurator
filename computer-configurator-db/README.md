@@ -141,7 +141,7 @@ Otherwise,
 3. `\i 'C:/Users/{UserName}/Desktop/Computer Configurator/computer-configurator-db/cc_create.sql'`
 4. `psql -d cc`
 5. `\i 'C:/Users/{UserName}/Desktop/Computer Configurator/computer-configurator-db/cc_ddl.sql'`
-6. `\i 'C:/Users/{UserName/Desktop/Computer Configurator/computer-configurator-db/cc_dml.sql}'`
+6. `\i 'C:/Users/{UserName/Desktop/Computer Configurator/computer-configurator-db/cc_dml.sql'`
 7. `\q`
 
 ---
