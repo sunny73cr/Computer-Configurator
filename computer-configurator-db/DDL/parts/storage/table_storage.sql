@@ -1,5 +1,5 @@
 CREATE TABLE storage (
-    PartUUID uuid NOT NULL,
+    UUID uuid NOT NULL,
     CapcityGBytes integer NOT NULL,
     ReadBandwidth integer NOT NULL,
     WriteBandwidth integer NOT NULL,
@@ -8,8 +8,8 @@ CREATE TABLE storage (
     MTBF integer NULL,
     MaxTBW integer NULL,
     CacheSizeMBytes integer NULL,
-    PRIMARY KEY (PartUUID),
-    FOREIGN KEY (PartUUID) REFERENCES part(UUID),
+    PRIMARY KEY (UUID),
+    FOREIGN KEY (UUID) REFERENCES part(UUID),
     CONSTRAINT storage_capacity_range CHECK (CapcityGBytes > 16 AND CapcityGBytes <= 40000),
     CONSTRAINT storage_readbandwidth_range CHECK (ReadBandwidth > 0 AND ReadBandwidth <= 14000),
     CONSTRAINT storage_writebandwidth_range CHECK (WriteBandwidth > 0 AND WriteBandwidth <= 14000),

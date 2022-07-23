@@ -1,7 +1,7 @@
 CREATE TABLE systembenchmark (
     UUID uuid NOT NULL DEFAULT gen_random_uuid(),
     SystemUUID uuid NOT NULL,
-    TimestampCreated timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    TimestampCreated timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     AuthorAccountUUID uuid NOT NULL,
     Notes text NULL,
     PRIMARY KEY (UUID),

@@ -1,8 +1,8 @@
 CREATE TABLE chassis_filtersupport (
-    ChassisPartUUID uuid NOT NULL,
+    ChassisUUID uuid NOT NULL,
     ChassisZoneUUID uuid NOT NULL,
     Removeable boolean NOT NULL,
-    PRIMARY KEY (ChassisPartUUID, ChassisZoneUUID),
-    FOREIGN KEY (ChassisPartUUID) REFERENCES chassis(PartUUID),
+    PRIMARY KEY (ChassisUUID, ChassisZoneUUID),
+    FOREIGN KEY (ChassisUUID) REFERENCES chassis(UUID),
     FOREIGN KEY (ChassisZoneUUID) REFERENCES chassiszone(UUID)
 );

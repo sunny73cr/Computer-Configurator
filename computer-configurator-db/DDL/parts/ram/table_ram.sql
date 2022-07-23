@@ -1,5 +1,5 @@
 CREATE TABLE ram (
-    PartUUID uuid NOT NULL,
+    UUID uuid NOT NULL,
     RAMSocketUUID uuid NOT NULL,
     RAMSpeedUUID uuid NOT NULL,
     ModuleCapacityGBytes integer NOT NULL,
@@ -8,8 +8,8 @@ CREATE TABLE ram (
     TRCD integer NOT NULL,
     TRP integer NOT NULL,
     TRAS integer NOT NULL,
-    PRIMARY KEY (PartUUID),
-    FOREIGN KEY (PartUUID) REFERENCES part(UUID),
+    PRIMARY KEY (UUID),
+    FOREIGN KEY (UUID) REFERENCES part(UUID),
     FOREIGN KEY (RAMSocketUUID) REFERENCES ramsocket(UUID),
     FOREIGN KEY (RAMSpeedUUID) REFERENCES ramspeed(UUID),
     CONSTRAINT ram_modulecapacity_range CHECK (ModuleCapacityGBytes > 1 AND ModuleCapacityGBytes <= 512),

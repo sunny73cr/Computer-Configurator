@@ -1,20 +1,10 @@
 using ComputerConfigurator.Api;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-
-var DefaultCors = "_defaultCors";
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: DefaultCors,
-                      builder =>
-                      {
-                          builder.WithOrigins("http://localhost:5000").AllowAnyHeader().AllowAnyMethod();
-                      });
-});
 
 builder.Services.AddControllers().AddJsonOptions(
     x => x.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.Never
@@ -44,11 +34,14 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-//builder.Services.AddScoped<CCContext>();
+builder.Services.AddDbContext<CCContext>(options => options
+    .UseNpgsql("Host=localhost;Database=cc;Username=ccNET;Password=EDhD4TWW6D9n3dV")
+    .LogTo(Console.WriteLine, LogLevel.Information)
+);
 
 var app = builder.Build();
 
-app.UseCors(DefaultCors);
+app.UseCors(policy => policy.WithOrigins("http://localhost:5000").AllowAnyHeader().AllowAnyMethod());
 
 app.UseSwagger();
 

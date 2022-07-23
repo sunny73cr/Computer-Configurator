@@ -1,7 +1,7 @@
 CREATE TABLE ssd (
-    StoragePartUUID uuid NOT NULL,
+    StorageUUID uuid NOT NULL,
     MountedStorageFormFactorUUID uuid NOT NULL,
-    PRIMARY KEY (StoragePartUUID),
-    FOREIGN KEY (StoragePartUUID) REFERENCES storage(PartUUID),
+    PRIMARY KEY (StorageUUID),
+    FOREIGN KEY (StorageUUID) REFERENCES storage(UUID),
     FOREIGN KEY (MountedStorageFormFactorUUID) REFERENCES mountedstorageformfactor(UUID)
 );

@@ -17,17 +17,10 @@
 
 #db
 
-#domain
-/computer-configurator-domain/bin
-/computer-configurator-domain/obj
-
-#dataaccess
-/computer-configurator-dataaccess/bin
-/computer-configurator-dataaccess/obj
-
 # api
 /computer-configurator-api/bin
 /computer-configurator-api/obj
+/computer-configurator-api/Generated
 
 # web
 /computer-configurator-web/node_modules

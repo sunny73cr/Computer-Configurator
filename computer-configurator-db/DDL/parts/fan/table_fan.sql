@@ -1,5 +1,5 @@
 CREATE TABLE fan (
-    PartUUID uuid NOT NULL,
+    UUID uuid NOT NULL,
     FanDiameterUUID uuid NOT NULL,
     WidthMM integer NOT NULL,
     PWMSupport boolean NOT NULL,
@@ -14,8 +14,8 @@ CREATE TABLE fan (
     FanVoltageUUID uuid NOT NULL,
     MaxCurrent real NOT NULL,
     MTBFHours integer NOT NULL,
-    PRIMARY KEY (PartUUID),
-    FOREIGN KEY (PartUUID) REFERENCES part(UUID),
+    PRIMARY KEY (UUID),
+    FOREIGN KEY (UUID) REFERENCES part(UUID),
     FOREIGN KEY (FanDiameterUUID) REFERENCES fandiameter(UUID),
     CONSTRAINT fan_width_range CHECK (WidthMM > 15 AND WidthMM <= 25),
     CONSTRAINT fan_minimumrpm_range CHECK (MinRPM > 400 AND MinRPM <= 30000),

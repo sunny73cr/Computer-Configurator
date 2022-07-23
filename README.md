@@ -9,16 +9,9 @@ Built using React Typescript, C# ASP.NET Core 6.0, and PostgreSQL 14.
     - None.
     --
 
-    -- Domain --
-    - None.
-    --
-
-    -- Data Access --
-    - Npgsql - ADO.NET Data Provider, .NET Interop with PostgreSQL
-    - Dapper ORM - Assists in developing with Npgsql
-    --
-
     -- API --
+    - Konscious.Security.Cryptography.Argon2, [Password-Based KDF](https://en.wikipedia.org/wiki/Key_derivation_function)
+    - Npgsql.EntityFrameworkCore.PostgreSQL, .NET and EF Core Interop with PostgreSQL
     - Swashbuckle ASPNetCore - Swagger/OpenAPI API Documentation
     --
 
