@@ -5,10 +5,6 @@ VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "computer-configurator-api", "computer-configurator-api\computer-configurator-api.csproj", "{0C061D17-ADCD-45B8-BE8F-DD8846B8697D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "computer-configurator-dataaccess", "computer-configurator-dataaccess\computer-configurator-dataaccess.csproj", "{E0A2BEA0-2C38-4EB0-B555-246310E4AB70}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "computer-configurator-domain", "computer-configurator-domain\computer-configurator-domain.csproj", "{3B7F90BA-599A-428B-8948-CA986619980C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,14 +15,6 @@ Global
 		{0C061D17-ADCD-45B8-BE8F-DD8846B8697D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C061D17-ADCD-45B8-BE8F-DD8846B8697D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C061D17-ADCD-45B8-BE8F-DD8846B8697D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0A2BEA0-2C38-4EB0-B555-246310E4AB70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0A2BEA0-2C38-4EB0-B555-246310E4AB70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0A2BEA0-2C38-4EB0-B555-246310E4AB70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0A2BEA0-2C38-4EB0-B555-246310E4AB70}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B7F90BA-599A-428B-8948-CA986619980C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B7F90BA-599A-428B-8948-CA986619980C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B7F90BA-599A-428B-8948-CA986619980C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B7F90BA-599A-428B-8948-CA986619980C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

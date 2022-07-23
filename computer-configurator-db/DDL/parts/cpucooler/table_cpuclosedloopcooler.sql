@@ -1,7 +1,7 @@
 CREATE TABLE cpuclosedloopcooler (
-    CPUCoolerPartUUID uuid NOT NULL,
+    CPUCoolerUUID uuid NOT NULL,
     RadiatorSizeUUID uuid NOT NULL,
-    PRIMARY KEY (CPUCoolerPartUUID),
-    FOREIGN KEY (CPUCoolerPartUUID) REFERENCES cpucooler(PartUUID),
+    PRIMARY KEY (CPUCoolerUUID),
+    FOREIGN KEY (CPUCoolerUUID) REFERENCES cpucooler(UUID),
     FOREIGN KEY (RadiatorSizeUUID) REFERENCES radiatorsize(UUID)
 );

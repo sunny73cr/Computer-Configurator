@@ -1,5 +1,5 @@
 CREATE TABLE chassis (
-    PartUUID uuid NOT NULL,
+    UUID uuid NOT NULL,
     LengthMM integer NOT NULL,
     WidthMM integer NOT NULL,
     HeightMM integer NOT NULL,
@@ -7,8 +7,8 @@ CREATE TABLE chassis (
     MaxPSULengthMM integer NOT NULL,
     MaxCPUCoolerHeightMM integer NOT NULL,
     PCIESlotCount integer NOT NULL,
-    PRIMARY KEY (PartUUID),
-    FOREIGN KEY (PartUUID) REFERENCES part(UUID),
+    PRIMARY KEY (UUID),
+    FOREIGN KEY (UUID) REFERENCES part(UUID),
     CONSTRAINT chassis_length_range CHECK (LengthMM > 0 AND LengthMM <= 1000),
     CONSTRAINT chassis_width_range CHECK (WidthMM > 0 AND WidthMM <= 1000),
     CONSTRAINT chassis_height_range CHECK (HeightMM > 0 AND HeightMM <= 1000),

@@ -4,7 +4,7 @@ CREATE TABLE account (
     Name varchar(30) NOT NULL,
     Password varchar(255) NOT NULL,
     Salt varchar(255) NOT NULL,
-    TimestampCreated timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    TimestampCreated timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     PRIMARY KEY (UUID),
     CONSTRAINT account_email_unique UNIQUE (Email),
     CONSTRAINT account_email_length CHECK (length(Email) > 0 AND length(Email) <= 128),

@@ -1,7 +1,7 @@
 CREATE TABLE chassis_motherboardformfactorsupport (
-    ChassisPartUUID uuid NOT NULL,
+    ChassisUUID uuid NOT NULL,
     MotherboardFormFactorUUID uuid NOT NULL,
-    PRIMARY KEY (ChassisPartUUID, MotherboardFormFactorUUID),
-    FOREIGN KEY (ChassisPartUUID) REFERENCES chassis(PartUUID),
+    PRIMARY KEY (ChassisUUID, MotherboardFormFactorUUID),
+    FOREIGN KEY (ChassisUUID) REFERENCES chassis(UUID),
     FOREIGN KEY (MotherboardFormFactorUUID) REFERENCES motherboardformfactor(UUID)
 );

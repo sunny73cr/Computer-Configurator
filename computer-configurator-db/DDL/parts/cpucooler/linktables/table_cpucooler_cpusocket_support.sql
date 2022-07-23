@@ -1,7 +1,7 @@
 CREATE TABLE cpucooler_cpusocket_support (
-    CPUCoolerPartUUID uuid NOT NULL,
+    CPUCoolerUUID uuid NOT NULL,
     CPUSocketUUID uuid NOT NULL,
-    PRIMARY KEY (CPUCoolerPartUUID, CPUSocketUUID),
-    FOREIGN KEY (CPUCoolerPartUUID) REFERENCES cpucooler(PartUUID),
+    PRIMARY KEY (CPUCoolerUUID, CPUSocketUUID),
+    FOREIGN KEY (CPUCoolerUUID) REFERENCES cpucooler(UUID),
     FOREIGN KEY (CPUSocketUUID) REFERENCES cpusocket(UUID)
 );

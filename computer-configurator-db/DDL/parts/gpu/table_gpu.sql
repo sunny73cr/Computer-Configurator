@@ -1,5 +1,5 @@
 CREATE TABLE gpu (
-    PartUUID uuid NOT NULL,
+    UUID uuid NOT NULL,
     PCIEConnectorUUID uuid NOT NULL,
     VRAMMBytes integer NOT NULL,
     BaseClockSpeed integer NOT NULL,
@@ -9,8 +9,8 @@ CREATE TABLE gpu (
     WidthMM integer NOT NULL,
     HeightMM integer NOT NULL,
     SlotWidth real NOT NULL,
-    PRIMARY KEY (PartUUID),
-    FOREIGN KEY (PartUUID) REFERENCES part(UUID),
+    PRIMARY KEY (UUID),
+    FOREIGN KEY (UUID) REFERENCES part(UUID),
     FOREIGN KEY (PCIEConnectorUUID) REFERENCES pcieconnector(UUID),
     CONSTRAINT gpu_vrammbytes_range CHECK (VRAMMBytes > 1024 AND VRAMMBytes <= 49512),
     CONSTRAINT gpu_baseclockspeed_range CHECK (BaseClockSpeed > 500 AND BaseClockSpeed <= 2800),

@@ -5,4 +5,4 @@ CREATE DATABASE cc
      LC_COLLATE = 'English_New Zealand.1252'
      LC_CTYPE = 'English_New Zealand.1252'
      TABLESPACE = pg_default
-     CONNECTION LIMIT = 2;
+     CONNECTION LIMIT = 10;

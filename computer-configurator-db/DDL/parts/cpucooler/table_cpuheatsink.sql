@@ -1,7 +1,7 @@
 CREATE TABLE cpuheatsink (
-    CPUCoolerPartUUID uuid NOT NULL,
+    CPUCoolerUUID uuid NOT NULL,
     HeightMM integer NOT NULL,
-    PRIMARY KEY (CPUCoolerPartUUID),
-    FOREIGN KEY (CPUCoolerPartUUID) REFERENCES cpucooler(PartUUID),
+    PRIMARY KEY (CPUCoolerUUID),
+    FOREIGN KEY (CPUCoolerUUID) REFERENCES cpucooler(UUID),
     CONSTRAINT cpuheatsink_height_range CHECK (HeightMM > 0 AND HeightMM <= 200)
 );
