@@ -1,5 +1,5 @@
 CREATE TABLE motherboardformfactor (
-    UUID uuid NOT NULL,
+    UUID uuid NOT NULL DEFAULT gen_random_uuid(),
     FormFactor varchar(30) NOT NULL,
     PRIMARY KEY (UUID),
     CONSTRAINT motherboardformfactor_formfactor_unique UNIQUE (FormFactor),

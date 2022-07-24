@@ -20,7 +20,30 @@ namespace ComputerConfigurator.Api
         #region LookupTables
 
         public virtual DbSet<Manufacturer.Manufacturer> Manufacturer { get; set; } = null!;
+        public virtual DbSet<AudioPort.AudioPort> AudioPort { get; set; } = null!;
+        public virtual DbSet<BenchmarkedResolution.BenchmarkedResolution> BenchmarkedResolution { get; set; } = null!;
+        public virtual DbSet<ChassisZone.ChassisZone> ChassisZone { get; set; } = null!;
         public virtual DbSet<CPUSocket.CPUSocket> CPUSocket { get; set; } = null!;
+        public virtual DbSet<DisplayConnector.DisplayConnector> DisplayConnector { get; set; } = null!;
+        public virtual DbSet<EightyPlusRating.EightyPlusRating> EightyPlusRating { get; set; } = null!;
+        public virtual DbSet<EthernetPort.EthernetPort> EthernetPort { get; set; } = null!;
+        public virtual DbSet<FanDiameter.FanDiameter> FanDiameter { get; set; } = null!;
+        public virtual DbSet<FanHeader.FanHeader> FanHeader { get; set; } = null!;
+        public virtual DbSet<FanVoltage.FanVoltage> FanVoltage { get; set; } = null!;
+        public virtual DbSet<MotherboardChipset.MotherboardChipset> MotherboardChipset { get; set; } = null!;
+        public virtual DbSet<MotherboardFormFactor.MotherboardFormFactor> MotherboardFormFactor { get; set; } = null!;
+        public virtual DbSet<MountedStorageFormFactor.MountedStorageFormFactor> MountedStorageFormFactor { get; set; } = null!;
+        public virtual DbSet<NVMEFormFactor.NVMEFormFactor> NVMEFormFactor { get; set; } = null!;
+        public virtual DbSet<NVMEInterface.NVMEInterface> NVMEInterface { get; set; } = null!;
+        public virtual DbSet<PCIEGeneration.PCIEGeneration> PCIEGeneration { get; set; } = null!;
+        public virtual DbSet<PCIEConnector.PCIEConnector> PCIEConnector { get; set; } = null!;
+        public virtual DbSet<PowerSupplyFormFactor.PowerSupplyFormFactor> PowerSupplyFormFactor { get; set; } = null!;
+        public virtual DbSet<RadiatorSize.RadiatorSize> RadiatorSize { get; set; } = null!;
+        public virtual DbSet<RAIDMode.RAIDMode> RAIDMode { get; set; } = null!;
+        public virtual DbSet<RAMSocket.RAMSocket> RAMSocket { get; set; } = null!;
+        public virtual DbSet<RAMSpeed.RAMSpeed> RAMSpeed { get; set; } = null!;
+        public virtual DbSet<SATAGeneration.SATAGeneration> SATAGeneration { get; set; } = null!;
+        public virtual DbSet<USBPort.USBPort> USBPort { get; set; } = null!;
 
         #endregion
 

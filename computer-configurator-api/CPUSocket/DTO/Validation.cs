@@ -13,7 +13,6 @@
 
         public Validation(DTO.Edit cpusocket)
         {
-            DomainValidation.Guid.NotEmpty(_errors, "UUID", cpusocket.UUID);
             DomainValidation.String.LengthRange(_errors, "Version", cpusocket.Version, 1, 20); 
         }
     }

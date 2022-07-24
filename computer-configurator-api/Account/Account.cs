@@ -39,7 +39,6 @@
         public static void Edit(Account account, DTO.Edit edits)
         {
             if (account.Email != edits.Email) account.Email = edits.Email;
-
             if (account.Name != edits.Name) account.Name = edits.Name;
         }
     }
