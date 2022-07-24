@@ -10,7 +10,7 @@ Responsible for communicating with the database and providing an appropriate res
 
 The major dependency for this project, providing the 'data access layer'.
 Npgsql provides communnication with PostgreSQL databases; and EntityFrameworkCore provides Object-Relational-Mapping.
-Eventually as queries become more complex for a combination of highly normalised data (eg. a 'System');
+Eventually as queries become more complex for a combination of highly normalised data (eg. the 'System' entity),
 raw SQL querying functionality built in to EF Core may be used for increasing performance.
 
 ### Konscious.Security.Cryptography.Argon2 [(NuGet)](https://www.nuget.org/packages/Konscious.Security.Cryptography.Argon2) [(GitHub)](https://github.com/P-H-C/phc-winner-argon2):
