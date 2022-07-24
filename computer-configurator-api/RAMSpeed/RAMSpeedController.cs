@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ComputerConfigurator.Api.RAMSpeed
 {
     [ApiController]
-    [Route("/[controller]/[action]/{id}")]
+    [Route("/[controller]/[action]/")]
     public class RAMSpeedController : ControllerBase
     {
         private readonly CCContext _context;

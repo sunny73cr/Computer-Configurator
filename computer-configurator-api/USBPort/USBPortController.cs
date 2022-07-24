@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ComputerConfigurator.Api.USBPort
 {
     [ApiController]
-    [Route("/[controller]/[action]/{id}")]
+    [Route("/[controller]/[action]/")]
     public class USBPortController : ControllerBase
     {
         private readonly CCContext _context;

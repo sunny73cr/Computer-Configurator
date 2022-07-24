@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ComputerConfigurator.Api.PowerSupplyFormFactor
 {
     [ApiController]
-    [Route("/[controller]/[action]/{id}")]
+    [Route("/[controller]/[action]/")]
     public class PowerSupplyFormFactorController : ControllerBase
     {
         private readonly CCContext _context;

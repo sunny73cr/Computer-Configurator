@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ComputerConfigurator.Api.RAMSocket
 {
     [ApiController]
-    [Route("/[controller]/[action]/{id}")]
+    [Route("/[controller]/[action]/")]
     public class RAMSocketController : ControllerBase
     {
         private readonly CCContext _context;

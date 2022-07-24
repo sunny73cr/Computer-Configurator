@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ComputerConfigurator.Api.DisplayConnector
 {
     [ApiController]
-    [Route("/[controller]/[action]/{id}")]
+    [Route("/[controller]/[action]/")]
     public class DisplayConnectorController : ControllerBase
     {
         private readonly CCContext _context;
