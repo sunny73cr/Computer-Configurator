@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.PCIEConnector
     {
         public void Configure(EntityTypeBuilder<PCIEConnector> builder)
         {
+            builder.ToTable("pcieconnector");
+
             builder.HasKey(e => e.UUID)
                 .HasName("pcieconnector_pkey");
 

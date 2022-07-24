@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.RAMSpeed
     {
         public void Configure(EntityTypeBuilder<RAMSpeed> builder)
         {
+            builder.ToTable("ramspeed");
+
             builder.HasKey(e => e.UUID)
                 .HasName("ramspeed_pkey");
 

@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.NVMEInterface
     {
         public void Configure(EntityTypeBuilder<NVMEInterface> builder)
         {
+            builder.ToTable("nvmeinterface");
+
             builder.HasKey(e => e.UUID)
                 .HasName("nvmeinterface_pkey");
 

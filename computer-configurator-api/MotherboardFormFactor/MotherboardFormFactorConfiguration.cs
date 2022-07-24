@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.MotherboardFormFactor
     {
         public void Configure(EntityTypeBuilder<MotherboardFormFactor> builder)
         {
+            builder.ToTable("motherboardformfactor");
+
             builder.HasKey(e => e.UUID)
                 .HasName("motherboardformfactor_pkey");
 

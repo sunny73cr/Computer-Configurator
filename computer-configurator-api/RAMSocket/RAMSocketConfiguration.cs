@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.RAMSocket
     {
         public void Configure(EntityTypeBuilder<RAMSocket> builder)
         {
+            builder.ToTable("ramsocket");
+
             builder.HasKey(e => e.UUID)
                 .HasName("ramsocket_pkey");
 

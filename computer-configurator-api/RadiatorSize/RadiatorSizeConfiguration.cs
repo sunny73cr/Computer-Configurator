@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.RadiatorSize
     {
         public void Configure(EntityTypeBuilder<RadiatorSize> builder)
         {
+            builder.ToTable("radiatorsize");
+
             builder.HasKey(e => e.UUID)
                 .HasName("radiatorsize_pkey");
 

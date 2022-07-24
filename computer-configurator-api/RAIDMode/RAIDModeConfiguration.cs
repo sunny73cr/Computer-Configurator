@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.RAIDMode
     {
         public void Configure(EntityTypeBuilder<RAIDMode> builder)
         {
+            builder.ToTable("raidmode");
+
             builder.HasKey(e => e.UUID)
                 .HasName("raidmode_pkey");
 

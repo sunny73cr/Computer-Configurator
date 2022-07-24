@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.EightyPlusRating
     {
         public void Configure(EntityTypeBuilder<EightyPlusRating> builder)
         {
+            builder.ToTable("eightyplusrating");
+
             builder.HasKey(e => e.UUID)
                 .HasName("eightyplusrating_pkey");
 

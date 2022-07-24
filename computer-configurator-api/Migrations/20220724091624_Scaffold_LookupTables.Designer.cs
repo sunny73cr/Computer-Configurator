@@ -3,6 +3,7 @@ using System;
 using ComputerConfigurator.Api;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ComputerConfigurator.Api.Migrations
 {
     [DbContext(typeof(CCContext))]
-    partial class CCContextModelSnapshot : ModelSnapshot
+    [Migration("20220724091624_Scaffold_LookupTables")]
+    partial class Scaffold_LookupTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.EthernetPort
     {
         public void Configure(EntityTypeBuilder<EthernetPort> builder)
         {
+            builder.ToTable("ethernetport");
+
             builder.HasKey(e => e.UUID)
                 .HasName("ethernetport_pkey");
 

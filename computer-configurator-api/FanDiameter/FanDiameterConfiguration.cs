@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.FanDiameter
     {
         public void Configure(EntityTypeBuilder<FanDiameter> builder)
         {
+            builder.ToTable("fandiameter");
+
             builder.HasKey(e => e.UUID)
                 .HasName("fandiameter_pkey");
 

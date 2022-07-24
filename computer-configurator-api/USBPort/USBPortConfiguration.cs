@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.USBPort
     {
         public void Configure(EntityTypeBuilder<USBPort> builder)
         {
+            builder.ToTable("usbport");
+
             builder.HasKey(e => e.UUID)
                 .HasName("usbport_pkey");
 

@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.PCIEGeneration
     {
         public void Configure(EntityTypeBuilder<PCIEGeneration> builder)
         {
+            builder.ToTable("pciegeneration");
+
             builder.HasKey(e => e.UUID)
                 .HasName("pciegeneration_pkey");
 

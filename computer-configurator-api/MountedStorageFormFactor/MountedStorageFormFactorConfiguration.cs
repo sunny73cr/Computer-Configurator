@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.MountedStorageFormFactor
     {
         public void Configure(EntityTypeBuilder<MountedStorageFormFactor> builder)
         {
+            builder.ToTable("mountedstorageformfactor");
+
             builder.HasKey(e => e.UUID)
                 .HasName("mountedstorageformfactor_pkey");
 

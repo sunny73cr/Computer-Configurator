@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.SATAGeneration
     {
         public void Configure(EntityTypeBuilder<SATAGeneration> builder)
         {
+            builder.ToTable("satageneration");
+
             builder.HasKey(e => e.UUID)
                 .HasName("satageneration_pkey");
 

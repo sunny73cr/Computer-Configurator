@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.NVMEFormFactor
     {
         public void Configure(EntityTypeBuilder<NVMEFormFactor> builder)
         {
+            builder.ToTable("nvmeformfactor");
+
             builder.HasKey(e => e.UUID)
                 .HasName("nvmeformfactor_pkey");
 

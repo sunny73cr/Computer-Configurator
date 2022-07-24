@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.PowerSupplyFormFactor
     {
         public void Configure(EntityTypeBuilder<PowerSupplyFormFactor> builder)
         {
+            builder.ToTable("powersupplyformfactor");
+
             builder.HasKey(e => e.UUID)
                 .HasName("powersupplyformfactor_pkey");
 

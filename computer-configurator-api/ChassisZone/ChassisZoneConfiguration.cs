@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.ChassisZone
     {
         public void Configure(EntityTypeBuilder<ChassisZone> builder)
         {
+            builder.ToTable("chassiszone");
+
             builder.HasKey(e => e.UUID)
                 .HasName("chassiszone_pkey");
 

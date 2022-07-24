@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.DisplayConnector
     {
         public void Configure(EntityTypeBuilder<DisplayConnector> builder)
         {
+            builder.ToTable("displayconnector");
+
             builder.HasKey(e => e.UUID)
                 .HasName("displayconnector_pkey");
 

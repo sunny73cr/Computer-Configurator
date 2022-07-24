@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.FanVoltage
     {
         public void Configure(EntityTypeBuilder<FanVoltage> builder)
         {
+            builder.ToTable("fanvoltage");
+
             builder.HasKey(e => e.UUID)
                 .HasName("fanvoltage_pkey");
 

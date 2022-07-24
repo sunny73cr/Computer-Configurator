@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.BenchmarkedResolution
     {
         public void Configure(EntityTypeBuilder<BenchmarkedResolution> builder)
         {
+            builder.ToTable("benchmarkedresolution");
+
             builder.HasKey(e => e.UUID)
                 .HasName("benchmarkedresolution_pkey");
 

@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.MotherboardChipset
     {
         public void Configure(EntityTypeBuilder<MotherboardChipset> builder)
         {
+            builder.ToTable("motherboardchipset");
+
             builder.HasKey(e => e.UUID)
                 .HasName("motherboardchipset_pkey");
 

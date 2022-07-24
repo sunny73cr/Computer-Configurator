@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.FanHeader
     {
         public void Configure(EntityTypeBuilder<FanHeader> builder)
         {
+            builder.ToTable("fanheader");
+
             builder.HasKey(e => e.UUID)
                 .HasName("fanheader_pkey");
 
