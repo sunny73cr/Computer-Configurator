@@ -69,6 +69,79 @@ namespace ComputerConfigurator.Api.Migrations
                     b.ToTable("account", (string)null);
                 });
 
+            modelBuilder.Entity("ComputerConfigurator.Api.AudioPort.AudioPort", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<int>("ConnectorSize")
+                        .HasColumnType("integer")
+                        .HasColumnName("connectorsize");
+
+                    b.Property<int>("PinCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("pincount");
+
+                    b.HasKey("UUID")
+                        .HasName("audioport_pkey");
+
+                    b.HasIndex("PinCount", "ConnectorSize")
+                        .IsUnique();
+
+                    b.ToTable("audioport", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.BenchmarkedResolution.BenchmarkedResolution", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<int>("PixelHeight")
+                        .HasColumnType("integer")
+                        .HasColumnName("pixelheight");
+
+                    b.Property<int>("PixelWidth")
+                        .HasColumnType("integer")
+                        .HasColumnName("pixelwidth");
+
+                    b.HasKey("UUID")
+                        .HasName("benchmarkedresolution_pkey");
+
+                    b.HasIndex(new[] { "PixelWidth", "PixelHeight" }, "benchmarkedresolution_pixelarea_unique")
+                        .IsUnique();
+
+                    b.ToTable("benchmarkedresolution", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.ChassisZone.ChassisZone", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Zone")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("zone");
+
+                    b.HasKey("UUID")
+                        .HasName("chassiszone_pkey");
+
+                    b.HasIndex(new[] { "Zone" }, "chassiszone_zone_unique")
+                        .IsUnique();
+
+                    b.ToTable("chassiszone", (string)null);
+                });
+
             modelBuilder.Entity("ComputerConfigurator.Api.CPUSocket.CPUSocket", b =>
                 {
                     b.Property<Guid>("UUID")
@@ -92,6 +165,145 @@ namespace ComputerConfigurator.Api.Migrations
                     b.ToTable("cpusocket", (string)null);
                 });
 
+            modelBuilder.Entity("ComputerConfigurator.Api.DisplayConnector.DisplayConnector", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Interface")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)")
+                        .HasColumnName("interface");
+
+                    b.Property<string>("Version")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)")
+                        .HasColumnName("version");
+
+                    b.HasKey("UUID")
+                        .HasName("displayconnector_pkey");
+
+                    b.HasIndex(new[] { "Interface", "Version" }, "displayconnector_interface_version_unique")
+                        .IsUnique();
+
+                    b.ToTable("displayconnector", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.EightyPlusRating.EightyPlusRating", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Rating")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("rating");
+
+                    b.HasKey("UUID")
+                        .HasName("eightyplusrating_pkey");
+
+                    b.HasIndex(new[] { "Rating" }, "eightyplusrating_rating_unique")
+                        .IsUnique();
+
+                    b.ToTable("eightyplusrating", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.EthernetPort.EthernetPort", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<int>("BandwidthMBytes")
+                        .HasColumnType("integer")
+                        .HasColumnName("bandwidthmbytes");
+
+                    b.Property<string>("Chipset")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("chipset");
+
+                    b.HasKey("UUID")
+                        .HasName("ethernetport_pkey");
+
+                    b.ToTable("ethernetport", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.FanDiameter.FanDiameter", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<int>("Diameter")
+                        .HasColumnType("integer")
+                        .HasColumnName("diameter");
+
+                    b.HasKey("UUID")
+                        .HasName("fandiameter_pkey");
+
+                    b.HasIndex(new[] { "Diameter" }, "fandiameter_diameter_unique")
+                        .IsUnique();
+
+                    b.ToTable("fandiameter", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.FanHeader.FanHeader", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<int>("PinCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("pincount");
+
+                    b.HasKey("UUID")
+                        .HasName("fanheader_pkey");
+
+                    b.HasIndex(new[] { "PinCount" }, "fanheader_pincount_unique")
+                        .IsUnique();
+
+                    b.ToTable("fanheader", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.FanVoltage.FanVoltage", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<int>("Voltage")
+                        .HasColumnType("integer")
+                        .HasColumnName("fanvoltage");
+
+                    b.HasKey("UUID")
+                        .HasName("fanvoltage_pkey");
+
+                    b.HasIndex(new[] { "Voltage" }, "fanvoltage_voltage_unique")
+                        .IsUnique();
+
+                    b.ToTable("fanvoltage", (string)null);
+                });
+
             modelBuilder.Entity("ComputerConfigurator.Api.Manufacturer.Manufacturer", b =>
                 {
                     b.Property<Guid>("UUID")
@@ -113,6 +325,131 @@ namespace ComputerConfigurator.Api.Migrations
                         .IsUnique();
 
                     b.ToTable("manufacturer", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.MotherboardChipset.MotherboardChipset", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<Guid>("CPUSocketUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("cpusocketuuid");
+
+                    b.Property<Guid>("ManufacturerUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("manufactureruuid");
+
+                    b.Property<string>("Version")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("version");
+
+                    b.HasKey("UUID")
+                        .HasName("motherboardchipset_pkey");
+
+                    b.HasIndex("CPUSocketUUID");
+
+                    b.HasIndex(new[] { "ManufacturerUUID", "Version" }, "motherboardchipset_manufacturer_version_unique")
+                        .IsUnique();
+
+                    b.ToTable("motherboardchipset", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.MotherboardFormFactor.MotherboardFormFactor", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("FormFactor")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("formfactor");
+
+                    b.HasKey("UUID")
+                        .HasName("motherboardformfactor_pkey");
+
+                    b.HasIndex(new[] { "FormFactor" }, "motherboardformfactor_formfactor_unique")
+                        .IsUnique();
+
+                    b.ToTable("motherboardformfactor", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.MountedStorageFormFactor.MountedStorageFormFactor", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)")
+                        .HasColumnName("size");
+
+                    b.HasKey("UUID")
+                        .HasName("mountedstorageformfactor_pkey");
+
+                    b.HasIndex(new[] { "Size" }, "mountedstorageformfactor_size_unique")
+                        .IsUnique();
+
+                    b.ToTable("mountedstorageformfactor", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.NVMEFormFactor.NVMEFormFactor", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("FormFactor")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)")
+                        .HasColumnName("formfactor");
+
+                    b.HasKey("UUID")
+                        .HasName("nvmeformfactor_pkey");
+
+                    b.HasIndex(new[] { "FormFactor" }, "nvmeformfactor_formfactor_unique")
+                        .IsUnique();
+
+                    b.ToTable("nvmeformfactor", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.NVMEInterface.NVMEInterface", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Interface")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)")
+                        .HasColumnName("interface");
+
+                    b.HasKey("UUID")
+                        .HasName("nvmeinterface_pkey");
+
+                    b.HasIndex(new[] { "Interface" }, "nvminterface_interface_unique")
+                        .IsUnique();
+
+                    b.ToTable("nvmeinterface", (string)null);
                 });
 
             modelBuilder.Entity("ComputerConfigurator.Api.Part.Part", b =>
@@ -157,6 +494,187 @@ namespace ComputerConfigurator.Api.Migrations
                     b.ToTable("part", (string)null);
                 });
 
+            modelBuilder.Entity("ComputerConfigurator.Api.PCIEConnector.PCIEConnector", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<int>("LaneCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("lanecount");
+
+                    b.Property<Guid>("PCIEGenerationUUID")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("UUID")
+                        .HasName("pcieconnector_pkey");
+
+                    b.HasIndex(new[] { "PCIEGenerationUUID", "LaneCount" }, "pcieconnector_lanecount_unique")
+                        .IsUnique();
+
+                    b.ToTable("pcieconnector", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.PCIEGeneration.PCIEGeneration", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Generation")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)")
+                        .HasColumnName("generation");
+
+                    b.HasKey("UUID")
+                        .HasName("pciegeneration_pkey");
+
+                    b.HasIndex(new[] { "Generation" }, "pciegeneration_generation_unique")
+                        .IsUnique();
+
+                    b.ToTable("pciegeneration", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.PowerSupplyFormFactor.PowerSupplyFormFactor", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("FormFactor")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("formfactor");
+
+                    b.HasKey("UUID")
+                        .HasName("powersupplyformfactor_pkey");
+
+                    b.HasIndex(new[] { "FormFactor" }, "powersupplyformfactor_formfactor_unique")
+                        .IsUnique();
+
+                    b.ToTable("powersupplyformfactor", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.RadiatorSize.RadiatorSize", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("integer")
+                        .HasColumnName("size");
+
+                    b.HasKey("UUID")
+                        .HasName("radiatorsize_pkey");
+
+                    b.HasIndex(new[] { "Size" }, "radiatorsize_size_unique")
+                        .IsUnique();
+
+                    b.ToTable("radiatorsize", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.RAIDMode.RAIDMode", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Mode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("mode");
+
+                    b.HasKey("UUID")
+                        .HasName("raidmode_pkey");
+
+                    b.HasIndex(new[] { "Mode" }, "raidmode_mode_unique")
+                        .IsUnique();
+
+                    b.ToTable("raidmode", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.RAMSocket.RAMSocket", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Version")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)")
+                        .HasColumnName("version");
+
+                    b.HasKey("UUID")
+                        .HasName("ramsocket_pkey");
+
+                    b.HasIndex(new[] { "Version" }, "ramsocket_version_unique")
+                        .IsUnique();
+
+                    b.ToTable("ramsocket", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.RAMSpeed.RAMSpeed", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<int>("ClockRate")
+                        .HasColumnType("integer")
+                        .HasColumnName("clockrate");
+
+                    b.HasKey("UUID")
+                        .HasName("ramspeed_pkey");
+
+                    b.HasIndex(new[] { "ClockRate" }, "ramspeed_clockrate_unique")
+                        .IsUnique();
+
+                    b.ToTable("ramspeed", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.SATAGeneration.SATAGeneration", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Generation")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("generation");
+
+                    b.HasKey("UUID")
+                        .HasName("satageneration_pkey");
+
+                    b.HasIndex(new[] { "Generation" }, "satageneration_generation_unique")
+                        .IsUnique();
+
+                    b.ToTable("satageneration", (string)null);
+                });
+
             modelBuilder.Entity("ComputerConfigurator.Api.Session.Session", b =>
                 {
                     b.Property<Guid>("Key")
@@ -184,6 +702,34 @@ namespace ComputerConfigurator.Api.Migrations
                     b.HasIndex("AccountUUID");
 
                     b.ToTable("session", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.USBPort.USBPort", b =>
+                {
+                    b.Property<Guid>("UUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Interface")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)")
+                        .HasColumnName("interface");
+
+                    b.Property<string>("Version")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)")
+                        .HasColumnName("version");
+
+                    b.HasKey("UUID")
+                        .HasName("usbport_pkey");
+
+                    b.HasIndex(new[] { "Interface", "Version" }, "usbport_interface_version_unique")
+                        .IsUnique();
+
+                    b.ToTable("usbport", (string)null);
                 });
 
             modelBuilder.Entity("ComputerConfigurator.Api.CPU.CPU", b =>
@@ -214,6 +760,25 @@ namespace ComputerConfigurator.Api.Migrations
                     b.ToTable("cpu", (string)null);
                 });
 
+            modelBuilder.Entity("ComputerConfigurator.Api.MotherboardChipset.MotherboardChipset", b =>
+                {
+                    b.HasOne("ComputerConfigurator.Api.CPUSocket.CPUSocket", "CPUSocket")
+                        .WithMany()
+                        .HasForeignKey("CPUSocketUUID")
+                        .IsRequired()
+                        .HasConstraintName("motherboardchipset_cpusocketuuid_fkey");
+
+                    b.HasOne("ComputerConfigurator.Api.Manufacturer.Manufacturer", "Manufacturer")
+                        .WithMany()
+                        .HasForeignKey("ManufacturerUUID")
+                        .IsRequired()
+                        .HasConstraintName("motherboardchipset_manufactureruuid_fkey");
+
+                    b.Navigation("CPUSocket");
+
+                    b.Navigation("Manufacturer");
+                });
+
             modelBuilder.Entity("ComputerConfigurator.Api.Part.Part", b =>
                 {
                     b.HasOne("ComputerConfigurator.Api.Manufacturer.Manufacturer", "Manufacturer")
@@ -223,6 +788,17 @@ namespace ComputerConfigurator.Api.Migrations
                         .HasConstraintName("part_manufactureruuid_fkey");
 
                     b.Navigation("Manufacturer");
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.PCIEConnector.PCIEConnector", b =>
+                {
+                    b.HasOne("ComputerConfigurator.Api.PCIEGeneration.PCIEGeneration", "PCIEGeneration")
+                        .WithMany("PCIEConnectors")
+                        .HasForeignKey("PCIEGenerationUUID")
+                        .IsRequired()
+                        .HasConstraintName("pcieconnector_pciegenerationuuid_fkey");
+
+                    b.Navigation("PCIEGeneration");
                 });
 
             modelBuilder.Entity("ComputerConfigurator.Api.Session.Session", b =>
@@ -254,6 +830,11 @@ namespace ComputerConfigurator.Api.Migrations
                     b.Navigation("CPUSocket");
 
                     b.Navigation("Part");
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.PCIEGeneration.PCIEGeneration", b =>
+                {
+                    b.Navigation("PCIEConnectors");
                 });
 #pragma warning restore 612, 618
         }

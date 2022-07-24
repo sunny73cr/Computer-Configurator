@@ -2,7 +2,6 @@
 {
     public class CPU : Part.Part
     {
-        //public Guid uuid { get; set; }
         public Guid CPUSocketUUID { get; set; }
         public int CoreCount { get; set; }
         public int ThreadCount { get; set; }
@@ -19,7 +18,6 @@
 
         public CPU(DTO.Create cpu) : base(cpu)
         {
-            //uuid = cpu.UUID;
             CPUSocketUUID = cpu.CPUSocketUUID;
             CoreCount = cpu.CoreCount;
             ThreadCount = cpu.ThreadCount;

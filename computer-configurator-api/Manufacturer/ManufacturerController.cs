@@ -37,13 +37,11 @@ namespace ComputerConfigurator.Api.Manufacturer
         [HttpGet]
         public async Task<ActionResult<List<DTO.Details>>> GetAll()
         {
-            List<Manufacturer> cpuSockets = await _context.Manufacturer.ToListAsync();
+            List<DTO.Details> Manufacturers = await _context.Manufacturer
+                .Select(manufacturer => new DTO.Details(manufacturer))
+                .ToListAsync();
 
-            List<DTO.Details> cpuSocketsDetails = cpuSockets
-                .Select(cpuSocket => new DTO.Details(cpuSocket))
-                .ToList();
-
-            return Ok(cpuSocketsDetails);
+            return Ok(Manufacturers);
         }
 
         [HttpGet]

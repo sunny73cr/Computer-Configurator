@@ -37,13 +37,11 @@ namespace ComputerConfigurator.Api.CPUSocket
         [HttpGet]
         public async Task<ActionResult<List<DTO.Details>>> GetAll()
         {
-            List<CPUSocket> CPUSockets = await _context.CPUSocket.ToListAsync();
-
-            List<DTO.Details> detailsCPUSockets = CPUSockets
+            List<DTO.Details> CPUSockets = await _context.CPUSocket
                 .Select(cpuSocket => new DTO.Details(cpuSocket))
-                .ToList();
+                .ToListAsync();
 
-            return Ok(detailsCPUSockets);
+            return Ok(CPUSockets);
         }
 
         [HttpGet]

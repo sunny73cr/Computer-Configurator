@@ -8,12 +8,12 @@
 
         public Validation(DTO.Create manufacturer)
         {
-
+            DomainValidation.String.LengthRange(_errors, "Name", manufacturer.Name, 1, 50);
         }
 
         public Validation(DTO.Edit manufacturer)
         {
-
+            DomainValidation.String.LengthRange(_errors, "Name", manufacturer.Name, 1, 50);
         }
     }
 }
