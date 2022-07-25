@@ -58,6 +58,14 @@ namespace ComputerConfigurator.Api
 
         public virtual DbSet<Part.Part> Part { get; set; } = null!;
         public virtual DbSet<CPU.CPU> CPU { get; set; } = null!;
+        public virtual DbSet<Chassis.Chassis> Chassis { get; set; } = null!;
+        public virtual DbSet<ChassisAudioPort.ChassisAudioPort> ChassisAudioPort { get; set; } = null!;
+        public virtual DbSet<ChassisFanSupport.ChassisFanSupport> ChassisFanSupport { get; set; } = null!;
+        public virtual DbSet<ChassisFilterSupport.ChassisFilterSupport> ChassisFilterSupport { get; set; } = null!;
+        public virtual DbSet<ChassisMotherboardFormFactorSupport.ChassisMotherboardFormFactorSupport> ChassisMotherboardFormFactorSupport { get; set; } = null!;
+        public virtual DbSet<ChassisPowerSupplyFormFactorSupport.ChassisPowerSupplyFormFactorSupport> ChassisPowerSupplyFormFactorSupport { get; set; } = null!;
+        public virtual DbSet<ChassisRadiatorSupport.ChassisRadiatorSupport> ChassisRadiatorSupport { get; set; } = null!;
+        public virtual DbSet<ChassisUSBPort.ChassisUSBPort> ChassisUSBPort { get; set; } = null!;
 
         #endregion
 

@@ -10,7 +10,7 @@
             milliseconds: 0
         );
 
-        public const string Key = "ccfgSeession";
+        public const string Key = "ccfgSession";
         public Guid SessionKey = Guid.Empty;
         public TimeSpan MaxAge = TimeSpan.Zero;
         public string Domain = string.Empty;
@@ -85,10 +85,11 @@
                 //32 digits, no hypens, no braces
                 $"{Key}={sessionKey.ToString("N")};" +
                 $"Max-Age={SessionLifetime.TotalSeconds};" +
-                $"Domain=computecfg.com;" +
+                $"Domain=localhost;" +
                 $"Path=/;" +
-                $"SameSite=Strict;" +
-                $"Secure;" +
+                //$"SameSite=Strict;" +
+                $"SameSite=None;" +
+                //$"Secure;" +
                 $"HttpOnly;";
         }
 
@@ -97,10 +98,11 @@
             return
                 $"{Key}=LoggedOut;" +
                 $"Max-Age=1;" +
-                $"Domain=computecfg.com;" +
+                $"Domain=localhost;" +
                 $"Path=/;" +
-                $"SameSite=Strict;" +
-                $"Secure;" +
+                //$"SameSite=Strict;" +
+                $"SameSite=None;" +
+                //$"Secure;" +
                 $"HttpOnly;";
         }
     }
