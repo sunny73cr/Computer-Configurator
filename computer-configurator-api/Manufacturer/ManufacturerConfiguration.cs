@@ -24,6 +24,12 @@ namespace ComputerConfigurator.Api.Manufacturer
                 .HasColumnName("name")
                 .HasColumnType("varchar(50)")
                 .HasMaxLength(50);
+
+            //builder.HasData(new List<Manufacturer>()
+            //{
+            //    new Manufacturer() { UUID = Guid.NewGuid(), Name = "AMD" },
+            //    new Manufacturer() { UUID = Guid.NewGuid(), Name = "Intel" },
+            //});
         }
     }
 }

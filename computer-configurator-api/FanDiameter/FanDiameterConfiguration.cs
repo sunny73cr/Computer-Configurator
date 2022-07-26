@@ -23,6 +23,16 @@ namespace ComputerConfigurator.Api.FanDiameter
             builder.Property(e => e.Diameter)
                 .HasColumnName("diameter")
                 .HasColumnType("integer");
+
+            //builder.HasData(new List<FanDiameter>()
+            //{
+            //    new FanDiameter() { UUID = Guid.NewGuid(), Diameter = 40 },
+            //    new FanDiameter() { UUID = Guid.NewGuid(), Diameter = 80 },
+            //    new FanDiameter() { UUID = Guid.NewGuid(), Diameter = 92 },
+            //    new FanDiameter() { UUID = Guid.NewGuid(), Diameter = 120 },
+            //    new FanDiameter() { UUID = Guid.NewGuid(), Diameter = 140 },
+            //    new FanDiameter() { UUID = Guid.NewGuid(), Diameter = 200 },
+            //});
         }
     }
 }

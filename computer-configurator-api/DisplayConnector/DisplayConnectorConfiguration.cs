@@ -29,6 +29,46 @@ namespace ComputerConfigurator.Api.DisplayConnector
                 .HasColumnName("version")
                 .HasColumnType("varchar(15)")
                 .HasMaxLength(15);
+
+            //builder.HasData(new List<DisplayConnector>()
+            //{
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "VGA", Version = "DE-15" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "VGA", Version = "DB-15" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "VGA", Version = "HD-15" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "DVI-I", Version = "Single-Link" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "DVI-I", Version = "Dual-Link" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "DVI-D", Version = "Single-Link" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "DVI-D", Version = "Dual-Link" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "HDMI", Version = "1.0" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "HDMI", Version = "1.1" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "HDMI", Version = "1.2" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "HDMI", Version = "1.2a" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "HDMI", Version = "1.3" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "HDMI", Version = "1.3a" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "HDMI", Version = "1.4" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "HDMI", Version = "1.4a" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "HDMI", Version = "1.4b" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "HDMI", Version = "2.0" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "HDMI", Version = "2.0a" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "HDMI", Version = "2.0b" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "HDMI", Version = "2.1" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "DisplayPort", Version = "1.0" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "DisplayPort", Version = "1.1" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "DisplayPort", Version = "1.2" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "DisplayPort", Version = "1.2a" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "DisplayPort", Version = "1.3" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "DisplayPort", Version = "1.4" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "DisplayPort", Version = "1.4a" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "DisplayPort", Version = "2.0" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "Mini DisplayPort", Version = "1.0" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "Mini DisplayPort", Version = "1.1" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "Mini DisplayPort", Version = "1.2" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "Mini DisplayPort", Version = "1.2a" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "Mini DisplayPort", Version = "1.3" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "Mini DisplayPort", Version = "1.4" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "Mini DisplayPort", Version = "1.4a" },
+            //    new DisplayConnector() { UUID = Guid.NewGuid(), Interface = "Mini DisplayPort", Version = "2.0" }
+            //});
         }
     }
 }

@@ -119,9 +119,18 @@ namespace ComputerConfigurator.Api
 
             #region Parts
 
+            new Part.PartConfiguration().Configure(modelBuilder.Entity<Part.Part>());
+
             new CPU.CPUConfiguration().Configure(modelBuilder.Entity<CPU.CPU>());
 
-            new Part.PartConfiguration().Configure(modelBuilder.Entity<Part.Part>());
+            new Chassis.ChassisConfiguration().Configure(modelBuilder.Entity<Chassis.Chassis>());
+            new ChassisAudioPort.ChassisAudioPortConfiguration().Configure(modelBuilder.Entity<ChassisAudioPort.ChassisAudioPort>());
+            new ChassisFanSupport.ChassisFanSupportConfiguration().Configure(modelBuilder.Entity<ChassisFanSupport.ChassisFanSupport>());
+            new ChassisFilterSupport.ChassisFilterSupportConfiguration().Configure(modelBuilder.Entity<ChassisFilterSupport.ChassisFilterSupport>());
+            new ChassisMotherboardFormFactorSupport.ChassisMotherboardFormFactorSupportConfiguration().Configure(modelBuilder.Entity<ChassisMotherboardFormFactorSupport.ChassisMotherboardFormFactorSupport>());
+            new ChassisPowerSupplyFormFactorSupport.ChassisPowerSupplyFormFactorSupportConfiguration().Configure(modelBuilder.Entity<ChassisPowerSupplyFormFactorSupport.ChassisPowerSupplyFormFactorSupport>());
+            new ChassisRadiatorSupport.ChassisRadiatorSupportConfiguration().Configure(modelBuilder.Entity<ChassisRadiatorSupport.ChassisRadiatorSupport>());
+            new ChassisUSBPort.ChassisUSBPortConfiguration().Configure(modelBuilder.Entity<ChassisUSBPort.ChassisUSBPort>());
 
             #endregion
 

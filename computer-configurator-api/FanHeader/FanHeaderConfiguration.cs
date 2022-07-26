@@ -23,6 +23,12 @@ namespace ComputerConfigurator.Api.FanHeader
             builder.Property(e => e.PinCount)
                 .HasColumnName("pincount")
                 .HasColumnType("integer");
+
+            //builder.HasData(new List<FanHeader>()
+            //{
+            //    new FanHeader() { UUID = Guid.NewGuid(), PinCount = 3 },
+            //    new FanHeader() { UUID = Guid.NewGuid(), PinCount = 4 }
+            //});
         }
     }
 }

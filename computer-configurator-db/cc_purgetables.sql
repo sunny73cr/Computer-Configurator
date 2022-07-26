@@ -56,8 +56,6 @@ drop table if exists cpu;
 
 drop table if exists part;
 
-drop table if exists manufacturer;
-
 drop table if exists audioport;
 drop table if exists chassiszone;
 drop table if exists motherboardchipset;
@@ -80,6 +78,8 @@ drop table if exists ramsocket;
 drop table if exists ramspeed;
 drop table if exists satageneration;
 drop table if exists usbport;
+
+drop table if exists manufacturer;
 
 drop table if exists session;
 drop table if exists account;

@@ -37,7 +37,7 @@
             Manufacturer = manufacturer;
         }
 
-        public static void Edit(Part part, DTO.Edit edits)
+        protected static void Edit(Part part, DTO.Edit edits)
         {
             if (part.ManufacturerUUID != edits.ManufacturerUUID) part.ManufacturerUUID = edits.ManufacturerUUID;
             if (part.Model != edits.Model) part.Model = edits.Model;

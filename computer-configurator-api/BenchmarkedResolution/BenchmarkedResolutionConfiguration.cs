@@ -27,6 +27,21 @@ namespace ComputerConfigurator.Api.BenchmarkedResolution
             builder.Property(e => e.PixelHeight)
                 .HasColumnName("pixelheight")
                 .HasColumnType("integer");
+
+            //builder.HasData(new List<BenchmarkedResolution>()
+            //{
+            //    new BenchmarkedResolution() { UUID = Guid.NewGuid(), PixelWidth = 1280, PixelHeight = 720 },
+            //    new BenchmarkedResolution() { UUID = Guid.NewGuid(), PixelWidth = 1366, PixelHeight = 768 },
+            //    new BenchmarkedResolution() { UUID = Guid.NewGuid(), PixelWidth = 1440, PixelHeight = 900 },
+            //    new BenchmarkedResolution() { UUID = Guid.NewGuid(), PixelWidth = 1600, PixelHeight = 900 },
+            //    new BenchmarkedResolution() { UUID = Guid.NewGuid(), PixelWidth = 1920, PixelHeight = 1080 },
+            //    new BenchmarkedResolution() { UUID = Guid.NewGuid(), PixelWidth = 1920, PixelHeight = 1200 },
+            //    new BenchmarkedResolution() { UUID = Guid.NewGuid(), PixelWidth = 1920, PixelHeight = 1080 },
+            //    new BenchmarkedResolution() { UUID = Guid.NewGuid(), PixelWidth = 2560, PixelHeight = 1440 },
+            //    new BenchmarkedResolution() { UUID = Guid.NewGuid(), PixelWidth = 2560, PixelHeight = 1600 },
+            //    new BenchmarkedResolution() { UUID = Guid.NewGuid(), PixelWidth = 3440, PixelHeight = 1440 },
+            //    new BenchmarkedResolution() { UUID = Guid.NewGuid(), PixelWidth = 3840, PixelHeight = 2160 },
+            //});
         }
     }
 }

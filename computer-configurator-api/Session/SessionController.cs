@@ -18,9 +18,26 @@ namespace ComputerConfigurator.Api.Session
         [HttpPost]
         public async Task<ActionResult> Login([FromBody] DTO.Login authenticationDetails)
         {
-            string? cookieString = Request.Cookies[SessionCookie.Key];
+            string? sessionKeyString = Request.Cookies[SessionCookie.Key];
 
-            if (cookieString != null && new SessionCookie(cookieString).Valid == true) return NoContent();
+            if (sessionKeyString != null)
+            {
+                bool validSessionKey = Guid.TryParse(sessionKeyString, out Guid sessionKey);
+
+                if (validSessionKey)
+                {
+                    Session? existingSession = await _context.Session.FirstOrDefaultAsync(x => x.Key == sessionKey);
+
+                    if (existingSession != null)
+                    {
+                        bool loggedIn = existingSession.LogoutTimestamp != null;
+
+                        bool expired = existingSession.LoginTimestamp.AddSeconds(SessionCookie.SessionLifetime.TotalSeconds) <= DateTime.UtcNow;
+
+                        if (loggedIn && expired == false) return NoContent();
+                    }
+                }
+            }
 
             Account.Account? account = await _context.Account.FirstOrDefaultAsync(x => x.Email == authenticationDetails.Email);
 
@@ -52,26 +69,39 @@ namespace ComputerConfigurator.Api.Session
         [HttpPatch]
         public async Task<ActionResult> Logout()
         {
-            string? cookieString = Request.Cookies[SessionCookie.Key];
+            string? sessionKey = Request.Cookies[SessionCookie.Key];
 
-            if (cookieString == null) return Unauthorized();
+            if (sessionKey == null)
+            {
 
-            SessionCookie cookie = new(cookieString);
+                Response.Headers.SetCookie = SessionCookie.LogoutCookie();
+                return NoContent();
+            }
 
-            if (cookie.Valid == false) return Unauthorized();
+            bool validSessionKey = Guid.TryParse(sessionKey, out Guid sessionKeyGuid);
 
-            //log invalid cookie
+            if (!validSessionKey)
+            {
 
-            Session? session = await _context.Session.FirstOrDefaultAsync(x => x.Key == cookie.SessionKey);
+                Response.Headers.SetCookie = SessionCookie.LogoutCookie();
+                return NoContent();
+            }
 
-            if (session == null) return Unauthorized();
+            Session? session = await _context.Session.FirstOrDefaultAsync(x => x.Key == sessionKeyGuid);
+
+            if (session == null)
+            {
+                //log invalid session key
+
+                Response.Headers.SetCookie = SessionCookie.LogoutCookie();
+                return NoContent();
+            }
 
             session.LogoutTimestamp = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
 
             Response.Headers.SetCookie = SessionCookie.LogoutCookie();
-
             return NoContent();
         }
     }

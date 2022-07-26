@@ -11,7 +11,8 @@ namespace ComputerConfigurator.Api.Chassis
 
             builder.Property(x => x.UUID)
                 .HasColumnName("uuid")
-                .HasColumnType("uuid");
+                .HasColumnType("uuid")
+                .ValueGeneratedNever();
 
             builder.Property(x => x.LengthMM)
                 .HasColumnName("lengthmm")
@@ -40,6 +41,12 @@ namespace ComputerConfigurator.Api.Chassis
             builder.Property(x => x.PCIESlotCount)
                 .HasColumnName("pcieslotcount")
                 .HasColumnType("integer");
+
+            builder.HasOne(x => x.Part)
+                .WithOne()
+                .HasForeignKey<Chassis>(x => x.UUID)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("chassis_uuid_fkey");
         }
     }
 }

@@ -22,7 +22,15 @@ namespace ComputerConfigurator.Api.FanVoltage
 
             builder.Property(e => e.Voltage)
                 .HasColumnName("fanvoltage")
-                .HasColumnType("integer");
+                .HasColumnType("real");
+
+            //builder.HasData(new List<FanVoltage>()
+            //{
+            //    new FanVoltage() { UUID = Guid.NewGuid(), Voltage = 3.3f },
+            //    new FanVoltage() { UUID = Guid.NewGuid(), Voltage = 5f },
+            //    new FanVoltage() { UUID = Guid.NewGuid(), Voltage = 12f },
+            //    new FanVoltage() { UUID = Guid.NewGuid(), Voltage = 24f },
+            //});
         }
     }
 }

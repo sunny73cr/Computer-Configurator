@@ -24,6 +24,16 @@ namespace ComputerConfigurator.Api.EightyPlusRating
                 .HasColumnName("rating")
                 .HasColumnType("varchar(20)")
                 .HasMaxLength(20);
+
+            //builder.HasData(new List<EightyPlusRating>()
+            //{
+            //    new EightyPlusRating() { UUID = Guid.NewGuid(), Rating = "White" },
+            //    new EightyPlusRating() { UUID = Guid.NewGuid(), Rating = "Bronze" },
+            //    new EightyPlusRating() { UUID = Guid.NewGuid(), Rating = "Silver" },
+            //    new EightyPlusRating() { UUID = Guid.NewGuid(), Rating = "Gold" },
+            //    new EightyPlusRating() { UUID = Guid.NewGuid(), Rating = "Titanium" },
+            //    new EightyPlusRating() { UUID = Guid.NewGuid(), Rating = "Platinum" }
+            //});
         }
     }
 }

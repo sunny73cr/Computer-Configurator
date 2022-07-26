@@ -37,6 +37,8 @@
 
         public static void Edit(Chassis chassis, DTO.Edit edits)
         {
+            Api.Part.Part.Edit(chassis, edits);
+
             if (chassis.LengthMM != edits.LengthMM) chassis.LengthMM = edits.LengthMM;
             if (chassis.WidthMM != edits.WidthMM) chassis.WidthMM = edits.WidthMM;
             if (chassis.HeightMM != edits.HeightMM) chassis.HeightMM = edits.HeightMM;
