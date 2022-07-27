@@ -25,7 +25,7 @@ namespace ComputerConfigurator.Api.ChassisFilterSupport
                 .HasColumnType("boolean");
 
             builder.HasOne(d => d.Chassis)
-                .WithMany(p => p.ChassisFilterSupport)
+                .WithMany(p => p.FilterSupport)
                 .HasForeignKey(d => d.ChassisUUID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("chassis_filtersupport_chassisuuid_fkey");

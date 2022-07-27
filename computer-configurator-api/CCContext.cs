@@ -67,6 +67,17 @@ namespace ComputerConfigurator.Api
         public virtual DbSet<ChassisRadiatorSupport.ChassisRadiatorSupport> ChassisRadiatorSupport { get; set; } = null!;
         public virtual DbSet<ChassisUSBPort.ChassisUSBPort> ChassisUSBPort { get; set; } = null!;
 
+        public virtual DbSet<CPUCooler.CPUCooler> CPUCooler { get; set; } = null!;
+        public virtual DbSet<CPUCoolerFan.CPUCoolerFan> CPUCoolerFan { get; set; } = null!;
+        public virtual DbSet<CPUCoolerCPUSocketSupport.CPUCoolerCPUSocketSupport> CPUCoolerCPUSocketSupport { get; set; } = null!;
+        public virtual DbSet<CPUHeatsink.CPUHeatsink> CPUHeatsink { get; set; } = null!;
+        public virtual DbSet<CPUClosedLoopCooler.CPUClosedLoopCooler> CPUClosedLoopCooler { get; set; } = null!;
+
+        public virtual DbSet<Fan.Fan> Fan { get; set; } = null!;
+
+        public virtual DbSet<GPU.GPU> GPU { get; set; } = null!;
+        public virtual DbSet<GPUDisplayConnector.GPUDisplayConnector> GPUDisplayConnector { get; set; } = null!;
+
         #endregion
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

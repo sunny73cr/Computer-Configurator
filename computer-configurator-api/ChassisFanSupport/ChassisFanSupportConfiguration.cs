@@ -33,7 +33,7 @@ namespace ComputerConfigurator.Api.ChassisFanSupport
                 .HasColumnType("integer");
 
             builder.HasOne(d => d.Chassis)
-                .WithMany(p => p.ChassisFanSupport)
+                .WithMany(p => p.FanSupport)
                 .HasForeignKey(d => d.ChassisUUID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("chassis_fansupport_chassisuuid_fkey");

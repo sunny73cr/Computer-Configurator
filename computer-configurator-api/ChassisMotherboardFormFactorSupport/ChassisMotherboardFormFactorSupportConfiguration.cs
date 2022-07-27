@@ -21,7 +21,7 @@ namespace ComputerConfigurator.Api.ChassisMotherboardFormFactorSupport
                 .HasColumnType("uuid");
 
             builder.HasOne(x => x.Chassis)
-                .WithMany(x => x.ChassisMotherboardFormFactorSupport)
+                .WithMany(x => x.MotherboardFormFactorSupport)
                 .HasForeignKey(x => x.ChassisUUID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("chassis_motherboardformfactorsupport_chassisuuid_fkey");

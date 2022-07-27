@@ -11,20 +11,20 @@
         public int PCIESlotCount { get; set; }
 
         public virtual Part.Part Part { get; set; } = null!;
-        public virtual ICollection<ChassisAudioPort.ChassisAudioPort> ChassisAudioPort { get; set; } = new HashSet<ChassisAudioPort.ChassisAudioPort>();
-        public virtual ICollection<ChassisFanSupport.ChassisFanSupport> ChassisFanSupport { get; set; } = new HashSet<ChassisFanSupport.ChassisFanSupport>();
-        public virtual ICollection<ChassisFilterSupport.ChassisFilterSupport> ChassisFilterSupport { get; set; } = new HashSet<ChassisFilterSupport.ChassisFilterSupport>();
-        public virtual ICollection<ChassisMotherboardFormFactorSupport.ChassisMotherboardFormFactorSupport> ChassisMotherboardFormFactorSupport { get; set; } = new HashSet<ChassisMotherboardFormFactorSupport.ChassisMotherboardFormFactorSupport>();
-        public virtual ICollection<ChassisPowerSupplyFormFactorSupport.ChassisPowerSupplyFormFactorSupport> ChassisPowerSupplyFormFactorSupport { get; set; } = new HashSet<ChassisPowerSupplyFormFactorSupport.ChassisPowerSupplyFormFactorSupport>();
-        public virtual ICollection<ChassisRadiatorSupport.ChassisRadiatorSupport> ChassisRadiatorSupport { get; set; } = new HashSet<ChassisRadiatorSupport.ChassisRadiatorSupport>();
-        public virtual ICollection<ChassisUSBPort.ChassisUSBPort> ChassisUSBPort { get; set; } = new HashSet<ChassisUSBPort.ChassisUSBPort>();
+        public virtual List<ChassisAudioPort.ChassisAudioPort> AudioPorts { get; set; } = new List<ChassisAudioPort.ChassisAudioPort>();
+        public virtual List<ChassisFanSupport.ChassisFanSupport> FanSupport { get; set; } = new List<ChassisFanSupport.ChassisFanSupport>();
+        public virtual List<ChassisFilterSupport.ChassisFilterSupport> FilterSupport { get; set; } = new List<ChassisFilterSupport.ChassisFilterSupport>();
+        public virtual List<ChassisMotherboardFormFactorSupport.ChassisMotherboardFormFactorSupport> MotherboardFormFactorSupport { get; set; } = new List<ChassisMotherboardFormFactorSupport.ChassisMotherboardFormFactorSupport>();
+        public virtual List<ChassisPowerSupplyFormFactorSupport.ChassisPowerSupplyFormFactorSupport> PowerSupplyFormFactorSupport { get; set; } = new List<ChassisPowerSupplyFormFactorSupport.ChassisPowerSupplyFormFactorSupport>();
+        public virtual List<ChassisRadiatorSupport.ChassisRadiatorSupport> RadiatorSupport { get; set; } = new List<ChassisRadiatorSupport.ChassisRadiatorSupport>();
+        public virtual List<ChassisUSBPort.ChassisUSBPort> USBPorts { get; set; } = new List<ChassisUSBPort.ChassisUSBPort>();
 
         public Chassis()
         {
 
         }
 
-        public Chassis(DTO.Create chassis)
+        public Chassis(DTO.Create chassis) : base(chassis)
         {
             LengthMM = chassis.LengthMM;
             WidthMM = chassis.WidthMM;
@@ -33,6 +33,27 @@
             MaxPSULengthMM = chassis.MaxPSULengthMM;
             MaxCPUCoolerHeightMM = chassis.MaxCPUCoolerHeightMM;
             PCIESlotCount = chassis.PCIESlotCount;
+            AudioPorts.AddRange(chassis.AudioPorts.Select(
+                    createChassisAudioPort => new ChassisAudioPort.ChassisAudioPort(chassis.UUID, createChassisAudioPort)
+            ));
+            FanSupport.AddRange(chassis.FanSupport.Select(
+                    createChassisFanSupport => new ChassisFanSupport.ChassisFanSupport(chassis.UUID, createChassisFanSupport)   
+            ));
+            FilterSupport.AddRange(chassis.FilterSupport.Select(
+                    createChassisFilterSupport => new ChassisFilterSupport.ChassisFilterSupport(chassis.UUID, createChassisFilterSupport)    
+            ));
+            MotherboardFormFactorSupport.AddRange(chassis.MotherboardFormFactorSupport.Select(
+                    createChassisMotherboardFormFactorSupport => new ChassisMotherboardFormFactorSupport.ChassisMotherboardFormFactorSupport(chassis.UUID, createChassisMotherboardFormFactorSupport)    
+            ));
+            PowerSupplyFormFactorSupport.AddRange(chassis.PowerSupplyFormFactorSupport.Select(
+                    createPowerSupplyFormFactorSupport => new ChassisPowerSupplyFormFactorSupport.ChassisPowerSupplyFormFactorSupport(chassis.UUID, createPowerSupplyFormFactorSupport)    
+            ));
+            RadiatorSupport.AddRange(chassis.RadiatorSupport.Select(
+                    createChassisRadiatorSupport => new ChassisRadiatorSupport.ChassisRadiatorSupport(chassis.UUID, createChassisRadiatorSupport)
+            ));
+            USBPorts.AddRange(chassis.USBPorts.Select(
+                    createChassisUSBPorts => new ChassisUSBPort.ChassisUSBPort(chassis.UUID, createChassisUSBPorts)
+            ));
         }
 
         public static void Edit(Chassis chassis, DTO.Edit edits)

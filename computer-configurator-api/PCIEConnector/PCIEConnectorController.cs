@@ -25,6 +25,10 @@ namespace ComputerConfigurator.Api.PCIEConnector
 
             if (existing != null) return Conflict();
 
+            PCIEGeneration.PCIEGeneration? pcieGeneration = await _context.PCIEGeneration.FirstOrDefaultAsync(x => x.UUID == createPCIEConnector.PCIEGenerationUUID);
+
+            if (pcieGeneration == null) return NotFound();
+
             PCIEConnector PCIEConnector = new(createPCIEConnector);
 
             _context.PCIEConnector.Add(PCIEConnector);
@@ -67,6 +71,13 @@ namespace ComputerConfigurator.Api.PCIEConnector
             PCIEConnector? PCIEConnector = await _context.PCIEConnector.FirstOrDefaultAsync(x => x.UUID == PCIEConnectorEdits.UUID);
 
             if (PCIEConnector == null) return NotFound();
+
+            if (PCIEConnector.PCIEGenerationUUID != PCIEConnectorEdits.PCIEGenerationUUID)
+            {
+                PCIEGeneration.PCIEGeneration? pcieGeneration = await _context.PCIEGeneration.FirstOrDefaultAsync(x => x.UUID == PCIEConnectorEdits.PCIEGenerationUUID);
+
+                if (pcieGeneration == null) return NotFound();
+            }
 
             PCIEConnector.Edit(PCIEConnector, PCIEConnectorEdits);
 

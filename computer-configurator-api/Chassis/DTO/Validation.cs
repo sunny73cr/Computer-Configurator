@@ -7,6 +7,8 @@
 
         public Validation(DTO.Create chassis)
         {
+            _errors.AddRange(new Part.DTO.Validation(chassis).Errors);
+
             DomainValidation.Numeric.ValueRange(_errors, "Length", chassis.LengthMM, 1, 1000);
             DomainValidation.Numeric.ValueRange(_errors, "Width", chassis.WidthMM, 1, 1000);
             DomainValidation.Numeric.ValueRange(_errors, "Height", chassis.HeightMM, 1, 1000);
@@ -18,6 +20,8 @@
 
         public Validation(DTO.Edit chassis)
         {
+            _errors.AddRange(new Part.DTO.Validation(chassis).Errors);
+
             DomainValidation.Numeric.ValueRange(_errors, "Length", chassis.LengthMM, 1, 1000);
             DomainValidation.Numeric.ValueRange(_errors, "Width", chassis.WidthMM, 1, 1000);
             DomainValidation.Numeric.ValueRange(_errors, "Height", chassis.HeightMM, 1, 1000);

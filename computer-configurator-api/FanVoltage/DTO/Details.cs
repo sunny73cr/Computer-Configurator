@@ -3,7 +3,7 @@
     public class Details
     {
         public Guid UUID { get; set; }
-        public int Voltage { get; set; }
+        public float Voltage { get; set; }
 
         public Details()
         {

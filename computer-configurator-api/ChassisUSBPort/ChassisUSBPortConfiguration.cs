@@ -29,7 +29,7 @@ namespace ComputerConfigurator.Api.ChassisUSBPort
                 .HasColumnType("integer");
 
             builder.HasOne(d => d.Chassis)
-                .WithMany(p => p.ChassisUSBPort)
+                .WithMany(p => p.USBPorts)
                 .HasForeignKey(d => d.ChassisUUID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("chassis_usbport_chassisuuid_fkey");

@@ -29,7 +29,7 @@ namespace ComputerConfigurator.Api.ChassisRadiatorSupport
                 .HasColumnType("integer");
 
             builder.HasOne(d => d.Chassis)
-                .WithMany(p => p.ChassisRadiatorSupport)
+                .WithMany(p => p.RadiatorSupport)
                 .HasForeignKey(d => d.ChassisUUID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("chassis_radiatorsupport_chassisuuid_fkey");

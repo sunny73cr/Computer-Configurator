@@ -25,7 +25,7 @@ namespace ComputerConfigurator.Api.ChassisAudioPort
                 .HasColumnType("uuid");
 
             builder.HasOne(d => d.Chassis)
-                .WithMany(p => p.ChassisAudioPort)
+                .WithMany(p => p.AudioPorts)
                 .HasForeignKey(d => d.ChassisUUID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("chassis_audioport_chassisuuid_fkey");

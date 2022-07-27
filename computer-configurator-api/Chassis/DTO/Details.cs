@@ -26,13 +26,13 @@
             MaxPSULengthMM = chassis.MaxPSULengthMM;
             MaxCPUCoolerHeightMM = chassis.MaxCPUCoolerHeightMM;
             PCIESlotCount = chassis.PCIESlotCount;
-            ChassisAudioPorts.AddRange(chassis.ChassisAudioPort.Select(audioPort => new ChassisAudioPort.DTO.Details(audioPort)));
-            ChassisFanSupport.AddRange(chassis.ChassisFanSupport.Select(fanSupport => new ChassisFanSupport.DTO.Details(fanSupport)));
-            ChassisFilterSupport.AddRange(chassis.ChassisFilterSupport.Select(filterSupport => new ChassisFilterSupport.DTO.Details(filterSupport)));
-            ChassisMotherboardFormFactorSupport.AddRange(chassis.ChassisMotherboardFormFactorSupport.Select(motherboardFormFactorSupport => new ChassisMotherboardFormFactorSupport.DTO.Details(motherboardFormFactorSupport)));
-            ChassisPowerSupplyFormFactorSupport.AddRange(chassis.ChassisPowerSupplyFormFactorSupport.Select(powerSupplyFormFactorSupport => new ChassisPowerSupplyFormFactorSupport.DTO.Details(powerSupplyFormFactorSupport)));
-            ChassisRadiatorSupport.AddRange(chassis.ChassisRadiatorSupport.Select(radiatorSupport => new ChassisRadiatorSupport.DTO.Details(radiatorSupport)));
-            ChassisUSBPorts.AddRange(chassis.ChassisUSBPort.Select(usbPort => new ChassisUSBPort.DTO.Details(usbPort)));
+            ChassisAudioPorts.AddRange(chassis.AudioPorts.Select(audioPort => new ChassisAudioPort.DTO.Details(audioPort)));
+            ChassisFanSupport.AddRange(chassis.FanSupport.Select(fanSupport => new ChassisFanSupport.DTO.Details(fanSupport)));
+            ChassisFilterSupport.AddRange(chassis.FilterSupport.Select(filterSupport => new ChassisFilterSupport.DTO.Details(filterSupport)));
+            ChassisMotherboardFormFactorSupport.AddRange(chassis.MotherboardFormFactorSupport.Select(motherboardFormFactorSupport => new ChassisMotherboardFormFactorSupport.DTO.Details(motherboardFormFactorSupport)));
+            ChassisPowerSupplyFormFactorSupport.AddRange(chassis.PowerSupplyFormFactorSupport.Select(powerSupplyFormFactorSupport => new ChassisPowerSupplyFormFactorSupport.DTO.Details(powerSupplyFormFactorSupport)));
+            ChassisRadiatorSupport.AddRange(chassis.RadiatorSupport.Select(radiatorSupport => new ChassisRadiatorSupport.DTO.Details(radiatorSupport)));
+            ChassisUSBPorts.AddRange(chassis.USBPorts.Select(usbPort => new ChassisUSBPort.DTO.Details(usbPort)));
         }
     }
 }

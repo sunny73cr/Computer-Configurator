@@ -25,7 +25,7 @@ namespace ComputerConfigurator.Api.ChassisPowerSupplyFormFactorSupport
                 .HasColumnType("boolean");
 
             builder.HasOne(d => d.Chassis)
-                .WithMany(p => p.ChassisPowerSupplyFormFactorSupport)
+                .WithMany(p => p.PowerSupplyFormFactorSupport)
                 .HasForeignKey(d => d.ChassisUUID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("chassis_powersupplyformfactorsupport_chassisuuid_fkey");
