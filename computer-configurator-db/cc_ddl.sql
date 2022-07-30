@@ -38,9 +38,9 @@ begin;
 	\ir DDL/parts/powersupply/table_powersupply.sql;
 
 	\ir DDL/parts/storage/table_storage.sql;
-	\ir DDL/parts/storage/table_nvme.sql;
-	\ir DDL/parts/storage/table_ssd.sql;
-	\ir DDL/parts/storage/table_hdd.sql;
+	\ir DDL/parts/storage/table_satahdd.sql;
+	\ir DDL/parts/storage/table_satassd.sql;
+	\ir DDL/parts/storage/table_nvmessd.sql;
 
 	\ir DDL/parts/gpu/table_gpu.sql;
 	\ir DDL/parts/gpu/linktables/table_gpu_displayconnector.sql;

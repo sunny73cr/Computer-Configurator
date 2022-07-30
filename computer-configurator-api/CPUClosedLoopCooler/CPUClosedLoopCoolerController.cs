@@ -62,9 +62,10 @@ namespace ComputerConfigurator.Api.CPUClosedLoopCooler
             IAsyncEnumerable<CPUClosedLoopCooler> query = _context.CPUClosedLoopCooler
                 .Include(x => x.Part)
                 .ThenInclude(x => x.Manufacturer)
-                .Include(x => x.RadiatorSize)
+                .Include(x => x.CPUCooler)
                 .Include(x => x.CPUCoolerFans)
                 .Include(x => x.CPUSockets)
+                .Include(x => x.RadiatorSize)
                 .AsAsyncEnumerable();
 
             await foreach (CPUClosedLoopCooler cpuClosedLoopCooler in query)
@@ -81,9 +82,10 @@ namespace ComputerConfigurator.Api.CPUClosedLoopCooler
             CPUClosedLoopCooler? CPUClosedLoopCooler = await _context.CPUClosedLoopCooler
                 .Include(x => x.Part)
                 .ThenInclude(x => x.Manufacturer)
-                .Include(x => x.RadiatorSize)
+                .Include(x => x.CPUCooler)
                 .Include(x => x.CPUCoolerFans)
                 .Include(x => x.CPUSockets)
+                .Include(x => x.RadiatorSize)
                 .FirstOrDefaultAsync(CPUClosedLoopCooler => CPUClosedLoopCooler.UUID == uuid);
 
             if (CPUClosedLoopCooler == null) return NotFound();

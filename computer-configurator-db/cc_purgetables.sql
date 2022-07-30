@@ -21,9 +21,9 @@ drop table if exists chassis;
 
 drop table if exists powersupply;
 
-drop table if exists nvme;
-drop table if exists ssd;
-drop table if exists hdd;
+drop table if exists nvmessd;
+drop table if exists satassd;
+drop table if exists satahdd;
 drop table if exists storage;
 
 drop table if exists gpu_displayconnector;

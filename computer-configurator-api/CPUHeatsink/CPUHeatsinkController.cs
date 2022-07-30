@@ -58,6 +58,7 @@ namespace ComputerConfigurator.Api.CPUHeatsink
             IAsyncEnumerable<CPUHeatsink> query = _context.CPUHeatsink
                 .Include(x => x.Part)
                 .ThenInclude(x => x.Manufacturer)
+                .Include(x => x.CPUCooler)
                 .Include(x => x.CPUCoolerFans)
                 .Include(x => x.CPUSockets)
                 .AsAsyncEnumerable();
@@ -76,6 +77,7 @@ namespace ComputerConfigurator.Api.CPUHeatsink
             CPUHeatsink? CPUHeatsink = await _context.CPUHeatsink
                 .Include(x => x.Part)
                 .ThenInclude(x => x.Manufacturer)
+                .Include(x => x.CPUCooler)
                 .Include(x => x.CPUCoolerFans)
                 .Include(x => x.CPUSockets)
                 .FirstOrDefaultAsync(CPUHeatsink => CPUHeatsink.UUID == uuid);

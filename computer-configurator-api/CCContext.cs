@@ -89,6 +89,11 @@ namespace ComputerConfigurator.Api
         public virtual DbSet<MotherboardRAMSpeed.MotherboardRAMSpeed> MotherboardRAMSpeed { get; set; } = null!;
         public virtual DbSet<MotherboardSATAConnector.MotherboardSATAConnector> MotherboardSATAConnector { get; set; } = null!;
         public virtual DbSet<MotherboardUSBPort.MotherboardUSBPort> MotherboardUSBPort { get; set; } = null!;
+
+        public virtual DbSet<Storage.Storage> Storage { get; set; } = null!;
+        public virtual DbSet<SATAHDD.SATAHDD> SATAHDD { get; set; } = null!;
+        public virtual DbSet<SATASSD.SATASSD> SATASSD { get; set; } = null!;
+        public virtual DbSet<NVMESSD.NVMESSD> NVMESSD { get; set; } = null!;
         #endregion
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
