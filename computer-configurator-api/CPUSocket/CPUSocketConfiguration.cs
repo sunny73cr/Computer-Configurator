@@ -24,23 +24,6 @@ namespace ComputerConfigurator.Api.CPUSocket
                 .HasColumnName("version")
                 .HasColumnType("varchar(20)")
                 .HasMaxLength(20);
-
-            //builder.HasData(new List<CPUSocket>()
-            //{
-            //    new CPUSocket() { UUID = Guid.NewGuid(), Version = "AM3+" },
-            //    new CPUSocket() { UUID = Guid.NewGuid(), Version = "AM4" },
-            //    new CPUSocket() { UUID = Guid.NewGuid(), Version = "AM5" },
-            //    new CPUSocket() { UUID = Guid.NewGuid(), Version = "SP3" },
-            //    new CPUSocket() { UUID = Guid.NewGuid(), Version = "TR4" },
-            //    new CPUSocket() { UUID = Guid.NewGuid(), Version = "sTRX4" },
-            //    new CPUSocket() { UUID = Guid.NewGuid(), Version = "LGA1155" },
-            //    new CPUSocket() { UUID = Guid.NewGuid(), Version = "LGA2011" },
-            //    new CPUSocket() { UUID = Guid.NewGuid(), Version = "LGA1150" },
-            //    new CPUSocket() { UUID = Guid.NewGuid(), Version = "LGA2011-v3" },
-            //    new CPUSocket() { UUID = Guid.NewGuid(), Version = "LGA1151" },
-            //    new CPUSocket() { UUID = Guid.NewGuid(), Version = "LGA1200" },
-            //    new CPUSocket() { UUID = Guid.NewGuid(), Version = "LGA1700" }
-            //});
         }
     }
 }

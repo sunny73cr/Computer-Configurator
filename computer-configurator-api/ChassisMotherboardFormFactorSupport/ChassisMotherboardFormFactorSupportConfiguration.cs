@@ -30,7 +30,7 @@ namespace ComputerConfigurator.Api.ChassisMotherboardFormFactorSupport
                 .WithMany()
                 .HasForeignKey(x => x.MotherboardFormFactorUUID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("chassis_motherboardformfactorsupport_motherboardformfactoruuis_fkey");
+                .HasConstraintName("chassis_motherboardformfactorsupport_motherboardformfactoruuid_fkey");
         }
     }
 }

@@ -11,11 +11,5 @@
             DomainValidation.String.LengthRange(_errors, "Chipset", EthernetPort.Chipset, 1, 50);
             DomainValidation.Numeric.ValueRange(_errors, "Bandwidth MegaBytes", EthernetPort.BandwidthMBytes, 100, 200000);
         }
-
-        public Validation(Edit EthernetPort)
-        {
-            DomainValidation.String.LengthRange(_errors, "Chipset", EthernetPort.Chipset, 1, 50);
-            DomainValidation.Numeric.ValueRange(_errors, "Bandwidth MegaBytes", EthernetPort.BandwidthMBytes, 100, 200000);
-        }
     }
 }

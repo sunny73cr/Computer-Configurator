@@ -2,8 +2,8 @@
 {
     public partial class Manufacturer
     {
-        public Guid UUID { get; set; } = Guid.Empty;
-        public string Name { get; set; } = null!;
+        public Guid UUID { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         public Manufacturer()
         {

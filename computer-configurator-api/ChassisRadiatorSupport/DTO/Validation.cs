@@ -9,5 +9,10 @@
         {
             DomainValidation.Numeric.ValueRange(_errors, "Maximum width", ChassisRadiatorSupport.MaximumWidthMM, 20, 60);
         }
+
+        public Validation(DTO.Edit ChassisRadiatorSupport)
+        {
+            DomainValidation.Numeric.ValueRange(_errors, "Maximum width", ChassisRadiatorSupport.MaximumWidthMM, 20, 60);
+        }
     }
 }

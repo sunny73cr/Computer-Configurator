@@ -10,10 +10,5 @@
         {
             DomainValidation.String.LengthRange(_errors, "Version", MotherboardChipset.Version, 1, 20);
         }
-
-        public Validation(Edit MotherboardChipset)
-        {
-            DomainValidation.String.LengthRange(_errors, "Version", MotherboardChipset.Version, 1, 20);
-        }
     }
 }

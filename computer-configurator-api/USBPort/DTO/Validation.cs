@@ -11,11 +11,5 @@
             DomainValidation.String.LengthRange(_errors, "Interface", USBPort.Interface, 1, 15);
             DomainValidation.String.LengthRange(_errors, "Version", USBPort.Version, 1, 15);
         }
-
-        public Validation(Edit USBPort)
-        {
-            DomainValidation.String.LengthRange(_errors, "Interface", USBPort.Interface, 1, 15);
-            DomainValidation.String.LengthRange(_errors, "Version", USBPort.Version, 1, 15);
-        }
     }
 }

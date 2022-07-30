@@ -3,7 +3,7 @@
     public class Details
     {
         public Guid UUID { get; set; }
-        public string Chipset { get; set; } = null!;
+        public string Chipset { get; set; } = string.Empty;
         public int BandwidthMBytes { get; set; }
 
         public Details()

@@ -10,10 +10,5 @@
         {
             DomainValidation.String.LengthRange(_errors, "Generation", SATAGeneration.Generation, 1, 10);
         }
-
-        public Validation(Edit SATAGeneration)
-        {
-            DomainValidation.String.LengthRange(_errors, "Generation", SATAGeneration.Generation, 1, 10);
-        }
     }
 }

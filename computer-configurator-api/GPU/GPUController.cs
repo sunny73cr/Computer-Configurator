@@ -21,9 +21,11 @@ namespace ComputerConfigurator.Api.GPU
 
             if (errors.Any()) return BadRequest(errors);
 
-            GPU? existing = await _context.GPU.FirstOrDefaultAsync(x => x.UUID == createGPU.UUID);
+            bool manufacturerExists = await _context.Manufacturer.AnyAsync(x => x.UUID == createGPU.ManufacturerUUID);
 
-            if (existing != null) return Conflict();
+            if (manufacturerExists == false) return NotFound();
+
+            if (await Part.Part.Duplicate(_context, createGPU)) return Conflict();
 
             PCIEConnector.PCIEConnector? pcieConnector = await _context.PCIEConnector.FirstOrDefaultAsync(x => x.UUID == createGPU.PCIEConnectorUUID);
 
@@ -72,6 +74,20 @@ namespace ComputerConfigurator.Api.GPU
             GPU? GPU = await _context.GPU.FirstOrDefaultAsync(x => x.UUID == GPUEdits.UUID);
 
             if (GPU == null) return NotFound();
+
+            if (GPU.ManufacturerUUID != GPUEdits.ManufacturerUUID)
+            {
+                bool newManufacturerExists = await _context.Manufacturer.AnyAsync(x => x.UUID == GPUEdits.ManufacturerUUID);
+
+                if (newManufacturerExists == false) return NotFound();
+
+                if (GPU.Model.ToLower() != GPUEdits.Model.ToLower())
+                {
+                    bool duplicate = await Part.Part.Duplicate(_context, GPUEdits);
+
+                    if (duplicate) return Conflict();
+                }
+            }
 
             GPU.Edit(GPU, GPUEdits);
 

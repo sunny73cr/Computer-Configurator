@@ -15,9 +15,4 @@ public partial class RAIDMode
         UUID = RAIDMode.UUID;
         Mode = RAIDMode.Mode;
     }
-
-    public static void Edit(RAIDMode RAIDMode, DTO.Edit edits)
-    {
-        if (RAIDMode.Mode != edits.Mode) RAIDMode.Mode = edits.Mode;
-    }
 }

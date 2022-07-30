@@ -21,9 +21,19 @@ namespace ComputerConfigurator.Api.Fan
 
             if (errors.Any()) return BadRequest(errors);
 
-            Fan? existing = await _context.Fan.FirstOrDefaultAsync(x => x.UUID == createFan.UUID);
+            bool manufacturerExists = await _context.Manufacturer.AnyAsync(x => x.UUID == createFan.ManufacturerUUID);
 
-            if (existing != null) return Conflict();
+            if (manufacturerExists == false) return NotFound();
+
+            if (await Part.Part.Duplicate(_context, createFan)) return Conflict();
+
+            bool fanDiameterExists = await _context.FanDiameter.AnyAsync(x => x.UUID == createFan.FanDiameterUUID);
+
+            if (fanDiameterExists == false) return NotFound();
+
+            bool fanVoltageExists = await _context.FanVoltage.AnyAsync(x => x.UUID == createFan.FanVoltageUUID);
+
+            if (fanVoltageExists == false) return NotFound();
 
             Fan Fan = new(createFan);
 
@@ -61,6 +71,28 @@ namespace ComputerConfigurator.Api.Fan
             Fan? Fan = await _context.Fan.FirstOrDefaultAsync(x => x.UUID == FanEdits.UUID);
 
             if (Fan == null) return NotFound();
+
+            if (Fan.ManufacturerUUID != FanEdits.ManufacturerUUID)
+            {
+                bool newManufacturerExists = await _context.Manufacturer.AnyAsync(x => x.UUID == FanEdits.ManufacturerUUID);
+
+                if (newManufacturerExists == false) return NotFound();
+
+                if (Fan.Model.ToLower() != FanEdits.Model.ToLower())
+                {
+                    bool duplicate = await Part.Part.Duplicate(_context, FanEdits);
+
+                    if (duplicate) return Conflict();
+                }
+            }
+
+            bool fanDiameterExists = await _context.FanDiameter.AnyAsync(x => x.UUID == FanEdits.FanDiameterUUID);
+
+            if (fanDiameterExists == false) return NotFound();
+
+            bool fanVoltageExists = await _context.FanVoltage.AnyAsync(x => x.UUID == FanEdits.FanVoltageUUID);
+
+            if (fanVoltageExists == false) return NotFound();
 
             Fan.Edit(Fan, FanEdits);
 

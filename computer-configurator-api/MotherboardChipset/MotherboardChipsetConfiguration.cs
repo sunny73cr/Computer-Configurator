@@ -44,11 +44,6 @@ namespace ComputerConfigurator.Api.MotherboardChipset
                 .HasForeignKey(d => d.CPUSocketUUID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("motherboardchipset_cpusocketuuid_fkey");
-
-            //builder.HasData(new List<MotherboardChipset>()
-            //{
-            //    new MotherboardChipset() { UUID = Guid.NewGuid(), }
-            //});
         }
     }
 }

@@ -21,26 +21,28 @@ namespace ComputerConfigurator.Api.CPUClosedLoopCooler
 
             if (errors.Any()) return BadRequest(errors);
 
-            CPUClosedLoopCooler? existing = await _context.CPUClosedLoopCooler.FirstOrDefaultAsync(x => x.UUID == createCPUClosedLoopCooler.UUID);
+            bool manufacturerExists = await _context.Manufacturer.AnyAsync(x => x.UUID == createCPUClosedLoopCooler.ManufacturerUUID);
 
-            if (existing != null) return Conflict();
+            if (manufacturerExists == false) return NotFound();
 
-            RadiatorSize.RadiatorSize? radiatorSize = await _context.RadiatorSize.FirstOrDefaultAsync(x => x.UUID == createCPUClosedLoopCooler.RadiatorSizeUUID);
+            if (await Part.Part.Duplicate(_context, createCPUClosedLoopCooler)) return Conflict();
 
-            if (radiatorSize == null) return NotFound();
+            bool radiatorSizeExists = await _context.RadiatorSize.AnyAsync(x => x.UUID == createCPUClosedLoopCooler.RadiatorSizeUUID);
+
+            if (radiatorSizeExists == false) return NotFound();
 
             foreach (CPUCoolerFan.DTO.Create createCPUCoolerFan in createCPUClosedLoopCooler.CPUCoolerFans)
             {
-                Fan.Fan? fan = await _context.Fan.FirstOrDefaultAsync(x => x.UUID == createCPUCoolerFan.FanUUID);
+                bool fanExists = await _context.Fan.AnyAsync(x => x.UUID == createCPUCoolerFan.FanUUID);
 
-                if (fan == null) return NotFound();
+                if (fanExists == false) return NotFound();
             }
 
             foreach (CPUCoolerCPUSocketSupport.DTO.Create createCPUCoolerSocketSupport in createCPUClosedLoopCooler.CPUCoolerCPUSocketSupport)
             {
-                CPUSocket.CPUSocket? cpuSocket = await _context.CPUSocket.FirstOrDefaultAsync(x => x.UUID == createCPUCoolerSocketSupport.CPUSocketUUID);
+                bool cpuSocketExists = await _context.CPUSocket.AnyAsync(x => x.UUID == createCPUCoolerSocketSupport.CPUSocketUUID);
 
-                if (cpuSocket == null) return NotFound();
+                if (cpuSocketExists == false) return NotFound();
             }
 
             CPUClosedLoopCooler CPUClosedLoopCooler = new(createCPUClosedLoopCooler);
@@ -53,20 +55,42 @@ namespace ComputerConfigurator.Api.CPUClosedLoopCooler
         }
 
         [HttpGet]
+        public async Task<ActionResult<ICollection<DTO.Details>>> GetAll()
+        {
+            List<DTO.Details> CPUClosedLoopCoolers = new();
+
+            IAsyncEnumerable<CPUClosedLoopCooler> query = _context.CPUClosedLoopCooler
+                .Include(x => x.Part)
+                .ThenInclude(x => x.Manufacturer)
+                .Include(x => x.RadiatorSize)
+                .Include(x => x.CPUCoolerFans)
+                .Include(x => x.CPUSockets)
+                .AsAsyncEnumerable();
+
+            await foreach (CPUClosedLoopCooler cpuClosedLoopCooler in query)
+            {
+                CPUClosedLoopCoolers.Add(new DTO.Details(cpuClosedLoopCooler));
+            }
+
+            return Ok(CPUClosedLoopCoolers);
+        }
+
+        [HttpGet]
         public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
         {
-            DTO.Details? CPUClosedLoopCooler = await _context.CPUClosedLoopCooler
-                .Include(x => x.CPUSockets)
-                .Include(x => x.CPUCoolerFans)
+            CPUClosedLoopCooler? CPUClosedLoopCooler = await _context.CPUClosedLoopCooler
+                .Include(x => x.Part)
+                .ThenInclude(x => x.Manufacturer)
                 .Include(x => x.RadiatorSize)
-                .Include(CPUClosedLoopCooler => CPUClosedLoopCooler.Part)
-                .ThenInclude(part => part.Manufacturer)
-                .Select(CPUClosedLoopCooler => new DTO.Details(CPUClosedLoopCooler))
+                .Include(x => x.CPUCoolerFans)
+                .Include(x => x.CPUSockets)
                 .FirstOrDefaultAsync(CPUClosedLoopCooler => CPUClosedLoopCooler.UUID == uuid);
 
             if (CPUClosedLoopCooler == null) return NotFound();
 
-            return Ok(CPUClosedLoopCooler);
+            DTO.Details CPUClosedLoopCoolerDetails = new(CPUClosedLoopCooler);
+
+            return Ok(CPUClosedLoopCoolerDetails);
         }
 
         [HttpPut]
@@ -80,6 +104,27 @@ namespace ComputerConfigurator.Api.CPUClosedLoopCooler
 
             if (CPUClosedLoopCooler == null) return NotFound();
 
+            if (CPUClosedLoopCooler.ManufacturerUUID != CPUClosedLoopCoolerEdits.ManufacturerUUID)
+            {
+                bool newManufacturerExists = await _context.Manufacturer.AnyAsync(x => x.UUID == CPUClosedLoopCoolerEdits.ManufacturerUUID);
+
+                if (newManufacturerExists == false) return NotFound();
+
+                if (CPUClosedLoopCooler.Model.ToLower() != CPUClosedLoopCoolerEdits.Model.ToLower())
+                {
+                    bool duplicate = await Part.Part.Duplicate(_context, CPUClosedLoopCoolerEdits);
+
+                    if (duplicate) return Conflict();
+                }
+            }
+
+            if (CPUClosedLoopCooler.RadiatorSizeUUID != CPUClosedLoopCoolerEdits.RadiatorSizeUUID)
+            {
+                bool radiatorSizeExists = await _context.RadiatorSize.AnyAsync(x => x.UUID == CPUClosedLoopCoolerEdits.RadiatorSizeUUID);
+
+                if (radiatorSizeExists == false) return NotFound();
+            }
+
             CPUClosedLoopCooler.Edit(CPUClosedLoopCooler, CPUClosedLoopCoolerEdits);
 
             await _context.SaveChangesAsync();
@@ -90,11 +135,11 @@ namespace ComputerConfigurator.Api.CPUClosedLoopCooler
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid uuid)
         {
-            CPUClosedLoopCooler? placeholder = await _context.CPUClosedLoopCooler.FirstOrDefaultAsync(x => x.UUID == uuid);
+            CPUClosedLoopCooler? CPUClosedLoopCooler = await _context.CPUClosedLoopCooler.FirstOrDefaultAsync(x => x.UUID == uuid);
 
-            if (placeholder == null) return NotFound();
+            if (CPUClosedLoopCooler == null) return NotFound();
 
-            _context.CPUClosedLoopCooler.Remove(placeholder);
+            _context.CPUClosedLoopCooler.Remove(CPUClosedLoopCooler);
 
             await _context.SaveChangesAsync();
 

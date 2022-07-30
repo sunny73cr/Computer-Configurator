@@ -14,19 +14,6 @@ namespace ComputerConfigurator.Api.ChassisFanSupport
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid chassisUUID)
-        {
-            List<DTO.Details> ChassisFanSupports = await _context.ChassisFanSupport
-                .Include(x => x.FanDiameter)
-                .Include(x => x.ChassisZone)
-                .Where(x => x.ChassisUUID == chassisUUID)
-                .Select(ChassisFanSupport => new DTO.Details(ChassisFanSupport))
-                .ToListAsync();
-
-            return Ok(ChassisFanSupports);
-        }
-
         [HttpPost]
         public async Task<ActionResult> Create(Guid chassisUUID, DTO.Create createChassisFanSupport)
         {
@@ -34,25 +21,25 @@ namespace ComputerConfigurator.Api.ChassisFanSupport
 
             if (errors.Any()) return BadRequest(errors);
 
-            ChassisFanSupport? existing = await _context.ChassisFanSupport.FirstOrDefaultAsync(x =>
+            bool existing = await _context.ChassisFanSupport.AnyAsync(x =>
                 x.ChassisUUID == chassisUUID
                 && x.FanDiameterUUID == createChassisFanSupport.FanDiameterUUID
                 && x.ChassisZoneUUID == createChassisFanSupport.ChassisZoneUUID
             );
 
-            if (existing != null) return Conflict();
+            if (existing) return Conflict();
 
-            Chassis.Chassis? chassis = await _context.Chassis.FirstOrDefaultAsync(x => x.UUID == chassisUUID);
+            bool chassisExists = await _context.Chassis.AnyAsync(x => x.UUID == chassisUUID);
 
-            if (chassis == null) return NotFound();
+            if (chassisExists == false) return NotFound();
 
-            ChassisZone.ChassisZone? chassisZone = await _context.ChassisZone.FirstOrDefaultAsync(x => x.UUID == createChassisFanSupport.ChassisZoneUUID);
+            bool chassisZoneExists = await _context.ChassisZone.AnyAsync(x => x.UUID == createChassisFanSupport.ChassisZoneUUID);
 
-            if (chassisZone == null) return NotFound();
+            if (chassisZoneExists == false) return NotFound();
 
-            FanDiameter.FanDiameter? fanDiameter = await _context.FanDiameter.FirstOrDefaultAsync(x => x.UUID == createChassisFanSupport.FanDiameterUUID);
-
-            if (fanDiameter == null) return NotFound();
+            bool fanDiameterExists = await _context.FanDiameter.AnyAsync(x => x.UUID == createChassisFanSupport.FanDiameterUUID);
+            
+            if (fanDiameterExists == false) return NotFound();
 
             ChassisFanSupport ChassisFanSupport = new(chassisUUID, createChassisFanSupport);
 
@@ -63,18 +50,59 @@ namespace ComputerConfigurator.Api.ChassisFanSupport
             return NoContent();
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid chassisUUID)
+        {
+            List<DTO.Details> ChassisFanSupport = new();
+
+            IAsyncEnumerable<ChassisFanSupport> query = _context.ChassisFanSupport
+                .Include(x => x.FanDiameter)
+                .Include(x => x.ChassisZone)
+                .Where(x => x.ChassisUUID == chassisUUID)
+                .AsAsyncEnumerable();
+
+            await foreach (ChassisFanSupport chassisFanSupport in query)
+            {
+                ChassisFanSupport.Add(new DTO.Details(chassisFanSupport));
+            }
+
+            return Ok(ChassisFanSupport);
+        }
+
+        [HttpPatch]
+        public async Task<ActionResult> Edit(Guid chassisUUID, DTO.Edit editChassisFanSupport)
+        {
+            var errors = editChassisFanSupport.Validate();
+
+            if (errors.Any()) return BadRequest(errors);
+            
+            ChassisFanSupport? chassisFanSupport = await _context.ChassisFanSupport.FirstOrDefaultAsync(x =>
+                x.ChassisUUID == chassisUUID
+                && x.FanDiameterUUID == editChassisFanSupport.FanDiameterUUID
+                && x.ChassisZoneUUID == editChassisFanSupport.ChassisZoneUUID
+            );
+
+            if (chassisFanSupport == null) return NotFound();
+
+            ChassisFanSupport.Edit(chassisFanSupport, editChassisFanSupport);
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid chassisUUID, Guid fanDiameterUUID, Guid chassisZoneUUID)
         {
-            ChassisFanSupport? existing = await _context.ChassisFanSupport.FirstOrDefaultAsync(x =>
+            ChassisFanSupport? chassisFanSupport = await _context.ChassisFanSupport.FirstOrDefaultAsync(x =>
                 x.ChassisUUID == chassisUUID
                 && x.FanDiameterUUID == fanDiameterUUID
                 && x.ChassisZoneUUID == chassisZoneUUID
             );
 
-            if (existing == null) return NotFound();
+            if (chassisFanSupport == null) return NotFound();
 
-            _context.ChassisFanSupport.Remove(existing);
+            _context.ChassisFanSupport.Remove(chassisFanSupport);
 
             await _context.SaveChangesAsync();
 

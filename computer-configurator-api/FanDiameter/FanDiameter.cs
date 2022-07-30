@@ -15,9 +15,4 @@ public partial class FanDiameter
         UUID = FanDiameter.UUID;
         Diameter = FanDiameter.Diameter;
     }
-
-    public static void Edit(FanDiameter FanDiameter, DTO.Edit edits)
-    {
-        if (FanDiameter.Diameter != edits.Diameter) FanDiameter.Diameter = edits.Diameter;
-    }
 }

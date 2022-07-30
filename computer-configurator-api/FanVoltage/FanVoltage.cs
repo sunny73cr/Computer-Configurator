@@ -15,9 +15,4 @@ public partial class FanVoltage
         UUID = FanVoltage.UUID;
         Voltage = FanVoltage.Voltage;
     }
-
-    public static void Edit(FanVoltage FanVoltage, DTO.Edit edits)
-    {
-        if (FanVoltage.Voltage != edits.Voltage) FanVoltage.Voltage = edits.Voltage;
-    }
 }

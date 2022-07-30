@@ -16,12 +16,10 @@
         public CPUCooler(DTO.Create cpucooler) : base(cpucooler)
         {
             TDPRating = cpucooler.TDPRating;
-            CPUCoolerFans.AddRange(cpucooler.CPUCoolerFans.Select(
-                cpuCoolerFan => new CPUCoolerFan.CPUCoolerFan(cpucooler.UUID, cpuCoolerFan)
-            ));
-            CPUSockets.AddRange(cpucooler.CPUCoolerCPUSocketSupport.Select(
-                cpuCoolerCPUSocket => new CPUCoolerCPUSocketSupport.CPUCoolerCPUSocketSupport(cpucooler.UUID, cpuCoolerCPUSocket)
-            ));
+
+            CPUCoolerFans = cpucooler.CPUCoolerFans.Select(x => new CPUCoolerFan.CPUCoolerFan(cpucooler.UUID, x)).ToList();
+            
+            CPUSockets = cpucooler.CPUCoolerCPUSocketSupport.Select(x => new CPUCoolerCPUSocketSupport.CPUCoolerCPUSocketSupport(cpucooler.UUID, x)).ToList();
         }
 
         public static void Edit(CPUCooler cpuCooler, DTO.Edit edits)

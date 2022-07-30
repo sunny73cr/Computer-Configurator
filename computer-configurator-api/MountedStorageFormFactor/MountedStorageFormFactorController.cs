@@ -21,9 +21,9 @@ namespace ComputerConfigurator.Api.MountedStorageFormFactor
 
             if (errors.Any()) return BadRequest(errors);
 
-            MountedStorageFormFactor? existing = await _context.MountedStorageFormFactor.FirstOrDefaultAsync(x => x.UUID == createMountedStorageFormFactor.UUID);
+            bool duplicate = await _context.MountedStorageFormFactor.AnyAsync(x => x.Size == createMountedStorageFormFactor.Size);
 
-            if (existing != null) return Conflict();
+            if (duplicate) return Conflict();
 
             MountedStorageFormFactor MountedStorageFormFactor = new(createMountedStorageFormFactor);
 
@@ -37,41 +37,17 @@ namespace ComputerConfigurator.Api.MountedStorageFormFactor
         [HttpGet]
         public async Task<ActionResult<List<DTO.Details>>> GetAll()
         {
-            List<DTO.Details> MountedStorageFormFactors = await _context.MountedStorageFormFactor
-                .Select(mountedStorageFormFactor => new DTO.Details(mountedStorageFormFactor))
-                .ToListAsync();
+            List<DTO.Details> MountedStorageFormFactors = new();
+
+            IAsyncEnumerable<MountedStorageFormFactor> query = _context.MountedStorageFormFactor
+                .AsAsyncEnumerable();
+
+            await foreach (MountedStorageFormFactor mountedStorageFormFactor in query)
+            {
+                MountedStorageFormFactors.Add(new DTO.Details(mountedStorageFormFactor));
+            }
 
             return Ok(MountedStorageFormFactors);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            MountedStorageFormFactor? MountedStorageFormFactor = await _context.MountedStorageFormFactor.FirstOrDefaultAsync(MountedStorageFormFactor => MountedStorageFormFactor.UUID == uuid);
-
-            if (MountedStorageFormFactor == null) return NotFound();
-
-            var details = new DTO.Details(MountedStorageFormFactor);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit MountedStorageFormFactorEdits)
-        {
-            IReadOnlyList<string> errors = MountedStorageFormFactorEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            MountedStorageFormFactor? MountedStorageFormFactor = await _context.MountedStorageFormFactor.FirstOrDefaultAsync(x => x.UUID == MountedStorageFormFactorEdits.UUID);
-
-            if (MountedStorageFormFactor == null) return NotFound();
-
-            MountedStorageFormFactor.Edit(MountedStorageFormFactor, MountedStorageFormFactorEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpDelete]

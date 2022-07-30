@@ -8,5 +8,9 @@
         public Validation(DTO.Create ChassisPowerSupplyFormFactorSupport)
         {
         }
+
+        public Validation(DTO.Edit ChassisPowerSupplyFormFactorSupport)
+        {
+        }
     }
 }

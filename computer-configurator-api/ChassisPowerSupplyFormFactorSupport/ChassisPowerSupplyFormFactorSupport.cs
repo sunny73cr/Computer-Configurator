@@ -20,5 +20,10 @@
             PowerSupplyFormFactorUUID = ChassisAudioPort.PowerSupplyFormFactorUUID;
             BracketRequired = ChassisAudioPort.BracketRequired;
         }
+
+        public static void Edit(ChassisPowerSupplyFormFactorSupport chassisPowerSupplyFormFactorSupport, DTO.Edit edits)
+        {
+            if (chassisPowerSupplyFormFactorSupport.BracketRequired != edits.BracketRequired) chassisPowerSupplyFormFactorSupport.BracketRequired = edits.BracketRequired;
+        }
     }
 }

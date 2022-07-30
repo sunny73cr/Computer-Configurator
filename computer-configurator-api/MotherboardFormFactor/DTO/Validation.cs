@@ -10,10 +10,5 @@
         {
             DomainValidation.String.LengthRange(_errors, "Form factor", MotherboardFormFactor.FormFactor, 1, 30);
         }
-
-        public Validation(Edit MotherboardFormFactor)
-        {
-            DomainValidation.String.LengthRange(_errors, "Form factor", MotherboardFormFactor.FormFactor, 1, 30);
-        }
     }
 }

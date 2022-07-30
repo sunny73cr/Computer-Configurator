@@ -14,19 +14,6 @@ namespace ComputerConfigurator.Api.ChassisAudioPort
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid chassisUUID)
-        {
-            List<DTO.Details> ChassisAudioPorts = await _context.ChassisAudioPort
-                .Include(x => x.AudioPort)
-                .Include(x => x.ChassisZone)
-                .Where(x => x.ChassisUUID == chassisUUID)
-                .Select(chassisAudioPort => new DTO.Details(chassisAudioPort))
-                .ToListAsync();
-
-            return Ok(ChassisAudioPorts);
-        }
-
         [HttpPost]
         public async Task<ActionResult> Create(Guid chassisUUID, DTO.Create createChassisAudioPort)
         {
@@ -34,25 +21,25 @@ namespace ComputerConfigurator.Api.ChassisAudioPort
 
             if (errors.Any()) return BadRequest(errors);
 
-            ChassisAudioPort? existing = await _context.ChassisAudioPort.FirstOrDefaultAsync(x =>
+            bool existing = await _context.ChassisAudioPort.AnyAsync(x =>
                 x.ChassisUUID == chassisUUID
                 && x.AudioPortUUID == createChassisAudioPort.AudioPortUUID
                 && x.ChassisZoneUUID == createChassisAudioPort.ChassisZoneUUID
             );
 
-            if (existing != null) return Conflict();
+            if (existing) return Conflict();
 
-            Chassis.Chassis? chassis = await _context.Chassis.FirstOrDefaultAsync(x => x.UUID == chassisUUID);
+            bool chassisExists = await _context.Chassis.AnyAsync(x => x.UUID == chassisUUID);
 
-            if (chassis == null) return NotFound();
+            if (chassisExists == false) return NotFound();
 
-            ChassisZone.ChassisZone? chassisZone = await _context.ChassisZone.FirstOrDefaultAsync(x => x.UUID == createChassisAudioPort.ChassisZoneUUID);
+            bool chassisZoneExists = await _context.ChassisZone.AnyAsync(x => x.UUID == createChassisAudioPort.ChassisZoneUUID);
 
-            if (chassisZone == null) return NotFound();
+            if (chassisZoneExists == false) return NotFound();
 
-            AudioPort.AudioPort? audioPort = await _context.AudioPort.FirstOrDefaultAsync(x => x.UUID == createChassisAudioPort.AudioPortUUID);
+            bool audioPortExists = await _context.AudioPort.AnyAsync(x => x.UUID == createChassisAudioPort.AudioPortUUID);
 
-            if (audioPort == null) return NotFound();
+            if (audioPortExists == false) return NotFound();
 
             ChassisAudioPort chassisAudioPort = new(chassisUUID, createChassisAudioPort);
 
@@ -61,6 +48,25 @@ namespace ComputerConfigurator.Api.ChassisAudioPort
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid chassisUUID)
+        {
+            List<DTO.Details> ChassisAudioPorts = new();
+
+            IAsyncEnumerable<ChassisAudioPort> query = _context.ChassisAudioPort
+                .Include(x => x.AudioPort)
+                .Include(x => x.ChassisZone)
+                .Where(x => x.ChassisUUID == chassisUUID)
+                .AsAsyncEnumerable();
+
+            await foreach (ChassisAudioPort chassisAudioPort in query)
+            {
+                ChassisAudioPorts.Add(new DTO.Details(chassisAudioPort));
+            }
+
+            return Ok(ChassisAudioPorts);
         }
 
         [HttpDelete]

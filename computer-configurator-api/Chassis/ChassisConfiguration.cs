@@ -9,11 +9,6 @@ namespace ComputerConfigurator.Api.Chassis
         {
             builder.ToTable("chassis");
 
-            builder.Property(x => x.UUID)
-                .HasColumnName("uuid")
-                .HasColumnType("uuid")
-                .ValueGeneratedNever();
-
             builder.Property(x => x.LengthMM)
                 .HasColumnName("lengthmm")
                 .HasColumnType("integer");

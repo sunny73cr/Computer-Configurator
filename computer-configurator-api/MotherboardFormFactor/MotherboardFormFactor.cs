@@ -15,9 +15,4 @@ public partial class MotherboardFormFactor
         UUID = MotherboardFormFactor.UUID;
         FormFactor = MotherboardFormFactor.FormFactor;
     }
-
-    public static void Edit(MotherboardFormFactor MotherboardFormFactor, DTO.Edit edits)
-    {
-        if (MotherboardFormFactor.FormFactor != edits.FormFactor) MotherboardFormFactor.FormFactor = edits.FormFactor;
-    }
 }

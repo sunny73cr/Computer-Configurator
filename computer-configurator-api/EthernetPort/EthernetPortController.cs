@@ -21,9 +21,9 @@ namespace ComputerConfigurator.Api.EthernetPort
 
             if (errors.Any()) return BadRequest(errors);
 
-            EthernetPort? existing = await _context.EthernetPort.FirstOrDefaultAsync(x => x.UUID == createEthernetPort.UUID);
+            bool existing = await _context.EthernetPort.AnyAsync(x => x.Chipset == createEthernetPort.Chipset);
 
-            if (existing != null) return Conflict();
+            if (existing) return Conflict();
 
             EthernetPort EthernetPort = new(createEthernetPort);
 
@@ -37,41 +37,17 @@ namespace ComputerConfigurator.Api.EthernetPort
         [HttpGet]
         public async Task<ActionResult<List<DTO.Details>>> GetAll()
         {
-            List<DTO.Details> EthernetPorts = await _context.EthernetPort
-                .Select(ethernetPort => new DTO.Details(ethernetPort))
-                .ToListAsync();
+            List<DTO.Details> EthernetPorts = new();
+
+            IAsyncEnumerable<EthernetPort> query = _context.EthernetPort
+                .AsAsyncEnumerable();
+
+            await foreach (EthernetPort ethernetPort in query)
+            {
+                EthernetPorts.Add(new DTO.Details(ethernetPort));
+            }
 
             return Ok(EthernetPorts);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            EthernetPort? EthernetPort = await _context.EthernetPort.FirstOrDefaultAsync(EthernetPort => EthernetPort.UUID == uuid);
-
-            if (EthernetPort == null) return NotFound();
-
-            var details = new DTO.Details(EthernetPort);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit EthernetPortEdits)
-        {
-            IReadOnlyList<string> errors = EthernetPortEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            EthernetPort? EthernetPort = await _context.EthernetPort.FirstOrDefaultAsync(x => x.UUID == EthernetPortEdits.UUID);
-
-            if (EthernetPort == null) return NotFound();
-
-            EthernetPort.Edit(EthernetPort, EthernetPortEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpDelete]

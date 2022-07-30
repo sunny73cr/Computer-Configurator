@@ -10,10 +10,5 @@
         {
             DomainValidation.String.LengthRange(_errors, "Size", MountedStorageFormFactor.Size, 1, 15);
         }
-
-        public Validation(Edit MountedStorageFormFactor)
-        {
-            DomainValidation.String.LengthRange(_errors, "Size", MountedStorageFormFactor.Size, 1, 15);
-        }
     }
 }

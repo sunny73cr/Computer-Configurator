@@ -7,7 +7,7 @@ namespace ComputerConfigurator.Api.CPUHeatsink
     {
         public void Configure(EntityTypeBuilder<CPUHeatsink> builder)
         {
-            builder.ToTable("cpucooler");
+            builder.ToTable("cpuheatsink");
 
             builder.Property(x => x.HeightMM)
                 .HasColumnName("heightmm")

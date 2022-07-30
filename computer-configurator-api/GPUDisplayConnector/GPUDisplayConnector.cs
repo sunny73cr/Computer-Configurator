@@ -20,10 +20,5 @@
             DisplayConnectorUUID = gpuDisplayConnector.DisplayConnectorUUID;
             Count = gpuDisplayConnector.Count;
         }
-
-        public static void Edit(GPUDisplayConnector gpuDisplayConnector, DTO.Edit edits)
-        {
-            if (gpuDisplayConnector.Count != edits.Count) gpuDisplayConnector.Count = edits.Count;
-        }
     }
 }

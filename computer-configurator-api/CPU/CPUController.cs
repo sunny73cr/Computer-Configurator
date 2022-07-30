@@ -21,9 +21,15 @@ namespace ComputerConfigurator.Api.CPU
 
             if (errors.Any()) return BadRequest(errors);
 
-            CPU? existing = await _context.CPU.FirstOrDefaultAsync(x => x.UUID == createCPU.UUID);
+            bool manufacturerExists = await _context.Manufacturer.AnyAsync(x => x.UUID == createCPU.ManufacturerUUID);
 
-            if (existing != null) return Conflict();
+            if (manufacturerExists == false) return NotFound();
+
+            if (await Part.Part.Duplicate(_context, createCPU)) return Conflict();
+
+            bool cpuSocketExists = await _context.CPUSocket.AnyAsync(x => x.UUID == createCPU.CPUSocketUUID);
+
+            if (cpuSocketExists == false) return NotFound();
 
             CPU cpu = new(createCPU);
 
@@ -32,6 +38,25 @@ namespace ComputerConfigurator.Api.CPU
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<ICollection<DTO.Details>>> GetAll()
+        {
+            List<DTO.Details> CPUs = new();
+
+            IAsyncEnumerable<CPU> query = _context.CPU
+                .Include(x => x.Part)
+                .ThenInclude(x => x.Manufacturer)
+                .Include(x => x.CPUSocket)
+                .AsAsyncEnumerable();
+
+            await foreach (CPU cpu in query)
+            {
+                CPUs.Add(new DTO.Details(cpu));
+            }
+
+            return Ok(CPUs);
         }
 
         [HttpGet]
@@ -61,6 +86,27 @@ namespace ComputerConfigurator.Api.CPU
 
             if (cpu == null) return NotFound();
 
+            if (cpu.ManufacturerUUID != cpuEdits.ManufacturerUUID)
+            {
+                bool newManufacturerExists = await _context.Manufacturer.AnyAsync(x => x.UUID == cpuEdits.ManufacturerUUID);
+
+                if (newManufacturerExists == false) return NotFound();
+
+                if (cpu.Model.ToLower() != cpuEdits.Model.ToLower())
+                {
+                    bool duplicate = await Part.Part.Duplicate(_context, cpuEdits);
+
+                    if (duplicate) return Conflict();
+                }
+            }
+
+            if (cpu.CPUSocketUUID != cpuEdits.CPUSocketUUID)
+            {
+                bool exists = await _context.CPUSocket.AnyAsync(x => x.UUID == cpuEdits.CPUSocketUUID);
+
+                if (exists == false) return NotFound();
+            }
+
             CPU.Edit(cpu, cpuEdits);
 
             await _context.SaveChangesAsync();
@@ -71,11 +117,11 @@ namespace ComputerConfigurator.Api.CPU
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid uuid)
         {
-            CPU? placeholder = await _context.CPU.FirstOrDefaultAsync(x => x.UUID == uuid);
+            CPU? cpu = await _context.CPU.FirstOrDefaultAsync(x => x.UUID == uuid);
 
-            if (placeholder == null) return NotFound();
+            if (cpu == null) return NotFound();
 
-            _context.CPU.Remove(placeholder);
+            _context.CPU.Remove(cpu);
 
             await _context.SaveChangesAsync();
 

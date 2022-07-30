@@ -21,22 +21,24 @@ namespace ComputerConfigurator.Api.CPUHeatsink
 
             if (errors.Any()) return BadRequest(errors);
 
-            CPUHeatsink? existing = await _context.CPUHeatsink.FirstOrDefaultAsync(x => x.UUID == createCPUHeatsink.UUID);
+            bool manufacturerExists = await _context.Manufacturer.AnyAsync(x => x.UUID == createCPUHeatsink.ManufacturerUUID);
 
-            if (existing != null) return Conflict();
+            if (manufacturerExists == false) return NotFound();
+
+            if (await Part.Part.Duplicate(_context, createCPUHeatsink)) return Conflict();
 
             foreach (CPUCoolerFan.DTO.Create createCPUCoolerFan in createCPUHeatsink.CPUCoolerFans)
             {
-                Fan.Fan? fan = await _context.Fan.FirstOrDefaultAsync(x => x.UUID == createCPUCoolerFan.FanUUID);
+                bool fanExists = await _context.Fan.AnyAsync(x => x.UUID == createCPUCoolerFan.FanUUID);
 
-                if (fan == null) return NotFound();
+                if (fanExists == false) return NotFound();
             }
 
             foreach (CPUCoolerCPUSocketSupport.DTO.Create createCPUCoolerSocketSupport in createCPUHeatsink.CPUCoolerCPUSocketSupport)
             {
-                CPUSocket.CPUSocket? cpuSocket = await _context.CPUSocket.FirstOrDefaultAsync(x => x.UUID == createCPUCoolerSocketSupport.CPUSocketUUID);
+                bool cpuSocketExists = await _context.CPUSocket.AnyAsync(x => x.UUID == createCPUCoolerSocketSupport.CPUSocketUUID);
 
-                if (cpuSocket == null) return NotFound();
+                if (cpuSocketExists == false) return NotFound();
             }
 
             CPUHeatsink CPUHeatsink = new(createCPUHeatsink);
@@ -49,19 +51,40 @@ namespace ComputerConfigurator.Api.CPUHeatsink
         }
 
         [HttpGet]
+        public async Task<ActionResult<ICollection<DTO.Details>>> GetAll()
+        {
+            List<DTO.Details> CPUHeatsinks = new();
+
+            IAsyncEnumerable<CPUHeatsink> query = _context.CPUHeatsink
+                .Include(x => x.Part)
+                .ThenInclude(x => x.Manufacturer)
+                .Include(x => x.CPUCoolerFans)
+                .Include(x => x.CPUSockets)
+                .AsAsyncEnumerable();
+
+            await foreach (CPUHeatsink cpuHeatsink in query)
+            {
+                CPUHeatsinks.Add(new DTO.Details(cpuHeatsink));
+            }
+
+            return Ok(CPUHeatsinks);
+        }
+
+        [HttpGet]
         public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
         {
-            DTO.Details? CPUHeatsink = await _context.CPUHeatsink
-                .Include(x => x.CPUSockets)
+            CPUHeatsink? CPUHeatsink = await _context.CPUHeatsink
+                .Include(x => x.Part)
+                .ThenInclude(x => x.Manufacturer)
                 .Include(x => x.CPUCoolerFans)
-                .Include(CPUHeatsink => CPUHeatsink.Part)
-                .ThenInclude(part => part.Manufacturer)
-                .Select(CPUHeatsink => new DTO.Details(CPUHeatsink))
+                .Include(x => x.CPUSockets)
                 .FirstOrDefaultAsync(CPUHeatsink => CPUHeatsink.UUID == uuid);
 
             if (CPUHeatsink == null) return NotFound();
 
-            return Ok(CPUHeatsink);
+            DTO.Details CPUHeatsinkDetails = new(CPUHeatsink);
+
+            return Ok(CPUHeatsinkDetails);
         }
 
         [HttpPut]
@@ -75,6 +98,20 @@ namespace ComputerConfigurator.Api.CPUHeatsink
 
             if (CPUHeatsink == null) return NotFound();
 
+            if (CPUHeatsink.ManufacturerUUID != CPUHeatsinkEdits.ManufacturerUUID)
+            {
+                bool newManufacturerExists = await _context.Manufacturer.AnyAsync(x => x.UUID == CPUHeatsinkEdits.ManufacturerUUID);
+
+                if (newManufacturerExists == false) return NotFound();
+
+                if (CPUHeatsink.Model.ToLower() != CPUHeatsinkEdits.Model.ToLower())
+                {
+                    bool duplicate = await Part.Part.Duplicate(_context, CPUHeatsinkEdits);
+
+                    if (duplicate) return Conflict();
+                }
+            }
+
             CPUHeatsink.Edit(CPUHeatsink, CPUHeatsinkEdits);
 
             await _context.SaveChangesAsync();
@@ -85,11 +122,11 @@ namespace ComputerConfigurator.Api.CPUHeatsink
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid uuid)
         {
-            CPUHeatsink? placeholder = await _context.CPUHeatsink.FirstOrDefaultAsync(x => x.UUID == uuid);
+            CPUHeatsink? CPUHeatsink = await _context.CPUHeatsink.FirstOrDefaultAsync(x => x.UUID == uuid);
 
-            if (placeholder == null) return NotFound();
+            if (CPUHeatsink == null) return NotFound();
 
-            _context.CPUHeatsink.Remove(placeholder);
+            _context.CPUHeatsink.Remove(CPUHeatsink);
 
             await _context.SaveChangesAsync();
 

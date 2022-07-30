@@ -23,5 +23,11 @@
             FanDiameterUUID = ChassisFanSupport.FanDiameterUUID;
             ChassisZoneUUID = ChassisFanSupport.ChassisZoneUUID;
         }
+
+        public static void Edit(ChassisFanSupport chassisFanSupport, DTO.Edit edits)
+        {
+            if (chassisFanSupport.MaximumWidthMM != edits.MaximumWidthMM) chassisFanSupport.MaximumWidthMM = edits.MaximumWidthMM;
+            if (chassisFanSupport.Count != edits.Count) chassisFanSupport.Count = edits.Count;
+        }
     }
 }

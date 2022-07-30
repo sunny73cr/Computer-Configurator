@@ -7,12 +7,12 @@
 
         public Validation(DTO.Create cpucoolerfan)
         {
-
+            DomainValidation.Numeric.ValueRange(_errors, "Count", cpucoolerfan.Count, 1, 8);
         }
 
         public Validation(DTO.Edit cpucoolerfan)
         {
-
+            DomainValidation.Numeric.ValueRange(_errors, "Count", cpucoolerfan.Count, 1, 8);
         }
     }
 }

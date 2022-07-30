@@ -2,6 +2,7 @@
 {
     public partial class ChassisFilterSupport
     {
+
         public Guid ChassisUUID { get; set; }
         public Guid ChassisZoneUUID { get; set; }
         public bool Removeable { get; set; }
@@ -19,6 +20,11 @@
             ChassisUUID = chassisUUID;
             ChassisZoneUUID = ChassisAudioPort.ChassisZoneUUID;
             Removeable = ChassisAudioPort.Removeable;
+        }
+
+        public static void Edit(ChassisFilterSupport chassisFilterSupport, DTO.Edit edits)
+        {
+            if (chassisFilterSupport.Removeable != edits.Removeable) chassisFilterSupport.Removeable = edits.Removeable;
         }
     }
 }

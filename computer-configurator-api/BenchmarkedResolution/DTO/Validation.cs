@@ -11,11 +11,5 @@
             DomainValidation.Numeric.ValueRange(_errors, "Pixel width", benchmarkedResolution.PixelWidth, 1, 15360);
             DomainValidation.Numeric.ValueRange(_errors, "Pixel height", benchmarkedResolution.PixelHeight, 1, 8640);
         }
-
-        public Validation(Edit benchmarkedResolution)
-        {
-            DomainValidation.Numeric.ValueRange(_errors, "Pixel width", benchmarkedResolution.PixelWidth, 1, 15360);
-            DomainValidation.Numeric.ValueRange(_errors, "Pixel height", benchmarkedResolution.PixelHeight, 1, 8640);
-        }
     }
 }

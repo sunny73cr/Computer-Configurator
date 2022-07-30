@@ -14,21 +14,6 @@ namespace ComputerConfigurator.Api.CPUCoolerFan
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid cpuCoolerUUID)
-        {
-            List<DTO.Details> CPUCoolerFans = await _context.CPUCoolerFan
-                .Include(x => x.Fan)
-                .ThenInclude(x => x.FanDiameter)
-                .Include(x => x.Fan)
-                .ThenInclude(x => x.FanVoltage)
-                .Where(x => x.CPUCoolerUUID == cpuCoolerUUID)
-                .Select(CPUCoolerFan => new DTO.Details(CPUCoolerFan))
-                .ToListAsync();
-
-            return Ok(CPUCoolerFans);
-        }
-
         [HttpPost]
         public async Task<ActionResult> Create(Guid cpuCoolerUUID, DTO.Create createCPUCoolerFan)
         {
@@ -43,13 +28,13 @@ namespace ComputerConfigurator.Api.CPUCoolerFan
 
             if (existing != null) return Conflict();
 
-            CPUCooler.CPUCooler? cpuCooler = await _context.CPUCooler.FirstOrDefaultAsync(x => x.UUID == cpuCoolerUUID);
+            bool cpuCoolerExists = await _context.CPUCooler.AnyAsync(x => x.UUID == cpuCoolerUUID);
 
-            if (cpuCooler == null) return NotFound();
+            if (cpuCoolerExists == false) return NotFound();
 
-            Fan.Fan? fan = await _context.Fan.FirstOrDefaultAsync(x => x.UUID == createCPUCoolerFan.FanUUID);
+            bool fanExists = await _context.Fan.AnyAsync(x => x.UUID == createCPUCoolerFan.FanUUID);
 
-            if (fan == null) return NotFound();
+            if (fanExists == false) return NotFound();
 
             CPUCoolerFan CPUCoolerFan = new(cpuCoolerUUID, createCPUCoolerFan);
 
@@ -58,6 +43,27 @@ namespace ComputerConfigurator.Api.CPUCoolerFan
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid cpuCoolerUUID)
+        {
+            List<DTO.Details> CPUCoolerFans = new();
+
+            IAsyncEnumerable<CPUCoolerFan> query = _context.CPUCoolerFan
+                .Include(x => x.Fan)
+                .ThenInclude(x => x.FanDiameter)
+                .Include(x => x.Fan)
+                .ThenInclude(x => x.FanVoltage)
+                .Where(x => x.CPUCoolerUUID == cpuCoolerUUID)
+                .AsAsyncEnumerable();
+
+            await foreach (CPUCoolerFan cpuCoolerFan in query)
+            {
+                CPUCoolerFans.Add(new DTO.Details(cpuCoolerFan));
+            }
+
+            return Ok(CPUCoolerFans);
         }
 
         [HttpPatch]
@@ -84,14 +90,14 @@ namespace ComputerConfigurator.Api.CPUCoolerFan
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid cpuCoolerUUID, Guid fanUUID)
         {
-            CPUCoolerFan? existing = await _context.CPUCoolerFan.FirstOrDefaultAsync(x =>
+            CPUCoolerFan? cpuCoolerFan = await _context.CPUCoolerFan.FirstOrDefaultAsync(x =>
                 x.CPUCoolerUUID == cpuCoolerUUID
                 && x.FanUUID == fanUUID
             );
 
-            if (existing == null) return NotFound();
+            if (cpuCoolerFan == null) return NotFound();
 
-            _context.CPUCoolerFan.Remove(existing);
+            _context.CPUCoolerFan.Remove(cpuCoolerFan);
 
             await _context.SaveChangesAsync();
 

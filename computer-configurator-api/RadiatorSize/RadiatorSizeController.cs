@@ -21,9 +21,9 @@ namespace ComputerConfigurator.Api.RadiatorSize
 
             if (errors.Any()) return BadRequest(errors);
 
-            RadiatorSize? existing = await _context.RadiatorSize.FirstOrDefaultAsync(x => x.UUID == createRadiatorSize.UUID);
+            bool duplicate = await _context.RadiatorSize.AnyAsync(x => x.Size == createRadiatorSize.Size);
 
-            if (existing != null) return Conflict();
+            if (duplicate) return Conflict();
 
             RadiatorSize RadiatorSize = new(createRadiatorSize);
 
@@ -37,41 +37,17 @@ namespace ComputerConfigurator.Api.RadiatorSize
         [HttpGet]
         public async Task<ActionResult<List<DTO.Details>>> GetAll()
         {
-            List<DTO.Details> RadiatorSizes = await _context.RadiatorSize
-                .Select(radiatorSize => new DTO.Details(radiatorSize))
-                .ToListAsync();
+            List<DTO.Details> RadiatorSizes = new();
+
+            IAsyncEnumerable<RadiatorSize> query = _context.RadiatorSize
+                .AsAsyncEnumerable();
+
+            await foreach (RadiatorSize radiatorSize in query)
+            {
+                RadiatorSizes.Add(new DTO.Details(radiatorSize));
+            }
 
             return Ok(RadiatorSizes);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            RadiatorSize? RadiatorSize = await _context.RadiatorSize.FirstOrDefaultAsync(RadiatorSize => RadiatorSize.UUID == uuid);
-
-            if (RadiatorSize == null) return NotFound();
-
-            var details = new DTO.Details(RadiatorSize);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit RadiatorSizeEdits)
-        {
-            IReadOnlyList<string> errors = RadiatorSizeEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            RadiatorSize? RadiatorSize = await _context.RadiatorSize.FirstOrDefaultAsync(x => x.UUID == RadiatorSizeEdits.UUID);
-
-            if (RadiatorSize == null) return NotFound();
-
-            RadiatorSize.Edit(RadiatorSize, RadiatorSizeEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpDelete]

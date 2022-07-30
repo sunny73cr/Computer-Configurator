@@ -14,19 +14,6 @@ namespace ComputerConfigurator.Api.ChassisRadiatorSupport
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid chassisUUID)
-        {
-            List<DTO.Details> ChassisRadiatorSupports = await _context.ChassisRadiatorSupport
-                .Include(x => x.RadiatorSize)
-                .Include(x => x.ChassisZone)
-                .Where(x => x.ChassisUUID == chassisUUID)
-                .Select(ChassisRadiatorSupport => new DTO.Details(ChassisRadiatorSupport))
-                .ToListAsync();
-
-            return Ok(ChassisRadiatorSupports);
-        }
-
         [HttpPost]
         public async Task<ActionResult> Create(Guid chassisUUID, DTO.Create createChassisRadiatorSupport)
         {
@@ -34,25 +21,25 @@ namespace ComputerConfigurator.Api.ChassisRadiatorSupport
 
             if (errors.Any()) return BadRequest(errors);
 
-            ChassisRadiatorSupport? existing = await _context.ChassisRadiatorSupport.FirstOrDefaultAsync(x =>
+            bool existing = await _context.ChassisRadiatorSupport.AnyAsync(x =>
                 x.ChassisUUID == chassisUUID
                 && x.RadiatorSizeUUID == createChassisRadiatorSupport.RadiatorSizeUUID
                 && x.ChassisZoneUUID == createChassisRadiatorSupport.ChassisZoneUUID
             );
 
-            if (existing != null) return Conflict();
+            if (existing) return Conflict();
 
-            Chassis.Chassis? chassis = await _context.Chassis.FirstOrDefaultAsync(x => x.UUID == chassisUUID);
+            bool chassisExists = await _context.Chassis.AnyAsync(x => x.UUID == chassisUUID);
 
-            if (chassis == null) return NotFound();
+            if (chassisExists == false) return NotFound();
 
-            RadiatorSize.RadiatorSize? radiatorSize = await _context.RadiatorSize.FirstOrDefaultAsync(x => x.UUID == createChassisRadiatorSupport.RadiatorSizeUUID);
+            bool radiatorSizeExists = await _context.RadiatorSize.AnyAsync(x => x.UUID == createChassisRadiatorSupport.RadiatorSizeUUID);
 
-            if (radiatorSize == null) return NotFound();
+            if (radiatorSizeExists == false) return NotFound();
 
-            ChassisZone.ChassisZone? chassisZone = await _context.ChassisZone.FirstOrDefaultAsync(x => x.UUID == createChassisRadiatorSupport.ChassisZoneUUID);
+            bool chassisZoneExists = await _context.ChassisZone.AnyAsync(x => x.UUID == createChassisRadiatorSupport.ChassisZoneUUID);
 
-            if (chassisZone == null) return NotFound();
+            if (chassisZoneExists == false) return NotFound();
 
             ChassisRadiatorSupport ChassisRadiatorSupport = new(chassisUUID, createChassisRadiatorSupport);
 
@@ -63,18 +50,59 @@ namespace ComputerConfigurator.Api.ChassisRadiatorSupport
             return NoContent();
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid chassisUUID)
+        {
+            List<DTO.Details> ChassisRadiatorSupport = new();
+
+            IAsyncEnumerable<ChassisRadiatorSupport> query = _context.ChassisRadiatorSupport
+                .Include(x => x.RadiatorSize)
+                .Include(x => x.ChassisZone)
+                .Where(x => x.ChassisUUID == chassisUUID)
+                .AsAsyncEnumerable();
+
+            await foreach (ChassisRadiatorSupport chassisRadiatorSupport in query)
+            {
+                ChassisRadiatorSupport.Add(new DTO.Details(chassisRadiatorSupport));
+            }
+
+            return Ok(ChassisRadiatorSupport);
+        }
+
+        [HttpPatch]
+        public async Task<ActionResult> Edit(Guid chassisUUID, DTO.Edit editChassisRadiatorSupport)
+        {
+            IReadOnlyList<string> errors = editChassisRadiatorSupport.Validate();
+
+            if (errors.Any()) return BadRequest(errors);
+
+            ChassisRadiatorSupport? chassisRadiatorSupport = await _context.ChassisRadiatorSupport.FirstOrDefaultAsync(x =>
+                x.ChassisUUID == chassisUUID
+                && x.RadiatorSizeUUID == editChassisRadiatorSupport.RadiatorSizeUUID
+                && x.ChassisZoneUUID == editChassisRadiatorSupport.ChassisZoneUUID
+            );
+
+            if (chassisRadiatorSupport == null) return NotFound();
+
+            ChassisRadiatorSupport.Edit(chassisRadiatorSupport, editChassisRadiatorSupport);
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid chassisUUID, Guid radiatorSizeUUID, Guid chassisZoneUUID)
         {
-            ChassisRadiatorSupport? existing = await _context.ChassisRadiatorSupport.FirstOrDefaultAsync(x =>
+            ChassisRadiatorSupport? chassisRadiatorSupport = await _context.ChassisRadiatorSupport.FirstOrDefaultAsync(x =>
                 x.ChassisUUID == chassisUUID
                 && x.RadiatorSizeUUID == radiatorSizeUUID
                 && x.ChassisZoneUUID == chassisZoneUUID
             );
 
-            if (existing == null) return NotFound();
+            if (chassisRadiatorSupport == null) return NotFound();
 
-            _context.ChassisRadiatorSupport.Remove(existing);
+            _context.ChassisRadiatorSupport.Remove(chassisRadiatorSupport);
 
             await _context.SaveChangesAsync();
 

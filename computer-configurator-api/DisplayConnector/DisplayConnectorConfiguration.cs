@@ -9,8 +9,7 @@ namespace ComputerConfigurator.Api.DisplayConnector
         {
             builder.ToTable("displayconnector");
 
-            builder.HasKey(e => e.UUID)
-                .HasName("displayconnector_pkey");
+            builder.HasKey(e => e.UUID).HasName("displayconnector_pkey");
 
             builder.HasIndex(e => new { e.Interface, e.Version }, "displayconnector_interface_version_unique")
                 .IsUnique();

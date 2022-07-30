@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
 
 namespace ComputerConfigurator.Api.Account
 {
@@ -22,21 +21,11 @@ namespace ComputerConfigurator.Api.Account
 
             if (errors.Count > 0) return BadRequest(errors);
 
-            Account? existingAccount = await _context.Account.FirstOrDefaultAsync(x => x.Email == newAccount.Email);
+            bool existingAccount = await _context.Account.AnyAsync(x => x.Email == newAccount.Email.ToLower());
 
-            if (existingAccount != null) return Conflict();
+            if (existingAccount) return Conflict();
 
-            byte[] saltBytes = Authentication.CreateSalt();
-
-            byte[] passwordBytes = Encoding.Unicode.GetBytes(newAccount.Password);
-
-            byte[] passwordHashBytes = Authentication.Hash(passwordBytes, saltBytes);
-
-            string passwordHashBase64 = Convert.ToBase64String(passwordHashBytes);
-
-            string saltBase64 = Convert.ToBase64String(saltBytes);
-
-            Account account = new(newAccount, passwordHashBase64, saltBase64);
+            Account account = new(newAccount);
 
             _context.Account.Add(account);
 
@@ -48,7 +37,7 @@ namespace ComputerConfigurator.Api.Account
         [HttpGet]
         public async Task<ActionResult<DTO.Details>> GetByEmail(string Email)
         {
-            Account? account = await _context.Account.FirstOrDefaultAsync(x => x.Email == Email);
+            Account? account = await _context.Account.FirstOrDefaultAsync(x => x.Email == Email.ToLower());
 
             if (account == null) return NotFound();
 
@@ -80,6 +69,13 @@ namespace ComputerConfigurator.Api.Account
 
             if (account == null) return NotFound();
 
+            if (account.Email != edits.Email.ToLower())
+            {
+                bool existingAccount = await _context.Account.AnyAsync(x => x.Email == edits.Email.ToLower());
+
+                if (existingAccount) return Conflict();
+            }
+
             Account.Edit(account, edits);
 
             await _context.SaveChangesAsync();
@@ -94,37 +90,13 @@ namespace ComputerConfigurator.Api.Account
 
             if (errors.Count > 0) return BadRequest(errors);
 
-            //  AccountQueries.GetByUUID(changePassword.AccountUUID);
-
             Account? account = await _context.Account.FirstOrDefaultAsync(x => x.UUID == changePassword.AccountUUID);
 
             if (account == null) return NotFound();
 
-            byte[] knownPasswordHash = Convert.FromBase64String(account.Password);
+            if (account.VerifyPassword(changePassword.OldPassword) == false) return Unauthorized();
 
-            byte[] oldPasswordBytes = Encoding.Unicode.GetBytes(changePassword.OldPassword);
-
-            byte[] oldSaltBytes = Convert.FromBase64String(account.Salt);
-
-            byte[] testPasswordHash = Authentication.Hash(oldPasswordBytes, oldSaltBytes);
-
-            bool authenticated = Authentication.Verify(knownPasswordHash, testPasswordHash);
-
-            if (!authenticated) return Unauthorized();
-
-            byte[] newSaltBytes = Authentication.CreateSalt();
-
-            byte[] newPasswordBytes = Encoding.Unicode.GetBytes(changePassword.NewPassword);
-
-            byte[] newHash = Authentication.Hash(newPasswordBytes, newSaltBytes);
-
-            string newPassword = Convert.ToBase64String(newHash);
-
-            string newSalt = Convert.ToBase64String(newSaltBytes);
-
-            account.Password = newPassword;
-
-            account.Salt = newSalt;
+            account.SetNewPassword(changePassword.NewPassword);
 
             await _context.SaveChangesAsync();
 

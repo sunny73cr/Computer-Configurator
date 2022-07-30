@@ -7,7 +7,7 @@ namespace ComputerConfigurator.Api.CPUClosedLoopCooler
     {
         public void Configure(EntityTypeBuilder<CPUClosedLoopCooler> builder)
         {
-            builder.ToTable("cpucooler");
+            builder.ToTable("cpuclosedloopcooler");
 
             builder.Property(x => x.RadiatorSizeUUID)
                 .HasColumnName("radiatorsizeuuid")

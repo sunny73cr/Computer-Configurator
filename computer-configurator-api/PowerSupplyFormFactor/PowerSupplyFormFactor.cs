@@ -15,9 +15,4 @@ public partial class PowerSupplyFormFactor
         UUID = PowerSupplyFormFactor.UUID;
         FormFactor = PowerSupplyFormFactor.FormFactor;
     }
-
-    public static void Edit(PowerSupplyFormFactor PowerSupplyFormFactor, DTO.Edit edits)
-    {
-        if (PowerSupplyFormFactor.FormFactor != edits.FormFactor) PowerSupplyFormFactor.FormFactor = edits.FormFactor;
-    }
 }

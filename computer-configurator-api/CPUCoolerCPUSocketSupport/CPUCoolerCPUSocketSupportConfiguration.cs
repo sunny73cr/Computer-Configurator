@@ -9,7 +9,7 @@ namespace ComputerConfigurator.Api.CPUCoolerCPUSocketSupport
         {
             builder.ToTable("cpucooler_cpusocket_support");
 
-            builder.HasKey(x => new { x.CPUCoolerUUID, x.CPUSocket })
+            builder.HasKey(x => new { x.CPUCoolerUUID, x.CPUSocketUUID })
                 .HasName("cpucooler_cpusocket_support_pkey");
 
             builder.Property(x => x.CPUCoolerUUID)

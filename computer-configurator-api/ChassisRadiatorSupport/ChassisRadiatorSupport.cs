@@ -23,5 +23,10 @@
             ChassisZoneUUID = ChassisRadiatorSupport.ChassisZoneUUID;
             MaximumWidthMM = ChassisRadiatorSupport.MaximumWidthMM;
         }
+
+        public static void Edit(ChassisRadiatorSupport chassisRadiatorSupport, DTO.Edit edits)
+        {
+            if (chassisRadiatorSupport.MaximumWidthMM != edits.MaximumWidthMM) chassisRadiatorSupport.MaximumWidthMM = edits.MaximumWidthMM;
+        }
     }
 }

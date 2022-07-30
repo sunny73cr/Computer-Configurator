@@ -8,5 +8,9 @@
         public Validation(DTO.Create ChassisFilterSupport)
         {
         }
+
+        public Validation(DTO.Edit ChassisFilterSupport)
+        {
+        }
     }
 }

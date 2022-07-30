@@ -19,10 +19,4 @@ public partial class PCIEConnector
         PCIEGenerationUUID = PCIEConnector.PCIEGenerationUUID;
         LaneCount = PCIEConnector.LaneCount;
     }
-
-    public static void Edit(PCIEConnector PCIEConnector, DTO.Edit edits)
-    {
-        if (PCIEConnector.PCIEGenerationUUID != edits.PCIEGenerationUUID) PCIEConnector.PCIEGenerationUUID = edits.PCIEGenerationUUID;
-        if (PCIEConnector.LaneCount != edits.LaneCount) PCIEConnector.LaneCount = edits.LaneCount;
-    }
 }

@@ -17,9 +17,4 @@ public partial class PCIEGeneration
         UUID = PCIEGeneration.UUID;
         Generation = PCIEGeneration.Generation;
     }
-
-    public static void Edit(PCIEGeneration PCIEGeneration, DTO.Edit edits)
-    {
-        if (PCIEGeneration.Generation != edits.Generation) PCIEGeneration.Generation = edits.Generation;
-    }
 }

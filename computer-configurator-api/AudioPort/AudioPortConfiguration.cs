@@ -9,10 +9,9 @@ namespace ComputerConfigurator.Api.AudioPort
         {
             builder.ToTable("audioport");
 
-            builder.HasKey(e => e.UUID)
-                .HasName("audioport_pkey");
+            builder.HasKey(e => e.UUID).HasName("audioport_pkey");
 
-            builder.HasIndex(x => new { x.PinCount, x.ConnectorSize })
+            builder.HasIndex(x => new { x.PinCount, x.ConnectorSize }, "audioport_pincount_connectorsize_unique")
                 .IsUnique();
 
             builder.Property(e => e.UUID)
@@ -27,13 +26,6 @@ namespace ComputerConfigurator.Api.AudioPort
             builder.Property(e => e.ConnectorSize)
                 .HasColumnName("connectorsize")
                 .HasColumnType("integer");
-
-            //builder.HasData(new List<AudioPort>()
-            //{
-            //    new AudioPort() { UUID = Guid.NewGuid(), PinCount = 3, ConnectorSize = 3.5f },
-            //    new AudioPort() { UUID = Guid.NewGuid(), PinCount = 4, ConnectorSize = 3.5f },
-            //    new AudioPort() { UUID = Guid.NewGuid(), PinCount = 3, ConnectorSize = 6.3f }
-            //});
         }
     }
 }

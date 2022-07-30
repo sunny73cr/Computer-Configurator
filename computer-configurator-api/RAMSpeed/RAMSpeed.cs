@@ -15,9 +15,4 @@ public partial class RAMSpeed
         UUID = RAMSpeed.UUID;
         ClockRate = RAMSpeed.ClockRate;
     }
-
-    public static void Edit(RAMSpeed RAMSpeed, DTO.Edit edits)
-    {
-        if (RAMSpeed.ClockRate != edits.ClockRate) RAMSpeed.ClockRate = edits.ClockRate;
-    }
 }

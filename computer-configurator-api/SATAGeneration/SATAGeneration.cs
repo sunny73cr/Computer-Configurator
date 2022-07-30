@@ -15,9 +15,4 @@ public partial class SATAGeneration
         UUID = SATAGeneration.UUID;
         Generation = SATAGeneration.Generation;
     }
-
-    public static void Edit(SATAGeneration SATAGeneration, DTO.Edit edits)
-    {
-        if (SATAGeneration.Generation != edits.Generation) SATAGeneration.Generation = edits.Generation;
-    }
 }

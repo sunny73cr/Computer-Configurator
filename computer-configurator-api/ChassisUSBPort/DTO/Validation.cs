@@ -9,5 +9,10 @@
         {
             DomainValidation.Numeric.ValueRange(_errors, "Count", ChassisUSBPort.Count, 1, 20);
         }
+
+        public Validation(DTO.Edit ChassisUSBPort)
+        {
+            DomainValidation.Numeric.ValueRange(_errors, "Count", ChassisUSBPort.Count, 1, 20);
+        }
     }
 }

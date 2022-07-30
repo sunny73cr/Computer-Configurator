@@ -9,10 +9,5 @@
         {
             DomainValidation.Numeric.ValueRange(_errors, "Count", gpuDisplayConnector.Count, 1, 6);
         }
-
-        public Validation(DTO.Edit gpuDisplayConnector)
-        {
-            DomainValidation.Numeric.ValueRange(_errors, "Count", gpuDisplayConnector.Count, 1, 6);
-        }
     }
 }

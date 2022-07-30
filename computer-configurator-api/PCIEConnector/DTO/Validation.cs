@@ -10,10 +10,5 @@
         {
             DomainValidation.Numeric.ValueRange(_errors, "Lane count", PCIEConnector.LaneCount, 1, 16);
         }
-
-        public Validation(Edit PCIEConnector)
-        {
-            DomainValidation.Numeric.ValueRange(_errors, "Lane count", PCIEConnector.LaneCount, 1, 16);
-        }
     }
 }

@@ -23,5 +23,10 @@
             ChassisZoneUUID = ChassisUSBPort.ChassisZoneUUID;
             Count = ChassisUSBPort.Count;
         }
+
+        public static void Edit(ChassisUSBPort chassisUSBPort, DTO.Edit edits)
+        {
+            if (chassisUSBPort.Count != edits.Count) chassisUSBPort.Count = edits.Count;
+        }
     }
 }

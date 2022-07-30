@@ -15,9 +15,4 @@ public partial class NVMEInterface
         UUID = NVMEInterface.UUID;
         Interface = NVMEInterface.Interface;
     }
-
-    public static void Edit(NVMEInterface NVMEInterface, DTO.Edit edits)
-    {
-        if (NVMEInterface.Interface != edits.Interface) NVMEInterface.Interface = edits.Interface;
-    }
 }

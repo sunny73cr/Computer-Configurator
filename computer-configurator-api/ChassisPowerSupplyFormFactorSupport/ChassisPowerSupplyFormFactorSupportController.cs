@@ -14,18 +14,6 @@ namespace ComputerConfigurator.Api.ChassisPowerSupplyFormFactorSupport
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid chassisUUID)
-        {
-            List<DTO.Details> ChassisPowerSupplyFormFactorSupports = await _context.ChassisPowerSupplyFormFactorSupport
-                .Include(x => x.PowerSupplyFormFactor)
-                .Where(x => x.ChassisUUID == chassisUUID)
-                .Select(ChassisPowerSupplyFormFactorSupport => new DTO.Details(ChassisPowerSupplyFormFactorSupport))
-                .ToListAsync();
-
-            return Ok(ChassisPowerSupplyFormFactorSupports);
-        }
-
         [HttpPost]
         public async Task<ActionResult> Create(Guid chassisUUID, DTO.Create createChassisPowerSupplyFormFactorSupport)
         {
@@ -33,20 +21,20 @@ namespace ComputerConfigurator.Api.ChassisPowerSupplyFormFactorSupport
 
             if (errors.Any()) return BadRequest(errors);
 
-            ChassisPowerSupplyFormFactorSupport? existing = await _context.ChassisPowerSupplyFormFactorSupport.FirstOrDefaultAsync(x =>
+            bool existing = await _context.ChassisPowerSupplyFormFactorSupport.AnyAsync(x =>
                 x.ChassisUUID == chassisUUID
                 && x.PowerSupplyFormFactorUUID == createChassisPowerSupplyFormFactorSupport.PowerSupplyFormFactorUUID
             );
 
-            if (existing != null) return Conflict();
+            if (existing) return Conflict();
 
-            Chassis.Chassis? chassis = await _context.Chassis.FirstOrDefaultAsync(x => x.UUID == chassisUUID);
+            bool chassisExists = await _context.Chassis.AnyAsync(x => x.UUID == chassisUUID);
 
-            if (chassis == null) return NotFound();
+            if (chassisExists == false) return NotFound();
 
-            PowerSupplyFormFactor.PowerSupplyFormFactor? chassisZone = await _context.PowerSupplyFormFactor.FirstOrDefaultAsync(x => x.UUID == createChassisPowerSupplyFormFactorSupport.PowerSupplyFormFactorUUID);
+            bool chassisZoneExists = await _context.PowerSupplyFormFactor.AnyAsync(x => x.UUID == createChassisPowerSupplyFormFactorSupport.PowerSupplyFormFactorUUID);
 
-            if (chassisZone == null) return NotFound();
+            if (chassisZoneExists == false) return NotFound();
 
             ChassisPowerSupplyFormFactorSupport ChassisPowerSupplyFormFactorSupport = new(chassisUUID, createChassisPowerSupplyFormFactorSupport);
 
@@ -57,17 +45,56 @@ namespace ComputerConfigurator.Api.ChassisPowerSupplyFormFactorSupport
             return NoContent();
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid chassisUUID)
+        {
+            List<DTO.Details> ChassisPowerSupplyFormFactorSupport = new();
+
+            IAsyncEnumerable<ChassisPowerSupplyFormFactorSupport> query = _context.ChassisPowerSupplyFormFactorSupport
+                .Include(x => x.PowerSupplyFormFactor)
+                .Where(x => x.ChassisUUID == chassisUUID)
+                .AsAsyncEnumerable();
+
+            await foreach (ChassisPowerSupplyFormFactorSupport chassisPowerSupplyFormFactorSupport in query)
+            {
+                ChassisPowerSupplyFormFactorSupport.Add(new DTO.Details(chassisPowerSupplyFormFactorSupport));
+            }
+
+            return Ok(ChassisPowerSupplyFormFactorSupport);
+        }
+
+        [HttpPatch]
+        public async Task<ActionResult> Edit(Guid chassisUUID, DTO.Edit editChassisPowerSupplyFormFactorSupport)
+        {
+            IReadOnlyList<string> errors = editChassisPowerSupplyFormFactorSupport.Validate();
+
+            if (errors.Any()) return BadRequest(errors);
+
+            ChassisPowerSupplyFormFactorSupport? chassisPowerSupplyFormFactorSupport = await _context.ChassisPowerSupplyFormFactorSupport.FirstOrDefaultAsync(x =>
+                x.ChassisUUID == chassisUUID
+                && x.PowerSupplyFormFactorUUID == editChassisPowerSupplyFormFactorSupport.PowerSupplyFormFactorUUID
+            );
+
+            if (chassisPowerSupplyFormFactorSupport == null) return NotFound();
+
+            ChassisPowerSupplyFormFactorSupport.Edit(chassisPowerSupplyFormFactorSupport, editChassisPowerSupplyFormFactorSupport);
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid chassisUUID, Guid powerSupplyFormFactorUUID)
         {
-            ChassisPowerSupplyFormFactorSupport? existing = await _context.ChassisPowerSupplyFormFactorSupport.FirstOrDefaultAsync(x =>
+            ChassisPowerSupplyFormFactorSupport? chassisPowerSupplyFormFactorSupport = await _context.ChassisPowerSupplyFormFactorSupport.FirstOrDefaultAsync(x =>
                 x.ChassisUUID == chassisUUID
                 && x.PowerSupplyFormFactorUUID == powerSupplyFormFactorUUID
             );
 
-            if (existing == null) return NotFound();
+            if (chassisPowerSupplyFormFactorSupport == null) return NotFound();
 
-            _context.ChassisPowerSupplyFormFactorSupport.Remove(existing);
+            _context.ChassisPowerSupplyFormFactorSupport.Remove(chassisPowerSupplyFormFactorSupport);
 
             await _context.SaveChangesAsync();
 

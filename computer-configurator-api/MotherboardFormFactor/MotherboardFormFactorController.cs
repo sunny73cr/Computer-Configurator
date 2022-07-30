@@ -44,36 +44,6 @@ namespace ComputerConfigurator.Api.MotherboardFormFactor
             return Ok(MotherboardFormFactors);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            MotherboardFormFactor? MotherboardFormFactor = await _context.MotherboardFormFactor.FirstOrDefaultAsync(MotherboardFormFactor => MotherboardFormFactor.UUID == uuid);
-
-            if (MotherboardFormFactor == null) return NotFound();
-
-            var details = new DTO.Details(MotherboardFormFactor);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit MotherboardFormFactorEdits)
-        {
-            IReadOnlyList<string> errors = MotherboardFormFactorEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            MotherboardFormFactor? MotherboardFormFactor = await _context.MotherboardFormFactor.FirstOrDefaultAsync(x => x.UUID == MotherboardFormFactorEdits.UUID);
-
-            if (MotherboardFormFactor == null) return NotFound();
-
-            MotherboardFormFactor.Edit(MotherboardFormFactor, MotherboardFormFactorEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid uuid)
         {

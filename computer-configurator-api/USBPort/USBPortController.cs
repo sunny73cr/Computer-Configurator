@@ -21,9 +21,12 @@ namespace ComputerConfigurator.Api.USBPort
 
             if (errors.Any()) return BadRequest(errors);
 
-            USBPort? existing = await _context.USBPort.FirstOrDefaultAsync(x => x.UUID == createUSBPort.UUID);
+            bool duplicate = await _context.USBPort.AnyAsync(x =>
+                x.Interface == createUSBPort.Interface
+                && x.Version == createUSBPort.Version
+            );
 
-            if (existing != null) return Conflict();
+            if (duplicate) return Conflict();
 
             USBPort USBPort = new(createUSBPort);
 
@@ -37,41 +40,17 @@ namespace ComputerConfigurator.Api.USBPort
         [HttpGet]
         public async Task<ActionResult<List<DTO.Details>>> GetAll()
         {
-            List<DTO.Details> USBPorts = await _context.USBPort
-                .Select(usbPorts => new DTO.Details(usbPorts))
-                .ToListAsync();
+            List<DTO.Details> USBPorts = new();
+
+            IAsyncEnumerable<USBPort> query = _context.USBPort
+                .AsAsyncEnumerable();
+
+            await foreach (USBPort usbPort in query)
+            {
+                USBPorts.Add(new DTO.Details(usbPort));
+            }
 
             return Ok(USBPorts);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            USBPort? USBPort = await _context.USBPort.FirstOrDefaultAsync(USBPort => USBPort.UUID == uuid);
-
-            if (USBPort == null) return NotFound();
-
-            var details = new DTO.Details(USBPort);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit USBPortEdits)
-        {
-            IReadOnlyList<string> errors = USBPortEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            USBPort? USBPort = await _context.USBPort.FirstOrDefaultAsync(x => x.UUID == USBPortEdits.UUID);
-
-            if (USBPort == null) return NotFound();
-
-            USBPort.Edit(USBPort, USBPortEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpDelete]

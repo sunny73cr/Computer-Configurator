@@ -21,73 +21,75 @@ namespace ComputerConfigurator.Api.Chassis
 
             if (errors.Any()) return BadRequest(errors);
 
-            Chassis? existing = await _context.Chassis.FirstOrDefaultAsync(x => x.UUID == createChassis.UUID);
+            bool manufacturerExists = await _context.Manufacturer.AnyAsync(x => x.UUID == createChassis.ManufacturerUUID);
 
-            if (existing != null) return Conflict();
+            if (manufacturerExists == false) return NotFound();
+
+            if (await Part.Part.Duplicate(_context, createChassis)) return Conflict();
 
             foreach (ChassisAudioPort.DTO.Create createChassisAudioPort in createChassis.AudioPorts)
             {
-                AudioPort.AudioPort? audioPort = await _context.AudioPort.FirstOrDefaultAsync(x => x.UUID == createChassisAudioPort.AudioPortUUID);
+                bool audioPortExists = await _context.AudioPort.AnyAsync(x => x.UUID == createChassisAudioPort.AudioPortUUID);
 
-                if (audioPort == null) return NotFound();
+                if (audioPortExists == false) return NotFound();
 
-                ChassisZone.ChassisZone? chassisZone = await _context.ChassisZone.FirstOrDefaultAsync(x => x.UUID == createChassisAudioPort.ChassisZoneUUID);
+                bool chassisZoneExists = await _context.ChassisZone.AnyAsync(x => x.UUID == createChassisAudioPort.ChassisZoneUUID);
 
-                if (chassisZone == null) return NotFound();
+                if (chassisZoneExists == false) return NotFound();
             }
 
             foreach (ChassisFanSupport.DTO.Create createChassisFanSupport in createChassis.FanSupport)
             {
-                FanDiameter.FanDiameter? fanDiameter = await _context.FanDiameter.FirstOrDefaultAsync(x => x.UUID == createChassisFanSupport.FanDiameterUUID);
+                bool fanDiameterExists = await _context.FanDiameter.AnyAsync(x => x.UUID == createChassisFanSupport.FanDiameterUUID);
 
-                if (fanDiameter == null) return NotFound();
+                if (fanDiameterExists == false) return NotFound();
 
-                ChassisZone.ChassisZone? chassisZone = await _context.ChassisZone.FirstOrDefaultAsync(x => x.UUID == createChassisFanSupport.ChassisZoneUUID);
+                bool chassisZoneExists = await _context.ChassisZone.AnyAsync(x => x.UUID == createChassisFanSupport.ChassisZoneUUID);
 
-                if (chassisZone == null) return NotFound();
+                if (chassisZoneExists == false) return NotFound();
             }
 
             foreach (ChassisFilterSupport.DTO.Create createChassisFilterSupport in createChassis.FilterSupport)
             {
-                ChassisZone.ChassisZone? chassisZone = await _context.ChassisZone.FirstOrDefaultAsync(x => x.UUID == createChassisFilterSupport.ChassisZoneUUID);
+                bool chassisZoneExists = await _context.ChassisZone.AnyAsync(x => x.UUID == createChassisFilterSupport.ChassisZoneUUID);
 
-                if (chassisZone == null) return NotFound();
+                if (chassisZoneExists == false) return NotFound();
             }
 
             foreach (ChassisMotherboardFormFactorSupport.DTO.Create createChassisMotherboardFormFactorSupport in createChassis.MotherboardFormFactorSupport)
             {
-                MotherboardFormFactor.MotherboardFormFactor? motherboardFormFactor = await _context.MotherboardFormFactor.FirstOrDefaultAsync(x => x.UUID == createChassisMotherboardFormFactorSupport.MotherboardFormFactorUUID);
+                bool motherboardFormFactorExists = await _context.MotherboardFormFactor.AnyAsync(x => x.UUID == createChassisMotherboardFormFactorSupport.MotherboardFormFactorUUID);
 
-                if (motherboardFormFactor == null) return NotFound();
+                if (motherboardFormFactorExists == false) return NotFound();
             }
 
             foreach (ChassisPowerSupplyFormFactorSupport.DTO.Create createChassisPowerSupplyFormFactorSupport in createChassis.PowerSupplyFormFactorSupport)
             {
-                PowerSupplyFormFactor.PowerSupplyFormFactor? powerSupplyFormFactor = await _context.PowerSupplyFormFactor.FirstOrDefaultAsync(x => x.UUID == createChassisPowerSupplyFormFactorSupport.PowerSupplyFormFactorUUID);
+                bool powerSupplyFormFactorExists = await _context.PowerSupplyFormFactor.AnyAsync(x => x.UUID == createChassisPowerSupplyFormFactorSupport.PowerSupplyFormFactorUUID);
 
-                if (powerSupplyFormFactor == null) return NotFound();
+                if (powerSupplyFormFactorExists == false) return NotFound();
             }
 
             foreach (ChassisRadiatorSupport.DTO.Create createChassisRadiatorSupport in createChassis.RadiatorSupport)
             {
-                RadiatorSize.RadiatorSize? radiatorSize = await _context.RadiatorSize.FirstOrDefaultAsync(x => x.UUID == createChassisRadiatorSupport.RadiatorSizeUUID);
+                bool radiatorSize = await _context.RadiatorSize.AnyAsync(x => x.UUID == createChassisRadiatorSupport.RadiatorSizeUUID);
 
-                if (radiatorSize == null) return NotFound();
+                if (radiatorSize == false) return NotFound();
 
-                ChassisZone.ChassisZone ? chassisZone = await _context.ChassisZone.FirstOrDefaultAsync(x => x.UUID == createChassisRadiatorSupport.ChassisZoneUUID);
+                bool chassisZoneExists = await _context.ChassisZone.AnyAsync(x => x.UUID == createChassisRadiatorSupport.ChassisZoneUUID);
 
-                if (chassisZone == null) return NotFound();
+                if (chassisZoneExists == false) return NotFound();
             }
 
             foreach (ChassisUSBPort.DTO.Create createChassisUSBPort in createChassis.USBPorts)
             {
-                USBPort.USBPort? usbPort = await _context.USBPort.FirstOrDefaultAsync(x => x.UUID == createChassisUSBPort.USBPortUUID);
+                bool usbPort = await _context.USBPort.AnyAsync(x => x.UUID == createChassisUSBPort.USBPortUUID);
 
-                if (usbPort == null) return NotFound();
+                if (usbPort == false) return NotFound();
 
-                ChassisZone.ChassisZone? chassisZone = await _context.ChassisZone.FirstOrDefaultAsync(x => x.UUID == createChassisUSBPort.ChassisZoneUUID);
+                bool chassisZoneExists = await _context.ChassisZone.AnyAsync(x => x.UUID == createChassisUSBPort.ChassisZoneUUID);
 
-                if (chassisZone == null) return NotFound();
+                if (chassisZoneExists == false) return NotFound();
             }
 
             Chassis Chassis = new(createChassis);
@@ -100,11 +102,43 @@ namespace ComputerConfigurator.Api.Chassis
         }
 
         [HttpGet]
+        public async Task<ActionResult<ICollection<DTO.Details>>> GetAll()
+        {
+            List<DTO.Details> ChassisDetails = new();
+
+            IAsyncEnumerable<Chassis> query = _context.Chassis
+                .Include(x => x.Part)
+                .ThenInclude(x => x.Manufacturer)
+                .Include(x => x.AudioPorts)
+                .Include(x => x.FanSupport)
+                .Include(x => x.FilterSupport)
+                .Include(x => x.MotherboardFormFactorSupport)
+                .Include(x => x.PowerSupplyFormFactorSupport)
+                .Include(x => x.RadiatorSupport)
+                .Include(x => x.USBPorts)
+                .AsAsyncEnumerable();
+
+            await foreach (Chassis chassis in query)
+            {
+                ChassisDetails.Add(new DTO.Details(chassis));
+            }
+
+            return Ok(ChassisDetails);
+        }
+
+        [HttpGet]
         public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
         {
             Chassis? Chassis = await _context.Chassis
-                .Include(Chassis => Chassis.Part)
-                .ThenInclude(part => part.Manufacturer)
+                .Include(x => x.Part)
+                .ThenInclude(x => x.Manufacturer)
+                .Include(x => x.AudioPorts)
+                .Include(x => x.FanSupport)
+                .Include(x => x.FilterSupport)
+                .Include(x => x.MotherboardFormFactorSupport)
+                .Include(x => x.PowerSupplyFormFactorSupport)
+                .Include(x => x.RadiatorSupport)
+                .Include(x => x.USBPorts)
                 .FirstOrDefaultAsync(Chassis => Chassis.UUID == uuid);
 
             if (Chassis == null) return NotFound();
@@ -124,6 +158,20 @@ namespace ComputerConfigurator.Api.Chassis
             Chassis? Chassis = await _context.Chassis.FirstOrDefaultAsync(x => x.UUID == ChassisEdits.UUID);
 
             if (Chassis == null) return NotFound();
+
+            if (Chassis.ManufacturerUUID != ChassisEdits.ManufacturerUUID)
+            {
+                bool newManufacturerExists = await _context.Manufacturer.AnyAsync(x => x.UUID == ChassisEdits.ManufacturerUUID);
+
+                if (newManufacturerExists == false) return NotFound();
+
+                if (Chassis.Model.ToLower() != ChassisEdits.Model.ToLower())
+                {
+                    bool duplicate = await Part.Part.Duplicate(_context, ChassisEdits);
+
+                    if (duplicate) return Conflict();
+                }
+            }
 
             Chassis.Edit(Chassis, ChassisEdits);
 

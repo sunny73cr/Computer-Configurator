@@ -9,8 +9,7 @@ namespace ComputerConfigurator.Api.Account
         {
             builder.ToTable("account");
 
-            builder.HasKey(e => e.UUID)
-                .HasName("account_pkey");
+            builder.HasKey(e => e.UUID).HasName("account_pkey");
 
             builder.HasIndex(e => e.Email, "account_email_unique")
                 .IsUnique();

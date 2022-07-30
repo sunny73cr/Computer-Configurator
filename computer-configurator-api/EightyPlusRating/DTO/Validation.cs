@@ -10,10 +10,5 @@
         {
             DomainValidation.String.LengthRange(_errors, "Rating", EightyPlusRating.Rating, 1, 20);
         }
-
-        public Validation(Edit EightyPlusRating)
-        {
-            DomainValidation.String.LengthRange(_errors, "Rating", EightyPlusRating.Rating, 1, 20);
-        }
     }
 }

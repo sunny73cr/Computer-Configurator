@@ -10,10 +10,5 @@
         {
             DomainValidation.String.LengthRange(_errors, "Version", RAMSocket.Version, 1, 15);
         }
-
-        public Validation(Edit RAMSocket)
-        {
-            DomainValidation.String.LengthRange(_errors, "Version", RAMSocket.Version, 1, 15);
-        }
     }
 }

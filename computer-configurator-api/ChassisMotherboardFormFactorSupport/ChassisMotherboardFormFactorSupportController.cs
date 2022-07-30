@@ -14,18 +14,6 @@ namespace ComputerConfigurator.Api.ChassisMotherboardFormFactorSupport
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid chassisUUID)
-        {
-            List<DTO.Details> ChassisMotherboardFormFactorSupports = await _context.ChassisMotherboardFormFactorSupport
-                .Include(x => x.MotherboardFormFactor)
-                .Where(x => x.ChassisUUID == chassisUUID)
-                .Select(ChassisMotherboardFormFactorSupport => new DTO.Details(ChassisMotherboardFormFactorSupport))
-                .ToListAsync();
-
-            return Ok(ChassisMotherboardFormFactorSupports);
-        }
-
         [HttpPost]
         public async Task<ActionResult> Create(Guid chassisUUID, DTO.Create createChassisMotherboardFormFactorSupport)
         {
@@ -33,20 +21,20 @@ namespace ComputerConfigurator.Api.ChassisMotherboardFormFactorSupport
 
             if (errors.Any()) return BadRequest(errors);
 
-            ChassisMotherboardFormFactorSupport? existing = await _context.ChassisMotherboardFormFactorSupport.FirstOrDefaultAsync(x =>
+            bool existing = await _context.ChassisMotherboardFormFactorSupport.AnyAsync(x =>
                 x.ChassisUUID == chassisUUID
                 && x.MotherboardFormFactorUUID == createChassisMotherboardFormFactorSupport.MotherboardFormFactorUUID
             );
 
-            if (existing != null) return Conflict();
+            if (existing) return Conflict();
 
-            Chassis.Chassis? chassis = await _context.Chassis.FirstOrDefaultAsync(x => x.UUID == chassisUUID);
+            bool chassisExists = await _context.Chassis.AnyAsync(x => x.UUID == chassisUUID);
 
-            if (chassis == null) return NotFound();
+            if (chassisExists == false) return NotFound();
 
-            MotherboardFormFactor.MotherboardFormFactor? motherboardFormFactorUUID = await _context.MotherboardFormFactor.FirstOrDefaultAsync(x => x.UUID == createChassisMotherboardFormFactorSupport.MotherboardFormFactorUUID);
+            bool motherboardFormFactorExists = await _context.MotherboardFormFactor.AnyAsync(x => x.UUID == createChassisMotherboardFormFactorSupport.MotherboardFormFactorUUID);
 
-            if (motherboardFormFactorUUID == null) return NotFound();
+            if (motherboardFormFactorExists == false) return NotFound();
 
             ChassisMotherboardFormFactorSupport ChassisMotherboardFormFactorSupport = new(chassisUUID, createChassisMotherboardFormFactorSupport);
 
@@ -57,17 +45,35 @@ namespace ComputerConfigurator.Api.ChassisMotherboardFormFactorSupport
             return NoContent();
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid chassisUUID)
+        {
+            List<DTO.Details> ChassisMotherboardFormFactorSupport = new();
+
+            IAsyncEnumerable<ChassisMotherboardFormFactorSupport> query = _context.ChassisMotherboardFormFactorSupport
+                .Include(x => x.MotherboardFormFactor)
+                .Where(x => x.ChassisUUID == chassisUUID)
+                .AsAsyncEnumerable();
+
+            await foreach (ChassisMotherboardFormFactorSupport chassisMotherboardFormFactorSupport in query)
+            {
+                ChassisMotherboardFormFactorSupport.Add(new DTO.Details(chassisMotherboardFormFactorSupport));
+            }
+
+            return Ok(ChassisMotherboardFormFactorSupport);
+        }
+
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid chassisUUID, Guid motherboardFormFactorUUID)
         {
-            ChassisMotherboardFormFactorSupport? existing = await _context.ChassisMotherboardFormFactorSupport.FirstOrDefaultAsync(x =>
+            ChassisMotherboardFormFactorSupport? motherboardFormFactorSupport = await _context.ChassisMotherboardFormFactorSupport.FirstOrDefaultAsync(x =>
                 x.ChassisUUID == chassisUUID
                 && x.MotherboardFormFactorUUID == motherboardFormFactorUUID
             );
 
-            if (existing == null) return NotFound();
+            if (motherboardFormFactorSupport == null) return NotFound();
 
-            _context.ChassisMotherboardFormFactorSupport.Remove(existing);
+            _context.ChassisMotherboardFormFactorSupport.Remove(motherboardFormFactorSupport);
 
             await _context.SaveChangesAsync();
 

@@ -21,9 +21,9 @@ namespace ComputerConfigurator.Api.FanDiameter
 
             if (errors.Any()) return BadRequest(errors);
 
-            FanDiameter? existing = await _context.FanDiameter.FirstOrDefaultAsync(x => x.UUID == createFanDiameter.UUID);
+            bool duplicate = await _context.FanDiameter.AnyAsync(x => x.Diameter == createFanDiameter.Diameter);
 
-            if (existing != null) return Conflict();
+            if (duplicate) return Conflict();
 
             FanDiameter FanDiameter = new(createFanDiameter);
 
@@ -42,36 +42,6 @@ namespace ComputerConfigurator.Api.FanDiameter
                 .ToListAsync();
 
             return Ok(FanDiameters);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            FanDiameter? FanDiameter = await _context.FanDiameter.FirstOrDefaultAsync(FanDiameter => FanDiameter.UUID == uuid);
-
-            if (FanDiameter == null) return NotFound();
-
-            var details = new DTO.Details(FanDiameter);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit FanDiameterEdits)
-        {
-            IReadOnlyList<string> errors = FanDiameterEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            FanDiameter? FanDiameter = await _context.FanDiameter.FirstOrDefaultAsync(x => x.UUID == FanDiameterEdits.UUID);
-
-            if (FanDiameter == null) return NotFound();
-
-            FanDiameter.Edit(FanDiameter, FanDiameterEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpDelete]

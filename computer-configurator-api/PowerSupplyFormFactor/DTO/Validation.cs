@@ -10,10 +10,5 @@
         {
             DomainValidation.String.LengthRange(_errors, "Form factor", PowerSupplyFormFactor.FormFactor, 1, 10);
         }
-
-        public Validation(Edit PowerSupplyFormFactor)
-        {
-            DomainValidation.String.LengthRange(_errors, "Form factor", PowerSupplyFormFactor.FormFactor, 1, 10);
-        }
     }
 }

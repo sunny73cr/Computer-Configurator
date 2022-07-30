@@ -44,36 +44,6 @@ namespace ComputerConfigurator.Api.FanVoltage
             return Ok(FanVoltages);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            FanVoltage? FanVoltage = await _context.FanVoltage.FirstOrDefaultAsync(FanVoltage => FanVoltage.UUID == uuid);
-
-            if (FanVoltage == null) return NotFound();
-
-            var details = new DTO.Details(FanVoltage);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit FanVoltageEdits)
-        {
-            IReadOnlyList<string> errors = FanVoltageEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            FanVoltage? FanVoltage = await _context.FanVoltage.FirstOrDefaultAsync(x => x.UUID == FanVoltageEdits.UUID);
-
-            if (FanVoltage == null) return NotFound();
-
-            FanVoltage.Edit(FanVoltage, FanVoltageEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid uuid)
         {

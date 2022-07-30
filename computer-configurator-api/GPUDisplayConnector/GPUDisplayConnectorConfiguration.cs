@@ -7,6 +7,8 @@ namespace ComputerConfigurator.Api.GPUDisplayConnector
     {
         public void Configure(EntityTypeBuilder<GPUDisplayConnector> builder)
         {
+            builder.ToTable("gpu_displayconnector");
+
             builder.HasKey(x => new { x.GPUUUID, x.DisplayConnectorUUID })
                 .HasName("gpu_displayconnector_pkey");
 

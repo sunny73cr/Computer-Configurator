@@ -9,11 +9,6 @@ namespace ComputerConfigurator.Api.CPU
         {
             builder.ToTable("cpu");
 
-            builder.Property(e => e.UUID)
-                .HasColumnName("uuid")
-                .HasColumnType("uuid")
-                .ValueGeneratedNever();
-
             builder.Property(e => e.CoreCount)
                 .HasColumnName("corecount")
                 .HasColumnType("integer");

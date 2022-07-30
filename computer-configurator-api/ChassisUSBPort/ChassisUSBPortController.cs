@@ -14,19 +14,6 @@ namespace ComputerConfigurator.Api.ChassisUSBPort
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid chassisUUID)
-        {
-            List<DTO.Details> ChassisUSBPorts = await _context.ChassisUSBPort
-                .Include(x => x.USBPort)
-                .Include(x => x.ChassisZone)
-                .Where(x => x.ChassisUUID == chassisUUID)
-                .Select(ChassisUSBPort => new DTO.Details(ChassisUSBPort))
-                .ToListAsync();
-
-            return Ok(ChassisUSBPorts);
-        }
-
         [HttpPost]
         public async Task<ActionResult> Create(Guid chassisUUID, DTO.Create createChassisUSBPort)
         {
@@ -34,25 +21,25 @@ namespace ComputerConfigurator.Api.ChassisUSBPort
 
             if (errors.Any()) return BadRequest(errors);
 
-            ChassisUSBPort? existing = await _context.ChassisUSBPort.FirstOrDefaultAsync(x =>
+            bool existing = await _context.ChassisUSBPort.AnyAsync(x =>
                 x.ChassisUUID == chassisUUID
                 && x.USBPortUUID == createChassisUSBPort.USBPortUUID
                 && x.ChassisZoneUUID == createChassisUSBPort.ChassisZoneUUID
             );
 
-            if (existing != null) return Conflict();
+            if (existing) return Conflict();
 
-            Chassis.Chassis? chassis = await _context.Chassis.FirstOrDefaultAsync(x => x.UUID == chassisUUID);
+            bool chassisExists = await _context.Chassis.AnyAsync(x => x.UUID == chassisUUID);
 
-            if (chassis == null) return NotFound();
+            if (chassisExists == false) return NotFound();
 
-            RadiatorSize.RadiatorSize? radiatorSize = await _context.RadiatorSize.FirstOrDefaultAsync(x => x.UUID == createChassisUSBPort.USBPortUUID);
+            bool radiatorSizeExists = await _context.RadiatorSize.AnyAsync(x => x.UUID == createChassisUSBPort.USBPortUUID);
 
-            if (radiatorSize == null) return NotFound();
+            if (radiatorSizeExists == false) return NotFound();
 
-            ChassisZone.ChassisZone? chassisZone = await _context.ChassisZone.FirstOrDefaultAsync(x => x.UUID == createChassisUSBPort.ChassisZoneUUID);
+            bool chassisZoneExists = await _context.ChassisZone.AnyAsync(x => x.UUID == createChassisUSBPort.ChassisZoneUUID);
 
-            if (chassisZone == null) return NotFound();
+            if (chassisZoneExists == false) return NotFound();
 
             ChassisUSBPort ChassisUSBPort = new(chassisUUID, createChassisUSBPort);
 
@@ -63,18 +50,59 @@ namespace ComputerConfigurator.Api.ChassisUSBPort
             return NoContent();
         }
 
-        [HttpDelete]
-        public async Task<ActionResult> Delete(Guid chassisUUID, Guid radiatorSizeUUID, Guid chassisZoneUUID)
+        [HttpGet]
+        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid chassisUUID)
         {
-            ChassisUSBPort? existing = await _context.ChassisUSBPort.FirstOrDefaultAsync(x =>
+            List<DTO.Details> ChassisUSBPorts = new();
+                
+            IAsyncEnumerable<ChassisUSBPort> query = _context.ChassisUSBPort
+                .Include(x => x.USBPort)
+                .Include(x => x.ChassisZone)
+                .Where(x => x.ChassisUUID == chassisUUID)
+                .AsAsyncEnumerable();
+
+            await foreach (ChassisUSBPort chassisUSBPort in query)
+            {
+                ChassisUSBPorts.Add(new DTO.Details(chassisUSBPort));
+            }
+
+            return Ok(ChassisUSBPorts);
+        }
+
+        [HttpPatch]
+        public async Task<ActionResult> Edit(Guid chassisUUID, DTO.Edit editChassisUSBPort)
+        {
+            IReadOnlyList<string> errors = editChassisUSBPort.Validate();
+
+            if (errors.Any()) return BadRequest(errors);
+
+            ChassisUSBPort? chassisUSBPort = await _context.ChassisUSBPort.FirstOrDefaultAsync(x =>
                 x.ChassisUUID == chassisUUID
-                && x.USBPortUUID == radiatorSizeUUID
+                && x.USBPortUUID == editChassisUSBPort.USBPortUUID
+                && x.ChassisZoneUUID == editChassisUSBPort.ChassisZoneUUID
+            );
+
+            if (chassisUSBPort == null) return NotFound();
+
+            ChassisUSBPort.Edit(chassisUSBPort, editChassisUSBPort);
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> Delete(Guid chassisUUID, Guid usbPortUUID, Guid chassisZoneUUID)
+        {
+            ChassisUSBPort? chassisUSBPort = await _context.ChassisUSBPort.FirstOrDefaultAsync(x =>
+                x.ChassisUUID == chassisUUID
+                && x.USBPortUUID == usbPortUUID
                 && x.ChassisZoneUUID == chassisZoneUUID
             );
 
-            if (existing == null) return NotFound();
+            if (chassisUSBPort == null) return NotFound();
 
-            _context.ChassisUSBPort.Remove(existing);
+            _context.ChassisUSBPort.Remove(chassisUSBPort);
 
             await _context.SaveChangesAsync();
 

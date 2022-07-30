@@ -10,10 +10,5 @@
         {
             DomainValidation.String.LengthRange(_errors, "Zone", ChassisZone.Zone, 1, 50);
         }
-
-        public Validation(Edit ChassisZone)
-        {
-            DomainValidation.String.LengthRange(_errors, "Zone", ChassisZone.Zone, 1, 50);
-        }
     }
 }

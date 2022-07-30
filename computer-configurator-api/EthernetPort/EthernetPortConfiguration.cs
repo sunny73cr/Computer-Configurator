@@ -12,6 +12,9 @@ namespace ComputerConfigurator.Api.EthernetPort
             builder.HasKey(e => e.UUID)
                 .HasName("ethernetport_pkey");
 
+            builder.HasIndex(x => x.Chipset, "ethernetport_chipset_unique")
+                .IsUnique();
+
             builder.Property(e => e.UUID)
                 .HasColumnName("uuid")
                 .HasColumnType("uuid")

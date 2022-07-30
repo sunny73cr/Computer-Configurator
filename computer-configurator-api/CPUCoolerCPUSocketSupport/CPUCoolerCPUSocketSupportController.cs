@@ -14,18 +14,6 @@ namespace ComputerConfigurator.Api.CPUCoolerCPUSocketSupport
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid cpuCoolerUUID)
-        {
-            List<DTO.Details> CPUCoolerCPUSocketSupports = await _context.CPUCoolerCPUSocketSupport
-                .Include(x => x.CPUSocket)
-                .Where(x => x.CPUCoolerUUID == cpuCoolerUUID)
-                .Select(CPUCoolerCPUSocketSupport => new DTO.Details(CPUCoolerCPUSocketSupport))
-                .ToListAsync();
-
-            return Ok(CPUCoolerCPUSocketSupports);
-        }
-
         [HttpPost]
         public async Task<ActionResult> Create(Guid cpuCoolerUUID, DTO.Create createCPUCoolerCPUSocketSupport)
         {
@@ -33,20 +21,20 @@ namespace ComputerConfigurator.Api.CPUCoolerCPUSocketSupport
 
             if (errors.Any()) return BadRequest(errors);
 
-            CPUCoolerCPUSocketSupport? existing = await _context.CPUCoolerCPUSocketSupport.FirstOrDefaultAsync(x =>
+            bool existing = await _context.CPUCoolerCPUSocketSupport.AnyAsync(x =>
                 x.CPUCoolerUUID == cpuCoolerUUID
                 && x.CPUSocketUUID == createCPUCoolerCPUSocketSupport.CPUSocketUUID
             );
 
-            if (existing != null) return Conflict();
+            if (existing) return Conflict();
 
-            CPUCooler.CPUCooler? cpuCooler = await _context.CPUCooler.FirstOrDefaultAsync(x => x.UUID == cpuCoolerUUID);
+            bool cpuCoolerExists = await _context.CPUCooler.AnyAsync(x => x.UUID == cpuCoolerUUID);
 
-            if (cpuCooler == null) return NotFound();
+            if (cpuCoolerExists == false) return NotFound();
 
-            CPUSocket.CPUSocket? cpuSocket = await _context.CPUSocket.FirstOrDefaultAsync(x => x.UUID == createCPUCoolerCPUSocketSupport.CPUSocketUUID);
+            bool cpuSocketExists = await _context.CPUSocket.AnyAsync(x => x.UUID == createCPUCoolerCPUSocketSupport.CPUSocketUUID);
 
-            if (cpuSocket == null) return NotFound();
+            if (cpuSocketExists == false) return NotFound();
 
             CPUCoolerCPUSocketSupport CPUCoolerCPUSocketSupport = new(cpuCoolerUUID, createCPUCoolerCPUSocketSupport);
 
@@ -57,17 +45,35 @@ namespace ComputerConfigurator.Api.CPUCoolerCPUSocketSupport
             return NoContent();
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<DTO.Details>>> GetAll(Guid cpuCoolerUUID)
+        {
+            List<DTO.Details> CPUCoolerCPUSocketSupport = new();
+
+            IAsyncEnumerable<CPUCoolerCPUSocketSupport> query = _context.CPUCoolerCPUSocketSupport
+                .Include(x => x.CPUSocket)
+                .Where(x => x.CPUCoolerUUID == cpuCoolerUUID)
+                .AsAsyncEnumerable();
+
+            await foreach (CPUCoolerCPUSocketSupport cpuCoolerCPUSocketSupport in query)
+            {
+                CPUCoolerCPUSocketSupport.Add(new DTO.Details(cpuCoolerCPUSocketSupport));
+            }
+
+            return Ok(CPUCoolerCPUSocketSupport);
+        }
+
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid cpuCoolerUUID, Guid cpuSocketUUID)
         {
-            CPUCoolerCPUSocketSupport? existing = await _context.CPUCoolerCPUSocketSupport.FirstOrDefaultAsync(x =>
+            CPUCoolerCPUSocketSupport? cpuCoolerCPUSocketSupport = await _context.CPUCoolerCPUSocketSupport.FirstOrDefaultAsync(x =>
                 x.CPUCoolerUUID == cpuCoolerUUID
                 && x.CPUSocketUUID == cpuSocketUUID
             );
 
-            if (existing == null) return NotFound();
+            if (cpuCoolerCPUSocketSupport == null) return NotFound();
 
-            _context.CPUCoolerCPUSocketSupport.Remove(existing);
+            _context.CPUCoolerCPUSocketSupport.Remove(cpuCoolerCPUSocketSupport);
 
             await _context.SaveChangesAsync();
 

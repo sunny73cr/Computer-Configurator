@@ -10,10 +10,5 @@
         {
             DomainValidation.String.LengthRange(_errors, "Mode", RAIDMode.Mode, 1, 50);
         }
-
-        public Validation(Edit RAIDMode)
-        {
-            DomainValidation.String.LengthRange(_errors, "Mode", RAIDMode.Mode, 1, 50);
-        }
     }
 }

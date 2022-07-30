@@ -17,9 +17,4 @@ public partial class USBPort
         Interface = USBPort.Interface;
         Version = USBPort.Version;
     }
-
-    public static void Edit(USBPort USBPort, DTO.Edit edits)
-    {
-        if (USBPort.Interface != edits.Interface) USBPort.Interface = edits.Interface;
-    }
 }

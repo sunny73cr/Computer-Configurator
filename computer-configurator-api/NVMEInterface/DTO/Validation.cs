@@ -10,10 +10,5 @@
         {
             DomainValidation.String.LengthRange(_errors, "Interface", NVMEInterface.Interface, 1, 10);
         }
-
-        public Validation(Edit NVMEInterface)
-        {
-            DomainValidation.String.LengthRange(_errors, "Interface", NVMEInterface.Interface, 1, 10);
-        }
     }
 }

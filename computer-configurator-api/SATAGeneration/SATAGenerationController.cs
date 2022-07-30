@@ -21,9 +21,9 @@ namespace ComputerConfigurator.Api.SATAGeneration
 
             if (errors.Any()) return BadRequest(errors);
 
-            SATAGeneration? existing = await _context.SATAGeneration.FirstOrDefaultAsync(x => x.UUID == createSATAGeneration.UUID);
+            bool duplicate = await _context.SATAGeneration.AnyAsync(x => x.Generation == createSATAGeneration.Generation);
 
-            if (existing != null) return Conflict();
+            if (duplicate) return Conflict();
 
             SATAGeneration SATAGeneration = new(createSATAGeneration);
 
@@ -37,41 +37,17 @@ namespace ComputerConfigurator.Api.SATAGeneration
         [HttpGet]
         public async Task<ActionResult<List<DTO.Details>>> GetAll()
         {
-            List<DTO.Details> SATAGenerations = await _context.SATAGeneration
-                .Select(sataGeneration => new DTO.Details(sataGeneration))
-                .ToListAsync();
+            List<DTO.Details> SATAGenerations = new();
+
+            IAsyncEnumerable<SATAGeneration> query = _context.SATAGeneration
+                .AsAsyncEnumerable();
+
+            await foreach (SATAGeneration sataGeneration in query)
+            {
+                SATAGenerations.Add(new DTO.Details(sataGeneration));
+            }
 
             return Ok(SATAGenerations);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            SATAGeneration? SATAGeneration = await _context.SATAGeneration.FirstOrDefaultAsync(SATAGeneration => SATAGeneration.UUID == uuid);
-
-            if (SATAGeneration == null) return NotFound();
-
-            var details = new DTO.Details(SATAGeneration);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit SATAGenerationEdits)
-        {
-            IReadOnlyList<string> errors = SATAGenerationEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            SATAGeneration? SATAGeneration = await _context.SATAGeneration.FirstOrDefaultAsync(x => x.UUID == SATAGenerationEdits.UUID);
-
-            if (SATAGeneration == null) return NotFound();
-
-            SATAGeneration.Edit(SATAGeneration, SATAGenerationEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpDelete]

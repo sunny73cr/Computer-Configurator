@@ -44,36 +44,6 @@ namespace ComputerConfigurator.Api.FanHeader
             return Ok(FanHeaders);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            FanHeader? FanHeader = await _context.FanHeader.FirstOrDefaultAsync(FanHeader => FanHeader.UUID == uuid);
-
-            if (FanHeader == null) return NotFound();
-
-            var details = new DTO.Details(FanHeader);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit FanHeaderEdits)
-        {
-            IReadOnlyList<string> errors = FanHeaderEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            FanHeader? FanHeader = await _context.FanHeader.FirstOrDefaultAsync(x => x.UUID == FanHeaderEdits.UUID);
-
-            if (FanHeader == null) return NotFound();
-
-            FanHeader.Edit(FanHeader, FanHeaderEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
         [HttpDelete]
         public async Task<ActionResult> Delete(Guid uuid)
         {
