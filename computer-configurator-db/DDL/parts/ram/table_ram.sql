@@ -12,10 +12,10 @@ CREATE TABLE ram (
     FOREIGN KEY (UUID) REFERENCES part(UUID),
     FOREIGN KEY (RAMSocketUUID) REFERENCES ramsocket(UUID),
     FOREIGN KEY (RAMSpeedUUID) REFERENCES ramspeed(UUID),
-    CONSTRAINT ram_modulecapacity_range CHECK (ModuleCapacityGBytes > 1 AND ModuleCapacityGBytes <= 512),
+    CONSTRAINT ram_modulecapacity_range CHECK (ModuleCapacityGBytes > 0 AND ModuleCapacityGBytes <= 512),
     CONSTRAINT ram_dimmcount_range CHECK (DIMMCount > 0 AND DIMMCount <= 32),
-    CONSTRAINT ram_cas_range CHECK (CAS > 15 AND CAS <= 50),
-    CONSTRAINT ram_trcd_range CHECK (TRCD > 15 AND TRCD <= 55),
-    CONSTRAINT ram_trp_range CHECK (TRP > 15 AND TRP <= 55),
-    CONSTRAINT ram_tras_range CHECK (TRAS > 25 AND TRAS <= 100)
+    CONSTRAINT ram_cas_range CHECK (CAS > 9 AND CAS <= 50),
+    CONSTRAINT ram_trcd_range CHECK (TRCD > 9 AND TRCD <= 55),
+    CONSTRAINT ram_trp_range CHECK (TRP > 9 AND TRP <= 55),
+    CONSTRAINT ram_tras_range CHECK (TRAS > 14 AND TRAS <= 100)
 );

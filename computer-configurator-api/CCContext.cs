@@ -94,6 +94,8 @@ namespace ComputerConfigurator.Api
         public virtual DbSet<SATAHDD.SATAHDD> SATAHDD { get; set; } = null!;
         public virtual DbSet<SATASSD.SATASSD> SATASSD { get; set; } = null!;
         public virtual DbSet<NVMESSD.NVMESSD> NVMESSD { get; set; } = null!;
+
+        public virtual DbSet<RAM.RAM> RAM { get; set; } = null!;
         #endregion
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
