@@ -96,6 +96,8 @@ namespace ComputerConfigurator.Api
         public virtual DbSet<NVMESSD.NVMESSD> NVMESSD { get; set; } = null!;
 
         public virtual DbSet<RAM.RAM> RAM { get; set; } = null!;
+
+        public virtual DbSet<Radiator.Radiator> Radiator { get; set; } = null!;
         #endregion
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
