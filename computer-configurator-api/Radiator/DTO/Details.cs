@@ -4,8 +4,8 @@
     {
         public int WidthMM { get; set; }
         public RadiatorSize.DTO.Details RadiatorSize { get; set; }
-        public int TubeInnerDiameterMM { get; set; }
-        public int TubeOuterDiameterMM { get; set; }
+        public float TubeInnerDiameterMM { get; set; }
+        public float TubeOuterDiameterMM { get; set; }
 
         public Details(Radiator radiator) : base(radiator)
         {
