@@ -10,10 +10,5 @@
         {
             DomainValidation.Numeric.ValueRange(_errors, "Diameter", FanDiameter.Diameter, 1, 50);
         }
-
-        public Validation(Edit FanDiameter)
-        {
-            DomainValidation.Numeric.ValueRange(_errors, "Diameter", FanDiameter.Diameter, 1, 50);
-        }
     }
 }

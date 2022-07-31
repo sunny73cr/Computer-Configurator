@@ -21,9 +21,9 @@ namespace ComputerConfigurator.Api.EightyPlusRating
 
             if (errors.Any()) return BadRequest(errors);
 
-            EightyPlusRating? existing = await _context.EightyPlusRating.FirstOrDefaultAsync(x => x.UUID == createEightyPlusRating.UUID);
+            bool existing = await _context.EightyPlusRating.AnyAsync(x => x.Rating == createEightyPlusRating.Rating);
 
-            if (existing != null) return Conflict();
+            if (existing) return Conflict();
 
             EightyPlusRating EightyPlusRating = new(createEightyPlusRating);
 
@@ -37,41 +37,17 @@ namespace ComputerConfigurator.Api.EightyPlusRating
         [HttpGet]
         public async Task<ActionResult<List<DTO.Details>>> GetAll()
         {
-            List<DTO.Details> EightyPlusRatings = await _context.EightyPlusRating
-                .Select(eightyPlusRating => new DTO.Details(eightyPlusRating))
-                .ToListAsync();
+            List<DTO.Details> EightyPlusRatings = new();
+
+            IAsyncEnumerable<EightyPlusRating> query = _context.EightyPlusRating
+                .AsAsyncEnumerable();
+
+            await foreach (EightyPlusRating eightyPlusRating in query)
+            {
+                EightyPlusRatings.Add(new DTO.Details(eightyPlusRating));
+            }
 
             return Ok(EightyPlusRatings);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            EightyPlusRating? EightyPlusRating = await _context.EightyPlusRating.FirstOrDefaultAsync(EightyPlusRating => EightyPlusRating.UUID == uuid);
-
-            if (EightyPlusRating == null) return NotFound();
-
-            var details = new DTO.Details(EightyPlusRating);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit EightyPlusRatingEdits)
-        {
-            IReadOnlyList<string> errors = EightyPlusRatingEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            EightyPlusRating? EightyPlusRating = await _context.EightyPlusRating.FirstOrDefaultAsync(x => x.UUID == EightyPlusRatingEdits.UUID);
-
-            if (EightyPlusRating == null) return NotFound();
-
-            EightyPlusRating.Edit(EightyPlusRating, EightyPlusRatingEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpDelete]

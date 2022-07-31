@@ -10,10 +10,5 @@
         {
             DomainValidation.String.LengthRange(_errors, "Generation", PCIEGeneration.Generation, 1, 16);
         }
-
-        public Validation(Edit PCIEGeneration)
-        {
-            DomainValidation.String.LengthRange(_errors, "Generation", PCIEGeneration.Generation, 1, 16);
-        }
     }
 }

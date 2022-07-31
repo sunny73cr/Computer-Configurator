@@ -3,7 +3,7 @@
     public class Create
     {
         public Guid UUID { get; } = Guid.NewGuid();
-        public string Version { get; set; } = null!;
+        public string Version { get; set; } = string.Empty;
 
         public Create()
         {

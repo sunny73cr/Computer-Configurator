@@ -15,9 +15,4 @@ public partial class RadiatorSize
         UUID = RadiatorSize.UUID;
         Size = RadiatorSize.Size;
     }
-
-    public static void Edit(RadiatorSize RadiatorSize, DTO.Edit edits)
-    {
-        if (RadiatorSize.Size != edits.Size) RadiatorSize.Size = edits.Size;
-    }
 }

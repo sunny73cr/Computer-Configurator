@@ -12,6 +12,9 @@ namespace ComputerConfigurator.Api.EthernetPort
             builder.HasKey(e => e.UUID)
                 .HasName("ethernetport_pkey");
 
+            builder.HasIndex(x => x.Chipset, "ethernetport_chipset_unique")
+                .IsUnique();
+
             builder.Property(e => e.UUID)
                 .HasColumnName("uuid")
                 .HasColumnType("uuid")
@@ -25,6 +28,15 @@ namespace ComputerConfigurator.Api.EthernetPort
                 .HasColumnName("chipset")
                 .HasColumnType("varchar(50)")
                 .HasMaxLength(50);
+
+            //builder.HasData(new List<EthernetPort>()
+            //{
+            //    new EthernetPort() { UUID = Guid.NewGuid(), BandwidthMBytes = 100, Chipset = "Unknown" },
+            //    new EthernetPort() { UUID = Guid.NewGuid(), BandwidthMBytes = 1000, Chipset = "Unknown" },
+            //    new EthernetPort() { UUID = Guid.NewGuid(), BandwidthMBytes = 2500, Chipset = "Unknown" },
+            //    new EthernetPort() { UUID = Guid.NewGuid(), BandwidthMBytes = 5000, Chipset = "Unknown" },
+            //    new EthernetPort() { UUID = Guid.NewGuid(), BandwidthMBytes = 10000, Chipset = "Unknown" },
+            //});
         }
     }
 }

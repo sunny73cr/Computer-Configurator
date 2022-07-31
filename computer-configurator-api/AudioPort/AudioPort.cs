@@ -17,11 +17,5 @@
             PinCount = audioPort.PinCount;
             ConnectorSize = audioPort.ConnectorSize;
         }
-
-        public static void Edit(AudioPort audioPort, DTO.Edit edits)
-        {
-            if (audioPort.PinCount != edits.PinCount) audioPort.PinCount = edits.PinCount;
-            if (audioPort.ConnectorSize != edits.ConnectorSize) audioPort.ConnectorSize = edits.ConnectorSize;
-        }
     }
 }

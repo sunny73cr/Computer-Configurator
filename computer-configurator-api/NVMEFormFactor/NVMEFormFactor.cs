@@ -15,9 +15,4 @@ public partial class NVMEFormFactor
         UUID = NVMEFormFactor.UUID;
         FormFactor = NVMEFormFactor.FormFactor;
     }
-
-    public static void Edit(NVMEFormFactor NVMEFormFactor, DTO.Edit edits)
-    {
-        if (NVMEFormFactor.FormFactor != edits.FormFactor) NVMEFormFactor.FormFactor = edits.FormFactor;
-    }
 }

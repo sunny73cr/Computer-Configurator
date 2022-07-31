@@ -21,9 +21,16 @@ namespace ComputerConfigurator.Api.PCIEConnector
 
             if (errors.Any()) return BadRequest(errors);
 
-            PCIEConnector? existing = await _context.PCIEConnector.FirstOrDefaultAsync(x => x.UUID == createPCIEConnector.UUID);
+            bool pcieGenerationExists = await _context.PCIEGeneration.AnyAsync(x => x.UUID == createPCIEConnector.PCIEGenerationUUID);
 
-            if (existing != null) return Conflict();
+            if (pcieGenerationExists == false) return NotFound();
+
+            bool duplicate = await _context.PCIEConnector.AnyAsync(x =>
+                x.LaneCount == createPCIEConnector.LaneCount
+                && x.PCIEGenerationUUID == createPCIEConnector.PCIEGenerationUUID
+            );
+
+            if (duplicate) return Conflict();
 
             PCIEConnector PCIEConnector = new(createPCIEConnector);
 
@@ -37,42 +44,18 @@ namespace ComputerConfigurator.Api.PCIEConnector
         [HttpGet]
         public async Task<ActionResult<List<DTO.Details>>> GetAll()
         {
-            List<DTO.Details> PCIEConnectors = await _context.PCIEConnector
+            List<DTO.Details> PCIEConnectors = new();
+
+            IAsyncEnumerable<PCIEConnector> query = _context.PCIEConnector
                 .Include(x => x.PCIEGeneration)
-                .Select(pcieConnector => new DTO.Details(pcieConnector))
-                .ToListAsync();
+                .AsAsyncEnumerable();
+
+            await foreach (PCIEConnector pcieConnector in query)
+            {
+                PCIEConnectors.Add(new DTO.Details(pcieConnector));
+            }
 
             return Ok(PCIEConnectors);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            PCIEConnector? PCIEConnector = await _context.PCIEConnector.FirstOrDefaultAsync(PCIEConnector => PCIEConnector.UUID == uuid);
-
-            if (PCIEConnector == null) return NotFound();
-
-            var details = new DTO.Details(PCIEConnector);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit PCIEConnectorEdits)
-        {
-            IReadOnlyList<string> errors = PCIEConnectorEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            PCIEConnector? PCIEConnector = await _context.PCIEConnector.FirstOrDefaultAsync(x => x.UUID == PCIEConnectorEdits.UUID);
-
-            if (PCIEConnector == null) return NotFound();
-
-            PCIEConnector.Edit(PCIEConnector, PCIEConnectorEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpDelete]

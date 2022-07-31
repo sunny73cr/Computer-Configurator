@@ -15,9 +15,4 @@ public partial class FanHeader
         UUID = FanHeader.UUID;
         PinCount = FanHeader.PinCount;
     }
-
-    public static void Edit(FanHeader FanHeader, DTO.Edit edits)
-    {
-        if (FanHeader.PinCount != edits.PinCount) FanHeader.PinCount = edits.PinCount;
-    }
 }

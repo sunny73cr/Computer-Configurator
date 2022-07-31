@@ -9,10 +9,9 @@ namespace ComputerConfigurator.Api.AudioPort
         {
             builder.ToTable("audioport");
 
-            builder.HasKey(e => e.UUID)
-                .HasName("audioport_pkey");
+            builder.HasKey(e => e.UUID).HasName("audioport_pkey");
 
-            builder.HasIndex(x => new { x.PinCount, x.ConnectorSize })
+            builder.HasIndex(x => new { x.PinCount, x.ConnectorSize }, "audioport_pincount_connectorsize_unique")
                 .IsUnique();
 
             builder.Property(e => e.UUID)

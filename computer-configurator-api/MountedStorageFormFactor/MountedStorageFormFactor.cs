@@ -15,9 +15,4 @@ public partial class MountedStorageFormFactor
         UUID = MountedStorageFormFactor.UUID;
         Size = MountedStorageFormFactor.Size;
     }
-
-    public static void Edit(MountedStorageFormFactor MountedStorageFormFactor, DTO.Edit edits)
-    {
-        if (MountedStorageFormFactor.Size != edits.Size) MountedStorageFormFactor.Size = edits.Size;
-    }
 }

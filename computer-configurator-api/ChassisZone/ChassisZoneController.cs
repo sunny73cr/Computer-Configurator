@@ -21,9 +21,9 @@ namespace ComputerConfigurator.Api.ChassisZone
 
             if (errors.Any()) return BadRequest(errors);
 
-            ChassisZone? existing = await _context.ChassisZone.FirstOrDefaultAsync(x => x.UUID == createChassisZone.UUID);
+            bool existing = await _context.ChassisZone.AnyAsync(x => x.Zone == createChassisZone.Zone);
 
-            if (existing != null) return Conflict();
+            if (existing) return Conflict();
 
             ChassisZone ChassisZone = new(createChassisZone);
 
@@ -35,43 +35,19 @@ namespace ComputerConfigurator.Api.ChassisZone
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DTO.Details>>> GetAll()
+        public async Task<ActionResult<ICollection<DTO.Details>>> GetAll()
         {
-            List<DTO.Details> ChassisZones = await _context.ChassisZone
-                .Select(chassisZone => new DTO.Details(chassisZone))
-                .ToListAsync();
+            List<DTO.Details> ChassisZones = new();
+
+            IAsyncEnumerable<ChassisZone> query = _context.ChassisZone
+                .AsAsyncEnumerable();
+
+            await foreach (ChassisZone chassisZone in query)
+            {
+                ChassisZones.Add(new DTO.Details(chassisZone));
+            }
 
             return Ok(ChassisZones);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            ChassisZone? ChassisZone = await _context.ChassisZone.FirstOrDefaultAsync(ChassisZone => ChassisZone.UUID == uuid);
-
-            if (ChassisZone == null) return NotFound();
-
-            var details = new DTO.Details(ChassisZone);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit ChassisZoneEdits)
-        {
-            IReadOnlyList<string> errors = ChassisZoneEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            ChassisZone? ChassisZone = await _context.ChassisZone.FirstOrDefaultAsync(x => x.UUID == ChassisZoneEdits.UUID);
-
-            if (ChassisZone == null) return NotFound();
-
-            ChassisZone.Edit(ChassisZone, ChassisZoneEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpDelete]

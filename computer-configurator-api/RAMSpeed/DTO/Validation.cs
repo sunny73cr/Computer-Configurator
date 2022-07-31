@@ -10,10 +10,5 @@
         {
             DomainValidation.Numeric.ValueRange(_errors, "ClockRate", RAMSpeed.ClockRate, 800, 14000);
         }
-
-        public Validation(Edit RAMSpeed)
-        {
-            DomainValidation.Numeric.ValueRange(_errors, "ClockRate", RAMSpeed.ClockRate, 800, 14000);
-        }
     }
 }

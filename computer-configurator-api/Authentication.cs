@@ -28,10 +28,5 @@ namespace ComputerConfigurator.Api
 
             return saltBuffer;
         }
-
-        public static bool Verify(byte[] knownPassword, byte[] testPassword)
-        {
-            return knownPassword.SequenceEqual(testPassword);
-        }
     }
 }

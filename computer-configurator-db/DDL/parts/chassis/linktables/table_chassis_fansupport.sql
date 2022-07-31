@@ -8,6 +8,6 @@ CREATE TABLE chassis_fansupport (
     FOREIGN KEY (ChassisUUID) REFERENCES chassis(UUID),
     FOREIGN KEY (FanDiameterUUID) REFERENCES fandiameter(UUID),
     FOREIGN KEY (ChassisZoneUUID) REFERENCES chassiszone(UUID),
-    CONSTRAINT chassis_fansupport_maximumwidth_range CHECK (MaximumWidthMM > 10 AND MaximumWidthMM <= 30),
+    CONSTRAINT chassis_fansupport_maximumwidth_range CHECK (MaximumWidthMM >= 10 AND MaximumWidthMM <= 30),
     CONSTRAINT chassis_fansupport_count_range CHECK (Count > 0 AND Count <= 5)
 );

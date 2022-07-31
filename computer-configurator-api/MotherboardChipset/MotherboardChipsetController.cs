@@ -21,17 +21,20 @@ namespace ComputerConfigurator.Api.MotherboardChipset
 
             if (errors.Any()) return BadRequest(errors);
 
-            MotherboardChipset? existing = await _context.MotherboardChipset.FirstOrDefaultAsync(x => x.UUID == createMotherboardChipset.UUID);
+            bool manufacturerExists = await _context.Manufacturer.AnyAsync(x => x.UUID == createMotherboardChipset.ManufacturerUUID);
 
-            if (existing != null) return Conflict();
+            if (manufacturerExists == false) return NotFound("Manufacturer not found.");
 
-            Manufacturer.Manufacturer? manufacturer = await _context.Manufacturer.FirstOrDefaultAsync(x => x.UUID == createMotherboardChipset.ManufacturerUUID);
+            bool cpuSocketExists = await _context.CPUSocket.AnyAsync(x => x.UUID == createMotherboardChipset.CPUSocketUUID);
 
-            if (manufacturer == null) return NotFound("Manufacturer not found.");
+            if (cpuSocketExists == false) return NotFound("CPU Socket not found.");
 
-            CPUSocket.CPUSocket? cpuSocket = await _context.CPUSocket.FirstOrDefaultAsync(x => x.UUID == createMotherboardChipset.CPUSocketUUID);
+            bool duplicate = await _context.MotherboardChipset.AnyAsync(x =>
+                x.ManufacturerUUID == createMotherboardChipset.ManufacturerUUID
+                && x.Version == createMotherboardChipset.Version
+            );
 
-            if (cpuSocket == null) return NotFound("CPU Socket not found.");
+            if (duplicate) return Conflict();
 
             MotherboardChipset MotherboardChipset = new(createMotherboardChipset);
 
@@ -43,48 +46,22 @@ namespace ComputerConfigurator.Api.MotherboardChipset
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DTO.Details>>> GetAll()
+        public async Task<ActionResult<ICollection<DTO.Details>>> GetAll(Guid motherboardChipsetUUID)
         {
-            List<DTO.Details> MotherboardChipsets = await _context.MotherboardChipset
+            HashSet<DTO.Details> MotherboardChipsetDetails = new();
+
+            IAsyncEnumerable<MotherboardChipset> query = _context.MotherboardChipset
                 .Include(x => x.Manufacturer)
                 .Include(x => x.CPUSocket)
-                .Select(motherboardChipset => new DTO.Details(motherboardChipset))
-                .ToListAsync();
+                .Where(x => x.UUID == motherboardChipsetUUID)
+                .AsAsyncEnumerable();
 
-            return Ok(MotherboardChipsets);
-        }
+            await foreach (MotherboardChipset MotherboardChipset in query)
+            {
+                MotherboardChipsetDetails.Add(new DTO.Details(MotherboardChipset));
+            }
 
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            MotherboardChipset? MotherboardChipset = await _context.MotherboardChipset
-                .Include(x => x.Manufacturer)
-                .Include(x => x.CPUSocket)
-                .FirstOrDefaultAsync(MotherboardChipset => MotherboardChipset.UUID == uuid);
-
-            if (MotherboardChipset == null) return NotFound();
-
-            var details = new DTO.Details(MotherboardChipset);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit MotherboardChipsetEdits)
-        {
-            IReadOnlyList<string> errors = MotherboardChipsetEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            MotherboardChipset? MotherboardChipset = await _context.MotherboardChipset.FirstOrDefaultAsync(x => x.UUID == MotherboardChipsetEdits.UUID);
-
-            if (MotherboardChipset == null) return NotFound();
-
-            MotherboardChipset.Edit(MotherboardChipset, MotherboardChipsetEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok(MotherboardChipsetDetails);
         }
 
         [HttpDelete]

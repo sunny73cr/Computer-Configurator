@@ -5,7 +5,7 @@
         public Guid UUID { get; set; }
         public CPUSocket.DTO.Details CPUSocket { get; set; } = null!;
         public Manufacturer.DTO.Details Manufacturer { get; set; } = null!;
-        public string Version { get; set; } = null!;
+        public string Version { get; set; } = string.Empty;
 
         public Details()
         {

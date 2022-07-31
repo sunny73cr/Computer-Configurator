@@ -10,10 +10,5 @@
         {
             DomainValidation.String.LengthRange(_errors, "Version", cpusocket.Version, 1, 20);
         }
-
-        public Validation(DTO.Edit cpusocket)
-        {
-            DomainValidation.String.LengthRange(_errors, "Version", cpusocket.Version, 1, 20); 
-        }
     }
 }

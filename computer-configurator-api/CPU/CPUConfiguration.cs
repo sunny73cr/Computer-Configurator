@@ -9,10 +9,6 @@ namespace ComputerConfigurator.Api.CPU
         {
             builder.ToTable("cpu");
 
-            builder.Property(e => e.UUID)
-                .HasColumnName("uuid")
-                .ValueGeneratedNever();
-
             builder.Property(e => e.CoreCount)
                 .HasColumnName("corecount")
                 .HasColumnType("integer");
@@ -29,17 +25,17 @@ namespace ComputerConfigurator.Api.CPU
                 .HasColumnName("boostclockspeed")
                 .HasColumnType("integer");
 
-            builder.HasOne(d => d.CPUSocket)
-                .WithMany()
-                .HasForeignKey(d => d.CPUSocketUUID)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("cpu_cpusocketuuid_fkey");
-
             builder.HasOne(d => d.Part)
                 .WithOne()
                 .HasForeignKey<CPU>(d => d.UUID)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("cpu_uuid_fkey");
+
+            builder.HasOne(d => d.CPUSocket)
+                .WithMany()
+                .HasForeignKey(d => d.CPUSocketUUID)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("cpu_cpusocketuuid_fkey");
         }
     }
 }

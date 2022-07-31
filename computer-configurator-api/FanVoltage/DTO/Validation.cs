@@ -10,10 +10,5 @@
         {
             DomainValidation.Numeric.ValueRange(_errors, "Voltage", FanVoltage.Voltage, 3, 48);
         }
-
-        public Validation(Edit FanVoltage)
-        {
-            DomainValidation.Numeric.ValueRange(_errors, "Voltage", FanVoltage.Voltage, 3, 48);
-        }
     }
 }

@@ -21,9 +21,9 @@ namespace ComputerConfigurator.Api.CPUSocket
 
             if (errors.Any()) return BadRequest(errors);
 
-            CPUSocket? existing = await _context.CPUSocket.FirstOrDefaultAsync(x => x.UUID == createCPUSocket.UUID);
+            bool existing = await _context.CPUSocket.AnyAsync(x => x.Version.ToLower() == createCPUSocket.Version.ToLower());
 
-            if (existing != null) return Conflict();
+            if (existing) return Conflict();
 
             CPUSocket cpu = new(createCPUSocket);
 
@@ -35,55 +35,19 @@ namespace ComputerConfigurator.Api.CPUSocket
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DTO.Details>>> GetAll()
+        public async Task<ActionResult<ICollection<DTO.Details>>> GetAll()
         {
-            List<DTO.Details> CPUSockets = await _context.CPUSocket
-                .Select(cpuSocket => new DTO.Details(cpuSocket))
-                .ToListAsync();
+            List<DTO.Details> CPUSockets = new();
+
+            IAsyncEnumerable<CPUSocket> query = _context.CPUSocket
+                .AsAsyncEnumerable();
+
+            await foreach (CPUSocket cpuSocket in query)
+            {
+                CPUSockets.Add(new DTO.Details(cpuSocket));
+            }
 
             return Ok(CPUSockets);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByVersion(string version)
-        {
-            CPUSocket? CPUSocket = await _context.CPUSocket.FirstOrDefaultAsync(x => x.Version == version);
-
-            if (CPUSocket == null) return NotFound();
-
-            var details = new DTO.Details(CPUSocket);
-
-            return Ok(details);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            CPUSocket? CPUSocket = await _context.CPUSocket.FirstOrDefaultAsync(x => x.UUID == uuid);
-
-            if (CPUSocket == null) return NotFound();
-
-            var details = new DTO.Details(CPUSocket);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit editsCPUSocket)
-        {
-            IReadOnlyList<string> errors = editsCPUSocket.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            CPUSocket? CPUSocket = await _context.CPUSocket.FirstOrDefaultAsync(x => x.UUID == editsCPUSocket.UUID);
-
-            if (CPUSocket == null) return NotFound();
-
-            CPUSocket.Edit(CPUSocket, editsCPUSocket);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpDelete]

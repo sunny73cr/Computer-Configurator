@@ -2,8 +2,6 @@
 {
     public class Details : Part.DTO.Details
     {
-        public new const string SQLParameters = "";
-
         public CPUSocket.DTO.Details CPUSocket { get; set; } = default!;
         public int CoreCount { get; set; }
         public int ThreadCount { get; set; }

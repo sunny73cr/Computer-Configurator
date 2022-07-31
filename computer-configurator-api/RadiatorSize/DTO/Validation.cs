@@ -10,10 +10,5 @@
         {
             DomainValidation.Numeric.ValueRange(_errors, "Size", RadiatorSize.Size, 120, 1080);
         }
-
-        public Validation(Edit RadiatorSize)
-        {
-            DomainValidation.Numeric.ValueRange(_errors, "Size", RadiatorSize.Size, 120, 1080);
-        }
     }
 }

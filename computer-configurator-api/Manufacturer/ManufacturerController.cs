@@ -21,9 +21,9 @@ namespace ComputerConfigurator.Api.Manufacturer
 
             if (errors.Any()) return BadRequest(errors);
 
-            Manufacturer? existing = await _context.Manufacturer.FirstOrDefaultAsync(x => x.Name == createManufacturer.Name);
+            bool existing = await _context.Manufacturer.AnyAsync(x => x.Name == createManufacturer.Name);
 
-            if (existing != null) return Conflict();
+            if (existing) return Conflict();
 
             Manufacturer manufacturer = new(createManufacturer);
 
@@ -35,11 +35,17 @@ namespace ComputerConfigurator.Api.Manufacturer
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DTO.Details>>> GetAll()
+        public async Task<ActionResult<ICollection<DTO.Details>>> GetAll()
         {
-            List<DTO.Details> Manufacturers = await _context.Manufacturer
-                .Select(manufacturer => new DTO.Details(manufacturer))
-                .ToListAsync();
+            List<DTO.Details> Manufacturers = new();
+
+            IAsyncEnumerable<Manufacturer> query = _context.Manufacturer
+                .AsAsyncEnumerable();
+
+            await foreach (Manufacturer manufacturer in query)
+            {
+                Manufacturers.Add(new DTO.Details(manufacturer));
+            }
 
             return Ok(Manufacturers);
         }
@@ -78,6 +84,13 @@ namespace ComputerConfigurator.Api.Manufacturer
             Manufacturer? manufacturer = await _context.Manufacturer.FirstOrDefaultAsync(x => x.UUID == manufacturerEdits.UUID);
 
             if (manufacturer == null) return NotFound();
+
+            if (manufacturer.Name != manufacturerEdits.Name)
+            {
+                bool conflictingName = await _context.Manufacturer.AnyAsync(x => x.Name == manufacturerEdits.Name);
+
+                if (conflictingName) return Conflict();
+            }
 
             Manufacturer.Edit(manufacturer, manufacturerEdits);
 

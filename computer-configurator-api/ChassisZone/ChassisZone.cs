@@ -15,9 +15,4 @@ public partial class ChassisZone
         UUID = ChassisZone.UUID;
         Zone = ChassisZone.Zone;
     }
-
-    public static void Edit(ChassisZone ChassisZone, DTO.Edit edits)
-    {
-        if (ChassisZone.Zone != edits.Zone) ChassisZone.Zone = edits.Zone;
-    }
 }

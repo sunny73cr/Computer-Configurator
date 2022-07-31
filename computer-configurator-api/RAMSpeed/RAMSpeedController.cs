@@ -21,9 +21,9 @@ namespace ComputerConfigurator.Api.RAMSpeed
 
             if (errors.Any()) return BadRequest(errors);
 
-            RAMSpeed? existing = await _context.RAMSpeed.FirstOrDefaultAsync(x => x.UUID == createRAMSpeed.UUID);
+            bool duplicate = await _context.RAMSpeed.AnyAsync(x => x.ClockRate == createRAMSpeed.ClockRate);
 
-            if (existing != null) return Conflict();
+            if (duplicate) return Conflict();
 
             RAMSpeed RAMSpeed = new(createRAMSpeed);
 
@@ -37,41 +37,17 @@ namespace ComputerConfigurator.Api.RAMSpeed
         [HttpGet]
         public async Task<ActionResult<List<DTO.Details>>> GetAll()
         {
-            List<DTO.Details> RAMSpeeds = await _context.RAMSpeed
-                .Select(ramSpeeds => new DTO.Details(ramSpeeds))
-                .ToListAsync();
+            List<DTO.Details> RAMSpeeds = new();
+
+            IAsyncEnumerable<RAMSpeed> query = _context.RAMSpeed
+                .AsAsyncEnumerable();
+
+            await foreach (RAMSpeed ramSpeed in query)
+            {
+                RAMSpeeds.Add(new DTO.Details(ramSpeed));
+            }
 
             return Ok(RAMSpeeds);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            RAMSpeed? RAMSpeed = await _context.RAMSpeed.FirstOrDefaultAsync(RAMSpeed => RAMSpeed.UUID == uuid);
-
-            if (RAMSpeed == null) return NotFound();
-
-            var details = new DTO.Details(RAMSpeed);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit RAMSpeedEdits)
-        {
-            IReadOnlyList<string> errors = RAMSpeedEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            RAMSpeed? RAMSpeed = await _context.RAMSpeed.FirstOrDefaultAsync(x => x.UUID == RAMSpeedEdits.UUID);
-
-            if (RAMSpeed == null) return NotFound();
-
-            RAMSpeed.Edit(RAMSpeed, RAMSpeedEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpDelete]

@@ -21,9 +21,9 @@ namespace ComputerConfigurator.Api.PowerSupplyFormFactor
 
             if (errors.Any()) return BadRequest(errors);
 
-            PowerSupplyFormFactor? existing = await _context.PowerSupplyFormFactor.FirstOrDefaultAsync(x => x.UUID == createPowerSupplyFormFactor.UUID);
+            bool duplicate = await _context.PowerSupplyFormFactor.AnyAsync(x => x.FormFactor == createPowerSupplyFormFactor.FormFactor);
 
-            if (existing != null) return Conflict();
+            if (duplicate) return Conflict();
 
             PowerSupplyFormFactor PowerSupplyFormFactor = new(createPowerSupplyFormFactor);
 
@@ -37,41 +37,17 @@ namespace ComputerConfigurator.Api.PowerSupplyFormFactor
         [HttpGet]
         public async Task<ActionResult<List<DTO.Details>>> GetAll()
         {
-            List<DTO.Details> PowerSupplyFormFactors = await _context.PowerSupplyFormFactor
-                .Select(powerSupplyFormFactor => new DTO.Details(powerSupplyFormFactor))
-                .ToListAsync();
+            List<DTO.Details> PowerSupplyFormFactors = new();
+
+            IAsyncEnumerable<PowerSupplyFormFactor> query = _context.PowerSupplyFormFactor
+                .AsAsyncEnumerable();
+
+            await foreach (PowerSupplyFormFactor powerSupplyFormFactor in query)
+            {
+                PowerSupplyFormFactors.Add(new DTO.Details(powerSupplyFormFactor));
+            }
 
             return Ok(PowerSupplyFormFactors);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            PowerSupplyFormFactor? PowerSupplyFormFactor = await _context.PowerSupplyFormFactor.FirstOrDefaultAsync(PowerSupplyFormFactor => PowerSupplyFormFactor.UUID == uuid);
-
-            if (PowerSupplyFormFactor == null) return NotFound();
-
-            var details = new DTO.Details(PowerSupplyFormFactor);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit PowerSupplyFormFactorEdits)
-        {
-            IReadOnlyList<string> errors = PowerSupplyFormFactorEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            PowerSupplyFormFactor? PowerSupplyFormFactor = await _context.PowerSupplyFormFactor.FirstOrDefaultAsync(x => x.UUID == PowerSupplyFormFactorEdits.UUID);
-
-            if (PowerSupplyFormFactor == null) return NotFound();
-
-            PowerSupplyFormFactor.Edit(PowerSupplyFormFactor, PowerSupplyFormFactorEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpDelete]

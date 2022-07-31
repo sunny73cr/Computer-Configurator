@@ -21,53 +21,16 @@ namespace ComputerConfigurator.Api.BenchmarkedResolution
 
             if (errors.Any()) return BadRequest(errors);
 
-            BenchmarkedResolution? existing = await _context.BenchmarkedResolution.FirstOrDefaultAsync(x => x.UUID == createBenchmarkedResolution.UUID);
+            bool existing = await _context.BenchmarkedResolution.AnyAsync(x =>
+                x.PixelWidth == createBenchmarkedResolution.PixelWidth
+                && x.PixelHeight == createBenchmarkedResolution.PixelHeight
+            );
 
-            if (existing != null) return Conflict();
+            if (existing) return Conflict();
 
             BenchmarkedResolution BenchmarkedResolution = new(createBenchmarkedResolution);
 
             _context.BenchmarkedResolution.Add(BenchmarkedResolution);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<List<DTO.Details>>> GetAll()
-        {
-            List<DTO.Details> BenchmarkedResolutions = await _context.BenchmarkedResolution
-                .Select(benchmarkedResolution => new DTO.Details(benchmarkedResolution))
-                .ToListAsync();
-
-            return Ok(BenchmarkedResolutions);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            BenchmarkedResolution? BenchmarkedResolution = await _context.BenchmarkedResolution.FirstOrDefaultAsync(BenchmarkedResolution => BenchmarkedResolution.UUID == uuid);
-
-            if (BenchmarkedResolution == null) return NotFound();
-
-            var details = new DTO.Details(BenchmarkedResolution);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit BenchmarkedResolutionEdits)
-        {
-            IReadOnlyList<string> errors = BenchmarkedResolutionEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            BenchmarkedResolution? BenchmarkedResolution = await _context.BenchmarkedResolution.FirstOrDefaultAsync(x => x.UUID == BenchmarkedResolutionEdits.UUID);
-
-            if (BenchmarkedResolution == null) return NotFound();
-
-            BenchmarkedResolution.Edit(BenchmarkedResolution, BenchmarkedResolutionEdits);
 
             await _context.SaveChangesAsync();
 

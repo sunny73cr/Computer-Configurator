@@ -11,11 +11,5 @@
             DomainValidation.String.LengthRange(_errors, "Interface", DisplayConnector.Interface, 1, 15);
             DomainValidation.String.LengthRange(_errors, "Version", DisplayConnector.Version, 1, 15);
         }
-
-        public Validation(Edit DisplayConnector)
-        {
-            DomainValidation.String.LengthRange(_errors, "Interface", DisplayConnector.Interface, 1, 15);
-            DomainValidation.String.LengthRange(_errors, "Version", DisplayConnector.Version, 1, 15);
-        }
     }
 }

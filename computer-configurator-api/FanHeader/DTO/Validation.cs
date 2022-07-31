@@ -10,10 +10,5 @@
         {
             DomainValidation.Numeric.ValueRange(_errors, "Diameter", FanHeader.PinCount, 3, 4);
         }
-
-        public Validation(Edit FanHeader)
-        {
-            DomainValidation.Numeric.ValueRange(_errors, "Diameter", FanHeader.PinCount, 3, 4);
-        }
     }
 }

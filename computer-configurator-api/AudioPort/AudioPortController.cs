@@ -21,9 +21,12 @@ namespace ComputerConfigurator.Api.AudioPort
 
             if (errors.Any()) return BadRequest(errors);
 
-            AudioPort? existing = await _context.AudioPort.FirstOrDefaultAsync(x => x.UUID == createAudioPort.UUID);
+            bool existing = await _context.AudioPort.AnyAsync(x =>
+                x.ConnectorSize == createAudioPort.ConnectorSize
+                && x.PinCount == createAudioPort.PinCount
+            );
 
-            if (existing != null) return Conflict();
+            if (existing) return Conflict();
 
             AudioPort AudioPort = new(createAudioPort);
 
@@ -35,43 +38,18 @@ namespace ComputerConfigurator.Api.AudioPort
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DTO.Details>>> GetAll()
+        public async Task<ActionResult<ICollection<DTO.Details>>> GetAll()
         {
-            List<DTO.Details> AudioPorts = await _context.AudioPort
-                .Select(audioPort => new DTO.Details(audioPort))
-                .ToListAsync();
+            List<DTO.Details> AudioPorts = new();
+
+            IAsyncEnumerable<AudioPort> query = _context.AudioPort.AsAsyncEnumerable();
+
+            await foreach (AudioPort audioPort in query)
+            {
+                AudioPorts.Add(new DTO.Details(audioPort));
+            }
 
             return Ok(AudioPorts);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            AudioPort? AudioPort = await _context.AudioPort.FirstOrDefaultAsync(AudioPort => AudioPort.UUID == uuid);
-
-            if (AudioPort == null) return NotFound();
-
-            var details = new DTO.Details(AudioPort);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit AudioPortEdits)
-        {
-            IReadOnlyList<string> errors = AudioPortEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            AudioPort? AudioPort = await _context.AudioPort.FirstOrDefaultAsync(x => x.UUID == AudioPortEdits.UUID);
-
-            if (AudioPort == null) return NotFound();
-
-            AudioPort.Edit(AudioPort, AudioPortEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpDelete]

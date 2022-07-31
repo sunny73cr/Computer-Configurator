@@ -10,10 +10,5 @@
         {
             DomainValidation.String.LengthRange(_errors, "Form factor", NVMEFormFactor.FormFactor, 1, 15);
         }
-
-        public Validation(Edit NVMEFormFactor)
-        {
-            DomainValidation.String.LengthRange(_errors, "Form factor", NVMEFormFactor.FormFactor, 1, 15);
-        }
     }
 }

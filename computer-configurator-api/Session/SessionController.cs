@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
 
 namespace ComputerConfigurator.Api.Session
 {
@@ -18,25 +17,13 @@ namespace ComputerConfigurator.Api.Session
         [HttpPost]
         public async Task<ActionResult> Login([FromBody] DTO.Login authenticationDetails)
         {
-            string? cookieString = Request.Cookies[SessionCookie.Key];
-
-            if (cookieString != null && new SessionCookie(cookieString).Valid == true) return NoContent();
+            if (await Session.ValdiateExistingSession(_context, Request.Cookies)) return NoContent();
 
             Account.Account? account = await _context.Account.FirstOrDefaultAsync(x => x.Email == authenticationDetails.Email);
 
             if (account == null) return Unauthorized();
 
-            byte[] knownPassword = Convert.FromBase64String(account.Password);
-
-            byte[] oldPasswordBytes = Encoding.Unicode.GetBytes(authenticationDetails.Password);
-
-            byte[] oldSaltBytes = Convert.FromBase64String(account.Salt);
-
-            byte[] testPassword = Authentication.Hash(oldPasswordBytes, oldSaltBytes);
-
-            bool authenticated = Authentication.Verify(knownPassword, testPassword);
-
-            if (!authenticated) return Unauthorized();
+            if (account.VerifyPassword(authenticationDetails.Password) == false) return Unauthorized();
 
             Session session = new(account.UUID);
 
@@ -52,26 +39,37 @@ namespace ComputerConfigurator.Api.Session
         [HttpPatch]
         public async Task<ActionResult> Logout()
         {
-            string? cookieString = Request.Cookies[SessionCookie.Key];
+            string? sessionKey = Request.Cookies[SessionCookie.Key];
 
-            if (cookieString == null) return Unauthorized();
+            if (sessionKey == null)
+            {
+                Response.Headers.SetCookie = SessionCookie.LogoutCookie();
+                return NoContent();
+            }
 
-            SessionCookie cookie = new(cookieString);
+            bool validSessionKey = Guid.TryParse(sessionKey, out Guid sessionKeyGuid);
 
-            if (cookie.Valid == false) return Unauthorized();
+            if (validSessionKey == false)
+            {
+                Response.Headers.SetCookie = SessionCookie.LogoutCookie();
+                return NoContent();
+            }
 
-            //log invalid cookie
+            Session? session = await _context.Session.FirstOrDefaultAsync(x => x.Key == sessionKeyGuid);
 
-            Session? session = await _context.Session.FirstOrDefaultAsync(x => x.Key == cookie.SessionKey);
+            if (session == null)
+            {
+                //log invalid session key
 
-            if (session == null) return Unauthorized();
+                Response.Headers.SetCookie = SessionCookie.LogoutCookie();
+                return NoContent();
+            }
 
             session.LogoutTimestamp = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
 
             Response.Headers.SetCookie = SessionCookie.LogoutCookie();
-
             return NoContent();
         }
     }

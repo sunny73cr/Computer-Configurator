@@ -21,9 +21,9 @@ namespace ComputerConfigurator.Api.PCIEGeneration
 
             if (errors.Any()) return BadRequest(errors);
 
-            PCIEGeneration? existing = await _context.PCIEGeneration.FirstOrDefaultAsync(x => x.UUID == createPCIEGeneration.UUID);
+            bool duplicate = await _context.PCIEGeneration.AnyAsync(x => x.Generation == createPCIEGeneration.Generation);
 
-            if (existing != null) return Conflict();
+            if (duplicate) return Conflict();
 
             PCIEGeneration PCIEGeneration = new(createPCIEGeneration);
 
@@ -37,41 +37,17 @@ namespace ComputerConfigurator.Api.PCIEGeneration
         [HttpGet]
         public async Task<ActionResult<List<DTO.Details>>> GetAll()
         {
-            List<DTO.Details> PCIEGenerations = await _context.PCIEGeneration
-                .Select(pcieGeneration => new DTO.Details(pcieGeneration))
-                .ToListAsync();
+            List<DTO.Details> PCIEGenerations = new();
+
+            IAsyncEnumerable<PCIEGeneration> query = _context.PCIEGeneration
+                .AsAsyncEnumerable();
+
+            await foreach (PCIEGeneration pcieGeneration in query)
+            {
+                PCIEGenerations.Add(new DTO.Details(pcieGeneration));
+            }
 
             return Ok(PCIEGenerations);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            PCIEGeneration? PCIEGeneration = await _context.PCIEGeneration.FirstOrDefaultAsync(PCIEGeneration => PCIEGeneration.UUID == uuid);
-
-            if (PCIEGeneration == null) return NotFound();
-
-            var details = new DTO.Details(PCIEGeneration);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit PCIEGenerationEdits)
-        {
-            IReadOnlyList<string> errors = PCIEGenerationEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            PCIEGeneration? PCIEGeneration = await _context.PCIEGeneration.FirstOrDefaultAsync(x => x.UUID == PCIEGenerationEdits.UUID);
-
-            if (PCIEGeneration == null) return NotFound();
-
-            PCIEGeneration.Edit(PCIEGeneration, PCIEGenerationEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpDelete]

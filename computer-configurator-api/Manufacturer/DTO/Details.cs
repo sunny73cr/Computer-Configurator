@@ -3,7 +3,7 @@
     public class Details
     {
         public Guid UUID { get; set; }
-        public string Name { get; set; } = null!;
+        public string Name { get; set; } = string.Empty;
 
         public Details()
         {

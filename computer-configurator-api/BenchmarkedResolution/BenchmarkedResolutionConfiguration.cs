@@ -9,8 +9,7 @@ namespace ComputerConfigurator.Api.BenchmarkedResolution
         {
             builder.ToTable("benchmarkedresolution");
 
-            builder.HasKey(e => e.UUID)
-                .HasName("benchmarkedresolution_pkey");
+            builder.HasKey(e => e.UUID).HasName("benchmarkedresolution_pkey");
 
             builder.HasIndex(e => new { e.PixelWidth, e.PixelHeight }, "benchmarkedresolution_pixelarea_unique")
                 .IsUnique();

@@ -11,11 +11,5 @@
             DomainValidation.Numeric.ValueRange(_errors, "Pin count", audioPort.PinCount, 1, 15360);
             DomainValidation.Numeric.ValueRange(_errors, "Connector size", audioPort.ConnectorSize, 1, 8640);
         }
-
-        public Validation(Edit audioPort)
-        {
-            DomainValidation.Numeric.ValueRange(_errors, "Pin count", audioPort.PinCount, 1, 15360);
-            DomainValidation.Numeric.ValueRange(_errors, "Connector size", audioPort.ConnectorSize, 1, 8640);
-        }
     }
 }

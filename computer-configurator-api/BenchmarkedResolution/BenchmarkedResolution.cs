@@ -17,11 +17,5 @@
             PixelWidth = benchmarkedresolution.PixelWidth;
             PixelHeight = benchmarkedresolution.PixelHeight;
         }
-
-        public static void Edit(BenchmarkedResolution benchmarkedResolution, DTO.Edit edits)
-        {
-            if (benchmarkedResolution.PixelWidth != edits.PixelWidth) benchmarkedResolution.PixelWidth = edits.PixelWidth;
-            if (benchmarkedResolution.PixelHeight != edits.PixelHeight) benchmarkedResolution.PixelHeight = edits.PixelHeight;
-        }
     }
 }

@@ -119,6 +119,180 @@ namespace ComputerConfigurator.Api.Migrations
                     b.ToTable("benchmarkedresolution", (string)null);
                 });
 
+            modelBuilder.Entity("ComputerConfigurator.Api.ChassisAudioPort.ChassisAudioPort", b =>
+                {
+                    b.Property<Guid>("ChassisUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("chassisuuid");
+
+                    b.Property<Guid>("AudioPortUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("audiportuuid");
+
+                    b.Property<Guid>("ChassisZoneUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("chassiszoneuuid");
+
+                    b.HasKey("ChassisUUID", "AudioPortUUID", "ChassisZoneUUID")
+                        .HasName("chassis_audioport_pkey");
+
+                    b.HasIndex("AudioPortUUID");
+
+                    b.HasIndex("ChassisZoneUUID");
+
+                    b.ToTable("chassis_audioport", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.ChassisFanSupport.ChassisFanSupport", b =>
+                {
+                    b.Property<Guid>("ChassisUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("chassisuuid");
+
+                    b.Property<Guid>("FanDiameterUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("fandiameteruuid");
+
+                    b.Property<Guid>("ChassisZoneUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("chassiszoneuuid");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("integer")
+                        .HasColumnName("count");
+
+                    b.Property<int>("MaximumWidthMM")
+                        .HasColumnType("integer")
+                        .HasColumnName("maximumwidthmm");
+
+                    b.HasKey("ChassisUUID", "FanDiameterUUID", "ChassisZoneUUID")
+                        .HasName("chassis_fansupport_pkey");
+
+                    b.HasIndex("ChassisZoneUUID");
+
+                    b.HasIndex("FanDiameterUUID");
+
+                    b.ToTable("chassis_fansupport", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.ChassisFilterSupport.ChassisFilterSupport", b =>
+                {
+                    b.Property<Guid>("ChassisUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("chassisuuid");
+
+                    b.Property<Guid>("ChassisZoneUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("chassiszoneuuid");
+
+                    b.Property<bool>("Removeable")
+                        .HasColumnType("boolean")
+                        .HasColumnName("removeable");
+
+                    b.HasKey("ChassisUUID", "ChassisZoneUUID")
+                        .HasName("chassis_filtersupport_pkey");
+
+                    b.HasIndex("ChassisZoneUUID");
+
+                    b.ToTable("chassis_filtersupport", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.ChassisMotherboardFormFactorSupport.ChassisMotherboardFormFactorSupport", b =>
+                {
+                    b.Property<Guid>("ChassisUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("chassisuuid");
+
+                    b.Property<Guid>("MotherboardFormFactorUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("motherboardformfactoruuid");
+
+                    b.HasKey("ChassisUUID", "MotherboardFormFactorUUID")
+                        .HasName("chassis_motherboardformfactorsupport_pkey");
+
+                    b.HasIndex("MotherboardFormFactorUUID");
+
+                    b.ToTable("chassis_motherboardformfactorsupport", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.ChassisPowerSupplyFormFactorSupport.ChassisPowerSupplyFormFactorSupport", b =>
+                {
+                    b.Property<Guid>("ChassisUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("chassisuuid");
+
+                    b.Property<Guid>("PowerSupplyFormFactorUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("powersupplyformfactoruuid");
+
+                    b.Property<bool>("BracketRequired")
+                        .HasColumnType("boolean")
+                        .HasColumnName("bracketrequired");
+
+                    b.HasKey("ChassisUUID", "PowerSupplyFormFactorUUID")
+                        .HasName("chassis_powersupplyformfactorsupport_pkey");
+
+                    b.HasIndex("PowerSupplyFormFactorUUID");
+
+                    b.ToTable("chassis_powersupplyformfactorsupport", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.ChassisRadiatorSupport.ChassisRadiatorSupport", b =>
+                {
+                    b.Property<Guid>("ChassisUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("chassisuuid");
+
+                    b.Property<Guid>("RadiatorSizeUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("radiatorsizeuuid");
+
+                    b.Property<Guid>("ChassisZoneUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("chassiszoneuuid");
+
+                    b.Property<int>("MaximumWidthMM")
+                        .HasColumnType("integer")
+                        .HasColumnName("maximumwidthmm");
+
+                    b.HasKey("ChassisUUID", "RadiatorSizeUUID", "ChassisZoneUUID")
+                        .HasName("chassis_radiatorsupport_pkey");
+
+                    b.HasIndex("ChassisZoneUUID");
+
+                    b.HasIndex("RadiatorSizeUUID");
+
+                    b.ToTable("chassis_radiatorsupport", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.ChassisUSBPort.ChassisUSBPort", b =>
+                {
+                    b.Property<Guid>("ChassisUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("chassisuuid");
+
+                    b.Property<Guid>("USBPortUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("usbportuuid");
+
+                    b.Property<Guid>("ChassisZoneUUID")
+                        .HasColumnType("uuid")
+                        .HasColumnName("chassiszoneuuid");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("integer")
+                        .HasColumnName("count");
+
+                    b.HasKey("ChassisUUID", "USBPortUUID", "ChassisZoneUUID")
+                        .HasName("chassis_usbport_pkey");
+
+                    b.HasIndex("ChassisZoneUUID");
+
+                    b.HasIndex("USBPortUUID");
+
+                    b.ToTable("chassis_usbport", (string)null);
+                });
+
             modelBuilder.Entity("ComputerConfigurator.Api.ChassisZone.ChassisZone", b =>
                 {
                     b.Property<Guid>("UUID")
@@ -732,6 +906,41 @@ namespace ComputerConfigurator.Api.Migrations
                     b.ToTable("usbport", (string)null);
                 });
 
+            modelBuilder.Entity("ComputerConfigurator.Api.Chassis.Chassis", b =>
+                {
+                    b.HasBaseType("ComputerConfigurator.Api.Part.Part");
+
+                    b.Property<int>("HeightMM")
+                        .HasColumnType("integer")
+                        .HasColumnName("heightmm");
+
+                    b.Property<int>("LengthMM")
+                        .HasColumnType("integer")
+                        .HasColumnName("lengthmm");
+
+                    b.Property<int>("MaxCPUCoolerHeightMM")
+                        .HasColumnType("integer")
+                        .HasColumnName("maxcpucoolerheightmm");
+
+                    b.Property<int>("MaxGPULengthMM")
+                        .HasColumnType("integer")
+                        .HasColumnName("maxgpulengthmm");
+
+                    b.Property<int>("MaxPSULengthMM")
+                        .HasColumnType("integer")
+                        .HasColumnName("maxpsulengthmm");
+
+                    b.Property<int>("PCIESlotCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("pcieslotcount");
+
+                    b.Property<int>("WidthMM")
+                        .HasColumnType("integer")
+                        .HasColumnName("widthmm");
+
+                    b.ToTable("chassis", (string)null);
+                });
+
             modelBuilder.Entity("ComputerConfigurator.Api.CPU.CPU", b =>
                 {
                     b.HasBaseType("ComputerConfigurator.Api.Part.Part");
@@ -758,6 +967,171 @@ namespace ComputerConfigurator.Api.Migrations
                     b.HasIndex("CPUSocketUUID");
 
                     b.ToTable("cpu", (string)null);
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.ChassisAudioPort.ChassisAudioPort", b =>
+                {
+                    b.HasOne("ComputerConfigurator.Api.AudioPort.AudioPort", "AudioPort")
+                        .WithMany()
+                        .HasForeignKey("AudioPortUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_audioport_audioportuuid_fkey");
+
+                    b.HasOne("ComputerConfigurator.Api.Chassis.Chassis", "Chassis")
+                        .WithMany("ChassisAudioPort")
+                        .HasForeignKey("ChassisUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_audioport_chassisuuid_fkey");
+
+                    b.HasOne("ComputerConfigurator.Api.ChassisZone.ChassisZone", "ChassisZone")
+                        .WithMany()
+                        .HasForeignKey("ChassisZoneUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_audioport_chassiszoneuuid_fkey");
+
+                    b.Navigation("AudioPort");
+
+                    b.Navigation("Chassis");
+
+                    b.Navigation("ChassisZone");
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.ChassisFanSupport.ChassisFanSupport", b =>
+                {
+                    b.HasOne("ComputerConfigurator.Api.Chassis.Chassis", "Chassis")
+                        .WithMany("ChassisFanSupport")
+                        .HasForeignKey("ChassisUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_fansupport_chassisuuid_fkey");
+
+                    b.HasOne("ComputerConfigurator.Api.ChassisZone.ChassisZone", "ChassisZone")
+                        .WithMany()
+                        .HasForeignKey("ChassisZoneUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_fansupport_chassiszoneuuid_fkey");
+
+                    b.HasOne("ComputerConfigurator.Api.FanDiameter.FanDiameter", "FanDiameter")
+                        .WithMany()
+                        .HasForeignKey("FanDiameterUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_fansupport_fandiameteruuid_fkey");
+
+                    b.Navigation("Chassis");
+
+                    b.Navigation("ChassisZone");
+
+                    b.Navigation("FanDiameter");
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.ChassisFilterSupport.ChassisFilterSupport", b =>
+                {
+                    b.HasOne("ComputerConfigurator.Api.Chassis.Chassis", "Chassis")
+                        .WithMany("ChassisFilterSupport")
+                        .HasForeignKey("ChassisUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_filtersupport_chassisuuid_fkey");
+
+                    b.HasOne("ComputerConfigurator.Api.ChassisZone.ChassisZone", "ChassisZone")
+                        .WithMany()
+                        .HasForeignKey("ChassisZoneUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_filtersupport_chassiszoneuuid_fkey");
+
+                    b.Navigation("Chassis");
+
+                    b.Navigation("ChassisZone");
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.ChassisMotherboardFormFactorSupport.ChassisMotherboardFormFactorSupport", b =>
+                {
+                    b.HasOne("ComputerConfigurator.Api.Chassis.Chassis", "Chassis")
+                        .WithMany("ChassisMotherboardFormFactorSupport")
+                        .HasForeignKey("ChassisUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_motherboardformfactorsupport_chassisuuid_fkey");
+
+                    b.HasOne("ComputerConfigurator.Api.MotherboardFormFactor.MotherboardFormFactor", "MotherboardFormFactor")
+                        .WithMany()
+                        .HasForeignKey("MotherboardFormFactorUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_motherboardformfactorsupport_motherboardformfactoruuis_fkey");
+
+                    b.Navigation("Chassis");
+
+                    b.Navigation("MotherboardFormFactor");
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.ChassisPowerSupplyFormFactorSupport.ChassisPowerSupplyFormFactorSupport", b =>
+                {
+                    b.HasOne("ComputerConfigurator.Api.Chassis.Chassis", "Chassis")
+                        .WithMany("ChassisPowerSupplyFormFactorSupport")
+                        .HasForeignKey("ChassisUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_powersupplyformfactorsupport_chassisuuid_fkey");
+
+                    b.HasOne("ComputerConfigurator.Api.PowerSupplyFormFactor.PowerSupplyFormFactor", "PowerSupplyFormFactor")
+                        .WithMany()
+                        .HasForeignKey("PowerSupplyFormFactorUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_powersupplyformfactorsupport_psuformfactoruuid_fkey");
+
+                    b.Navigation("Chassis");
+
+                    b.Navigation("PowerSupplyFormFactor");
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.ChassisRadiatorSupport.ChassisRadiatorSupport", b =>
+                {
+                    b.HasOne("ComputerConfigurator.Api.Chassis.Chassis", "Chassis")
+                        .WithMany("ChassisRadiatorSupport")
+                        .HasForeignKey("ChassisUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_radiatorsupport_chassisuuid_fkey");
+
+                    b.HasOne("ComputerConfigurator.Api.ChassisZone.ChassisZone", "ChassisZone")
+                        .WithMany()
+                        .HasForeignKey("ChassisZoneUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_radiatorsupport_chassiszoneuuid_fkey");
+
+                    b.HasOne("ComputerConfigurator.Api.RadiatorSize.RadiatorSize", "RadiatorSize")
+                        .WithMany()
+                        .HasForeignKey("RadiatorSizeUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_radiatorsupport_radiatorsizeuuid_fkey");
+
+                    b.Navigation("Chassis");
+
+                    b.Navigation("ChassisZone");
+
+                    b.Navigation("RadiatorSize");
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.ChassisUSBPort.ChassisUSBPort", b =>
+                {
+                    b.HasOne("ComputerConfigurator.Api.Chassis.Chassis", "Chassis")
+                        .WithMany("ChassisUSBPort")
+                        .HasForeignKey("ChassisUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_usbport_chassisuuid_fkey");
+
+                    b.HasOne("ComputerConfigurator.Api.ChassisZone.ChassisZone", "ChassisZone")
+                        .WithMany()
+                        .HasForeignKey("ChassisZoneUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_usbport_chassiszoneuuid_fkey");
+
+                    b.HasOne("ComputerConfigurator.Api.USBPort.USBPort", "USBPort")
+                        .WithMany()
+                        .HasForeignKey("USBPortUUID")
+                        .IsRequired()
+                        .HasConstraintName("chassis_usbport_usbportuuid_fkey");
+
+                    b.Navigation("Chassis");
+
+                    b.Navigation("ChassisZone");
+
+                    b.Navigation("USBPort");
                 });
 
             modelBuilder.Entity("ComputerConfigurator.Api.MotherboardChipset.MotherboardChipset", b =>
@@ -812,6 +1186,18 @@ namespace ComputerConfigurator.Api.Migrations
                     b.Navigation("Account");
                 });
 
+            modelBuilder.Entity("ComputerConfigurator.Api.Chassis.Chassis", b =>
+                {
+                    b.HasOne("ComputerConfigurator.Api.Part.Part", "Part")
+                        .WithOne()
+                        .HasForeignKey("ComputerConfigurator.Api.Chassis.Chassis", "UUID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("chassis_uuid_fkey");
+
+                    b.Navigation("Part");
+                });
+
             modelBuilder.Entity("ComputerConfigurator.Api.CPU.CPU", b =>
                 {
                     b.HasOne("ComputerConfigurator.Api.CPUSocket.CPUSocket", "CPUSocket")
@@ -835,6 +1221,23 @@ namespace ComputerConfigurator.Api.Migrations
             modelBuilder.Entity("ComputerConfigurator.Api.PCIEGeneration.PCIEGeneration", b =>
                 {
                     b.Navigation("PCIEConnectors");
+                });
+
+            modelBuilder.Entity("ComputerConfigurator.Api.Chassis.Chassis", b =>
+                {
+                    b.Navigation("ChassisAudioPort");
+
+                    b.Navigation("ChassisFanSupport");
+
+                    b.Navigation("ChassisFilterSupport");
+
+                    b.Navigation("ChassisMotherboardFormFactorSupport");
+
+                    b.Navigation("ChassisPowerSupplyFormFactorSupport");
+
+                    b.Navigation("ChassisRadiatorSupport");
+
+                    b.Navigation("ChassisUSBPort");
                 });
 #pragma warning restore 612, 618
         }

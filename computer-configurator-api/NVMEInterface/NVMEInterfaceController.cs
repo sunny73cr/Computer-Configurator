@@ -21,9 +21,9 @@ namespace ComputerConfigurator.Api.NVMEInterface
 
             if (errors.Any()) return BadRequest(errors);
 
-            NVMEInterface? existing = await _context.NVMEInterface.FirstOrDefaultAsync(x => x.UUID == createNVMEInterface.UUID);
+            bool duplicate = await _context.NVMEInterface.AnyAsync(x => x.Interface == createNVMEInterface.Interface);
 
-            if (existing != null) return Conflict();
+            if (duplicate) return Conflict();
 
             NVMEInterface NVMEInterface = new(createNVMEInterface);
 
@@ -37,41 +37,17 @@ namespace ComputerConfigurator.Api.NVMEInterface
         [HttpGet]
         public async Task<ActionResult<List<DTO.Details>>> GetAll()
         {
-            List<DTO.Details> NVMEInterfaces = await _context.NVMEInterface
-                .Select(nvmeInterface => new DTO.Details(nvmeInterface))
-                .ToListAsync();
+            List<DTO.Details> NVMEInterfaces = new();
+
+            IAsyncEnumerable<NVMEInterface> query = _context.NVMEInterface
+                .AsAsyncEnumerable();
+
+            await foreach (NVMEInterface nvmeInterface in query)
+            {
+                NVMEInterfaces.Add(new DTO.Details(nvmeInterface));
+            }
 
             return Ok(NVMEInterfaces);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<DTO.Details>> GetByUUID(Guid uuid)
-        {
-            NVMEInterface? NVMEInterface = await _context.NVMEInterface.FirstOrDefaultAsync(NVMEInterface => NVMEInterface.UUID == uuid);
-
-            if (NVMEInterface == null) return NotFound();
-
-            var details = new DTO.Details(NVMEInterface);
-
-            return Ok(details);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Edit(DTO.Edit NVMEInterfaceEdits)
-        {
-            IReadOnlyList<string> errors = NVMEInterfaceEdits.Validate();
-
-            if (errors.Any()) return BadRequest(errors);
-
-            NVMEInterface? NVMEInterface = await _context.NVMEInterface.FirstOrDefaultAsync(x => x.UUID == NVMEInterfaceEdits.UUID);
-
-            if (NVMEInterface == null) return NotFound();
-
-            NVMEInterface.Edit(NVMEInterface, NVMEInterfaceEdits);
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         [HttpDelete]
