@@ -205,6 +205,16 @@ namespace ComputerConfigurator.Api
             new MotherboardSATAConnector.MotherboardSATAConnectorConfiguration().Configure(modelBuilder.Entity<MotherboardSATAConnector.MotherboardSATAConnector>());
             new MotherboardUSBPort.MotherboardUSBPortConfiguration().Configure(modelBuilder.Entity<MotherboardUSBPort.MotherboardUSBPort>());
 
+            new Storage.StorageConfiguration().Configure(modelBuilder.Entity<Storage.Storage>());
+            new SATAHDD.SATAHDDConfiguration().Configure(modelBuilder.Entity<SATAHDD.SATAHDD>());
+            new SATASSD.SATASSDConfiguration().Configure(modelBuilder.Entity<SATASSD.SATASSD>());
+            new NVMESSD.NVMESSDConfiguration().Configure(modelBuilder.Entity<NVMESSD.NVMESSD>());
+
+            new RAM.RAMConfiguration().Configure(modelBuilder.Entity<RAM.RAM>());
+
+            new Radiator.RadiatorConfiguration().Configure(modelBuilder.Entity<Radiator.Radiator>());
+
+            new PowerSupply.PowerSupplyConfiguration().Configure(modelBuilder.Entity<PowerSupply.PowerSupply>());
             #endregion
 
             OnModelCreatingPartial(modelBuilder);

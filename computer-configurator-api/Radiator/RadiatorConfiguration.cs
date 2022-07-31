@@ -15,7 +15,7 @@ namespace ComputerConfigurator.Api.Radiator
 
             builder.Property(x => x.RadiatorSizeUUID)
                 .HasColumnName("radiatorsizeuuid")
-                .HasColumnType("integer");
+                .HasColumnType("uuid");
 
             builder.Property(x => x.TubeInnerDiameterMM)
                 .HasColumnName("tubeinnerdiametermm")
