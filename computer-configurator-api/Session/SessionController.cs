@@ -14,10 +14,24 @@ namespace ComputerConfigurator.Api.Session
             _context = context;
         }
 
+        [HttpGet]
+        public async Task<ActionResult> WhoAmI()
+        {
+            Session? mySession = await Session.ValdiateExistingSession(_context, Request.Cookies);
+
+            if (mySession == null) return Unauthorized();
+
+            Account.DTO.Details accountDetails = new(mySession.Account);
+
+            return Ok(accountDetails);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Login([FromBody] DTO.Login authenticationDetails)
         {
-            if (await Session.ValdiateExistingSession(_context, Request.Cookies)) return NoContent();
+            Session? existingSession = await Session.ValdiateExistingSession(_context, Request.Cookies);
+
+            if (existingSession != null) return NoContent();
 
             Account.Account? account = await _context.Account.FirstOrDefaultAsync(x => x.Email == authenticationDetails.Email);
 

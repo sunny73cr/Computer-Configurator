@@ -24,29 +24,29 @@ namespace ComputerConfigurator.Api.Session
             LogoutTimestamp = null;
         }
 
-        public static async Task<bool> ValdiateExistingSession(CCContext context, IRequestCookieCollection cookies)
+        public static async Task<Session?> ValdiateExistingSession(CCContext context, IRequestCookieCollection cookies)
         {
             string? sessionKeyString = cookies[SessionCookie.Key];
 
-            if (sessionKeyString == null) return false;
+            if (sessionKeyString == null) return null;
 
             bool validSessionKey = Guid.TryParse(sessionKeyString, out Guid sessionKey);
 
-            if (validSessionKey == false) return false;
+            if (validSessionKey == false) return null;
 
             Session? existingSession = await context.Session.FirstOrDefaultAsync(x => x.Key == sessionKey);
 
-            if (existingSession == null) return false;
+            if (existingSession == null) return null;
 
             bool loggedIn = existingSession.LogoutTimestamp != null;
 
-            if (loggedIn == false) return false;
+            if (loggedIn == false) return null;
 
             bool expired = existingSession.LoginTimestamp.AddSeconds(SessionCookie.SessionLifetime.TotalSeconds) <= DateTime.UtcNow;
 
-            if (expired) return false;
+            if (expired) return null;
 
-            return true;
+            return existingSession;
         }
     }
 }
