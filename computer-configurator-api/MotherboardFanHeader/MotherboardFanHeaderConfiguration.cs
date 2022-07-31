@@ -10,7 +10,7 @@ namespace ComputerConfigurator.Api.MotherboardFanHeader
             builder.ToTable("motherboard_fanheader");
 
             builder.HasKey(x => new { x.MotherboardUUID, x.FanHeaderUUID })
-                .HasName("motherboard_ethernetport_pkey");
+                .HasName("motherboard_fanheader_pkey");
 
             builder.Property(x => x.MotherboardUUID)
                 .HasColumnName("motherboarduuid")
